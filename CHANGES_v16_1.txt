@@ -1,0 +1,20 @@
+Parking Slot Engine v16.1
+
+Stability patch based on the v16 labeling/state-search failures.
+
+1. Robustness GT UNKNOWN label fixed
+   - O/E/U are now persisted as explicit strings.
+   - U is excluded from binary metrics automatically.
+   - Legacy 1/0/blank CSV files remain readable.
+   - Each O/E/U keypress is saved immediately, reducing loss if the UI is closed mid-session.
+
+2. State-search leaderboard duplicate-column crash fixed
+   - temporal_variant and source evidence_mode are stored under distinct column names.
+   - Existing malformed detection_mode_comparison.csv files with evidence_mode.1 are repaired on read.
+   - All comparison tables are forced to unique column names before concat/write.
+   - Repairs are recorded in STATE_SEARCH_REPAIR.log and included in UPLOAD_TO_CHATGPT.zip.
+
+3. UI behavior preserved
+   - Progress bar/timing area remains pinned at the bottom from first launch.
+   - Controls remain scrollable.
+   - Existing v16 detector/evidence/slot-learning cache signatures are unchanged.

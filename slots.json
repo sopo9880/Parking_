@@ -1,0 +1,1636 @@
+{
+  "slots": [
+    {
+      "local_id": "C1_S001",
+      "cctv": "cctv1",
+      "point": [
+        16,
+        79
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G001",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        16.0,
+        79.0
+      ],
+      "anchor_center_raw": [
+        15.12,
+        61.3
+      ],
+      "anchor_center": [
+        15.12,
+        61.3
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        2.65,
+        4.14
+      ],
+      "anchor_std_px": 3.4,
+      "anchor_shift_px": 17.72,
+      "anchor_max_shift_px": 28.56,
+      "anchor_sample_gate_px": 85.67,
+      "nearest_manual_slot_distance_px": 95.19,
+      "expected_box_wh": [
+        30.15,
+        84.58
+      ],
+      "assignment_radius_px": 78.06,
+      "region": [
+        6,
+        42,
+        24,
+        81
+      ],
+      "learned_box_samples": 439,
+      "learned_center_samples_raw": 439,
+      "learned_center_samples": 439,
+      "template_initial": "templates\\C1_S001_initial.jpg"
+    },
+    {
+      "local_id": "C1_S002",
+      "cctv": "cctv1",
+      "point": [
+        10,
+        174
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G002",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        10.0,
+        174.0
+      ],
+      "anchor_center_raw": [
+        18.91,
+        174.96
+      ],
+      "anchor_center": [
+        10.0,
+        174.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_samples<30",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        1.87,
+        0.18
+      ],
+      "anchor_std_px": 1.03,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 28.56,
+      "anchor_sample_gate_px": 85.67,
+      "nearest_manual_slot_distance_px": 95.19,
+      "expected_box_wh": [
+        37.49,
+        103.27
+      ],
+      "assignment_radius_px": 78.06,
+      "region": [
+        1,
+        150,
+        19,
+        198
+      ],
+      "learned_box_samples": 2,
+      "learned_center_samples_raw": 2,
+      "learned_center_samples": 2,
+      "template_initial": "templates\\C1_S002_initial.jpg"
+    },
+    {
+      "local_id": "C1_S003",
+      "cctv": "cctv1",
+      "point": [
+        422,
+        70
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G003",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        422.0,
+        70.0
+      ],
+      "anchor_center_raw": [
+        476.26,
+        66.17
+      ],
+      "anchor_center": [
+        422.0,
+        70.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>40.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        19.26,
+        5.46
+      ],
+      "anchor_std_px": 12.36,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 40.0,
+      "anchor_sample_gate_px": 120.0,
+      "nearest_manual_slot_distance_px": 218.23,
+      "expected_box_wh": [
+        181.83,
+        59.09
+      ],
+      "assignment_radius_px": 120.0,
+      "region": [
+        387,
+        56,
+        457,
+        84
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C1_S003_initial.jpg"
+    },
+    {
+      "local_id": "C1_S004",
+      "cctv": "cctv1",
+      "point": [
+        640,
+        80
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G004",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        640.0,
+        80.0
+      ],
+      "anchor_center_raw": [
+        652.1,
+        77.28
+      ],
+      "anchor_center": [
+        652.1,
+        77.28
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        2.32,
+        1.36
+      ],
+      "anchor_std_px": 1.84,
+      "anchor_shift_px": 12.4,
+      "anchor_max_shift_px": 16.87,
+      "anchor_sample_gate_px": 50.6,
+      "nearest_manual_slot_distance_px": 56.22,
+      "expected_box_wh": [
+        69.59,
+        38.06
+      ],
+      "assignment_radius_px": 46.1,
+      "region": [
+        639,
+        68,
+        665,
+        86
+      ],
+      "learned_box_samples": 450,
+      "learned_center_samples_raw": 450,
+      "learned_center_samples": 450,
+      "template_initial": "templates\\C1_S004_initial.jpg"
+    },
+    {
+      "local_id": "C1_S005",
+      "cctv": "cctv1",
+      "point": [
+        645,
+        136
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G005",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        645.0,
+        136.0
+      ],
+      "anchor_center_raw": [
+        677.16,
+        124.7
+      ],
+      "anchor_center": [
+        645.0,
+        136.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>16.9",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        13.68,
+        3.08
+      ],
+      "anchor_std_px": 8.38,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.87,
+      "anchor_sample_gate_px": 50.6,
+      "nearest_manual_slot_distance_px": 56.22,
+      "expected_box_wh": [
+        178.12,
+        91.87
+      ],
+      "assignment_radius_px": 46.1,
+      "region": [
+        611,
+        115,
+        679,
+        157
+      ],
+      "learned_box_samples": 449,
+      "learned_center_samples_raw": 449,
+      "learned_center_samples": 449,
+      "template_initial": "templates\\C1_S005_initial.jpg"
+    },
+    {
+      "local_id": "C1_S006",
+      "cctv": "cctv1",
+      "point": [
+        746,
+        91
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G006",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        746.0,
+        91.0
+      ],
+      "anchor_center_raw": [
+        694.3,
+        94.71
+      ],
+      "anchor_center": [
+        746.0,
+        91.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>32.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        11.94,
+        10.09
+      ],
+      "anchor_std_px": 11.01,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 31.97,
+      "anchor_sample_gate_px": 95.91,
+      "nearest_manual_slot_distance_px": 106.57,
+      "expected_box_wh": [
+        117.3,
+        35.36
+      ],
+      "assignment_radius_px": 87.39,
+      "region": [
+        724,
+        82,
+        768,
+        100
+      ],
+      "learned_box_samples": 30,
+      "learned_center_samples_raw": 30,
+      "learned_center_samples": 30,
+      "template_initial": "templates\\C1_S006_initial.jpg"
+    },
+    {
+      "local_id": "C2_S001",
+      "cctv": "cctv2",
+      "point": [
+        39,
+        278
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G007",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        39.0,
+        278.0
+      ],
+      "anchor_center_raw": [
+        41.24,
+        298.89
+      ],
+      "anchor_center": [
+        41.24,
+        298.89
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        1.43,
+        1.46
+      ],
+      "anchor_std_px": 1.45,
+      "anchor_shift_px": 21.01,
+      "anchor_max_shift_px": 29.12,
+      "anchor_sample_gate_px": 87.37,
+      "nearest_manual_slot_distance_px": 97.08,
+      "expected_box_wh": [
+        81.83,
+        175.97
+      ],
+      "assignment_radius_px": 79.61,
+      "region": [
+        26,
+        258,
+        57,
+        339
+      ],
+      "learned_box_samples": 397,
+      "learned_center_samples_raw": 397,
+      "learned_center_samples": 397,
+      "template_initial": "templates\\C2_S001_initial.jpg"
+    },
+    {
+      "local_id": "C2_S002",
+      "cctv": "cctv2",
+      "point": [
+        119,
+        223
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G008",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        119.0,
+        223.0
+      ],
+      "anchor_center_raw": [
+        86.22,
+        198.72
+      ],
+      "anchor_center": [
+        119.0,
+        223.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>26.3",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        1.41,
+        4.74
+      ],
+      "anchor_std_px": 3.07,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 26.31,
+      "anchor_sample_gate_px": 78.92,
+      "nearest_manual_slot_distance_px": 87.69,
+      "expected_box_wh": [
+        171.83,
+        152.3
+      ],
+      "assignment_radius_px": 71.91,
+      "region": [
+        86,
+        188,
+        152,
+        258
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C2_S002_initial.jpg"
+    },
+    {
+      "local_id": "C2_S003",
+      "cctv": "cctv2",
+      "point": [
+        180,
+        160
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G009",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        180.0,
+        160.0
+      ],
+      "anchor_center_raw": [
+        180.62,
+        165.79
+      ],
+      "anchor_center": [
+        180.62,
+        165.79
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        5.33,
+        2.62
+      ],
+      "anchor_std_px": 3.97,
+      "anchor_shift_px": 5.82,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 42.87,
+      "nearest_manual_slot_distance_px": 47.63,
+      "expected_box_wh": [
+        77.04,
+        70.5
+      ],
+      "assignment_radius_px": 39.06,
+      "region": [
+        166,
+        150,
+        195,
+        182
+      ],
+      "learned_box_samples": 81,
+      "learned_center_samples_raw": 81,
+      "learned_center_samples": 81,
+      "template_initial": "templates\\C2_S003_initial.jpg"
+    },
+    {
+      "local_id": "C2_S004",
+      "cctv": "cctv2",
+      "point": [
+        217,
+        130
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G010",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        217.0,
+        130.0
+      ],
+      "anchor_center_raw": [
+        215.94,
+        130.14
+      ],
+      "anchor_center": [
+        215.94,
+        130.14
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        3.08,
+        4.27
+      ],
+      "anchor_std_px": 3.67,
+      "anchor_shift_px": 1.07,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 36.67,
+      "expected_box_wh": [
+        136.52,
+        86.67
+      ],
+      "assignment_radius_px": 30.07,
+      "region": [
+        190,
+        110,
+        242,
+        150
+      ],
+      "learned_box_samples": 450,
+      "learned_center_samples_raw": 450,
+      "learned_center_samples": 450,
+      "template_initial": "templates\\C2_S004_initial.jpg"
+    },
+    {
+      "local_id": "C2_S005",
+      "cctv": "cctv2",
+      "point": [
+        250,
+        114
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G001",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        250.0,
+        114.0
+      ],
+      "anchor_center_raw": [
+        249.2,
+        84.41
+      ],
+      "anchor_center": [
+        250.0,
+        114.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_samples<30",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        0.0,
+        0.0
+      ],
+      "anchor_std_px": 0.0,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 36.67,
+      "expected_box_wh": [
+        195.94,
+        68.61
+      ],
+      "assignment_radius_px": 30.07,
+      "region": [
+        213,
+        98,
+        287,
+        130
+      ],
+      "learned_box_samples": 2,
+      "learned_center_samples_raw": 2,
+      "learned_center_samples": 1,
+      "template_initial": "templates\\C2_S005_initial.jpg"
+    },
+    {
+      "local_id": "C2_S006",
+      "cctv": "cctv2",
+      "point": [
+        403,
+        93
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G003",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        403.0,
+        93.0
+      ],
+      "anchor_center_raw": [
+        406.26,
+        94.08
+      ],
+      "anchor_center": [
+        406.26,
+        94.08
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        3.3,
+        2.48
+      ],
+      "anchor_std_px": 2.89,
+      "anchor_shift_px": 3.44,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 47.11,
+      "nearest_manual_slot_distance_px": 52.35,
+      "expected_box_wh": [
+        55.66,
+        44.99
+      ],
+      "assignment_radius_px": 42.92,
+      "region": [
+        396,
+        84,
+        417,
+        104
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C2_S006_initial.jpg"
+    },
+    {
+      "local_id": "C2_S007",
+      "cctv": "cctv2",
+      "point": [
+        455,
+        87
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G004",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        455.0,
+        87.0
+      ],
+      "anchor_center_raw": [
+        455.46,
+        84.96
+      ],
+      "anchor_center": [
+        455.46,
+        84.96
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        2.4,
+        1.0
+      ],
+      "anchor_std_px": 1.7,
+      "anchor_shift_px": 2.09,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 46.83,
+      "nearest_manual_slot_distance_px": 52.04,
+      "expected_box_wh": [
+        42.37,
+        33.56
+      ],
+      "assignment_radius_px": 42.67,
+      "region": [
+        446,
+        76,
+        464,
+        94
+      ],
+      "learned_box_samples": 450,
+      "learned_center_samples_raw": 450,
+      "learned_center_samples": 450,
+      "template_initial": "templates\\C2_S007_initial.jpg"
+    },
+    {
+      "local_id": "C2_S008",
+      "cctv": "cctv2",
+      "point": [
+        507,
+        89
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G006",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        507.0,
+        89.0
+      ],
+      "anchor_center_raw": [
+        508.11,
+        94.53
+      ],
+      "anchor_center": [
+        508.11,
+        94.53
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        3.06,
+        2.4
+      ],
+      "anchor_std_px": 2.73,
+      "anchor_shift_px": 5.64,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 46.83,
+      "nearest_manual_slot_distance_px": 52.04,
+      "expected_box_wh": [
+        42.99,
+        40.51
+      ],
+      "assignment_radius_px": 42.67,
+      "region": [
+        499,
+        85,
+        517,
+        104
+      ],
+      "learned_box_samples": 449,
+      "learned_center_samples_raw": 449,
+      "learned_center_samples": 449,
+      "template_initial": "templates\\C2_S008_initial.jpg"
+    },
+    {
+      "local_id": "C2_S009",
+      "cctv": "cctv2",
+      "point": [
+        571,
+        98
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G005",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        571.0,
+        98.0
+      ],
+      "anchor_center_raw": [
+        580.99,
+        102.82
+      ],
+      "anchor_center": [
+        580.99,
+        102.82
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        4.57,
+        2.03
+      ],
+      "anchor_std_px": 3.3,
+      "anchor_shift_px": 11.09,
+      "anchor_max_shift_px": 19.39,
+      "anchor_sample_gate_px": 58.17,
+      "nearest_manual_slot_distance_px": 64.63,
+      "expected_box_wh": [
+        71.52,
+        42.11
+      ],
+      "assignment_radius_px": 53.0,
+      "region": [
+        567,
+        93,
+        595,
+        113
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C2_S009_initial.jpg"
+    },
+    {
+      "local_id": "C2_S010",
+      "cctv": "cctv2",
+      "point": [
+        648,
+        147
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G002",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        648.0,
+        147.0
+      ],
+      "anchor_center_raw": [
+        669.45,
+        142.13
+      ],
+      "anchor_center": [
+        648.0,
+        147.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>16.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        3.98,
+        3.31
+      ],
+      "anchor_std_px": 3.64,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 37.66,
+      "expected_box_wh": [
+        135.45,
+        62.99
+      ],
+      "assignment_radius_px": 30.88,
+      "region": [
+        622,
+        133,
+        674,
+        161
+      ],
+      "learned_box_samples": 95,
+      "learned_center_samples_raw": 95,
+      "learned_center_samples": 95,
+      "template_initial": "templates\\C2_S010_initial.jpg"
+    },
+    {
+      "local_id": "C2_S011",
+      "cctv": "cctv2",
+      "point": [
+        685,
+        154
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G017",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        685.0,
+        154.0
+      ],
+      "anchor_center_raw": [
+        675.85,
+        143.52
+      ],
+      "anchor_center": [
+        675.85,
+        143.52
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        12.84,
+        5.78
+      ],
+      "anchor_std_px": 9.31,
+      "anchor_shift_px": 13.91,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 37.66,
+      "expected_box_wh": [
+        134.54,
+        62.64
+      ],
+      "assignment_radius_px": 30.88,
+      "region": [
+        650,
+        129,
+        701,
+        158
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C2_S011_initial.jpg"
+    },
+    {
+      "local_id": "C2_S012",
+      "cctv": "cctv2",
+      "point": [
+        730,
+        193
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G018",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        730.0,
+        193.0
+      ],
+      "anchor_center_raw": [
+        732.17,
+        186.69
+      ],
+      "anchor_center": [
+        732.17,
+        186.69
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        21.98,
+        17.08
+      ],
+      "anchor_std_px": 19.53,
+      "anchor_shift_px": 6.67,
+      "anchor_max_shift_px": 17.86,
+      "anchor_sample_gate_px": 53.59,
+      "nearest_manual_slot_distance_px": 59.55,
+      "expected_box_wh": [
+        63.88,
+        69.76
+      ],
+      "assignment_radius_px": 48.83,
+      "region": [
+        720,
+        171,
+        744,
+        203
+      ],
+      "learned_box_samples": 137,
+      "learned_center_samples_raw": 137,
+      "learned_center_samples": 132,
+      "template_initial": "templates\\C2_S012_initial.jpg"
+    },
+    {
+      "local_id": "C2_S013",
+      "cctv": "cctv2",
+      "point": [
+        825,
+        256
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G019",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        825.0,
+        256.0
+      ],
+      "anchor_center_raw": [
+        775.31,
+        233.56
+      ],
+      "anchor_center": [
+        825.0,
+        256.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>26.4",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        20.0,
+        14.98
+      ],
+      "anchor_std_px": 17.49,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 26.42,
+      "anchor_sample_gate_px": 79.25,
+      "nearest_manual_slot_distance_px": 88.06,
+      "expected_box_wh": [
+        170.41,
+        143.78
+      ],
+      "assignment_radius_px": 72.21,
+      "region": [
+        793,
+        223,
+        857,
+        289
+      ],
+      "learned_box_samples": 379,
+      "learned_center_samples_raw": 379,
+      "learned_center_samples": 379,
+      "template_initial": "templates\\C2_S013_initial.jpg"
+    },
+    {
+      "local_id": "C2_S014",
+      "cctv": "cctv2",
+      "point": [
+        848,
+        341
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G020",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        848.0,
+        341.0
+      ],
+      "anchor_center_raw": [
+        848.0,
+        341.0
+      ],
+      "anchor_center": [
+        848.0,
+        341.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_no_samples",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        0.0,
+        0.0
+      ],
+      "anchor_std_px": 0.0,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 26.42,
+      "anchor_sample_gate_px": 79.25,
+      "nearest_manual_slot_distance_px": 88.06,
+      "expected_box_wh": [
+        68.88,
+        46.5
+      ],
+      "assignment_radius_px": 72.21,
+      "region": [
+        826,
+        325,
+        861,
+        357
+      ],
+      "learned_box_samples": 0,
+      "learned_center_samples_raw": 0,
+      "learned_center_samples": 0,
+      "template_initial": "templates\\C2_S014_initial.jpg"
+    },
+    {
+      "local_id": "C3_S001",
+      "cctv": "cctv3",
+      "point": [
+        27,
+        284
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G021",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        27.0,
+        284.0
+      ],
+      "anchor_center_raw": [
+        34.97,
+        275.54
+      ],
+      "anchor_center": [
+        34.97,
+        275.54
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        1.74,
+        1.58
+      ],
+      "anchor_std_px": 1.66,
+      "anchor_shift_px": 11.63,
+      "anchor_max_shift_px": 34.54,
+      "anchor_sample_gate_px": 103.62,
+      "nearest_manual_slot_distance_px": 115.13,
+      "expected_box_wh": [
+        69.11,
+        117.0
+      ],
+      "assignment_radius_px": 94.41,
+      "region": [
+        22,
+        249,
+        48,
+        302
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C3_S001_initial.jpg"
+    },
+    {
+      "local_id": "C3_S002",
+      "cctv": "cctv3",
+      "point": [
+        137,
+        250
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G019",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        137.0,
+        250.0
+      ],
+      "anchor_center_raw": [
+        137.0,
+        250.0
+      ],
+      "anchor_center": [
+        137.0,
+        250.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_no_samples",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        0.0,
+        0.0
+      ],
+      "anchor_std_px": 0.0,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 35.85,
+      "expected_box_wh": [
+        74.08,
+        49.4
+      ],
+      "assignment_radius_px": 29.39,
+      "region": [
+        114,
+        233,
+        160,
+        267
+      ],
+      "learned_box_samples": 0,
+      "learned_center_samples_raw": 0,
+      "learned_center_samples": 0,
+      "template_initial": "templates\\C3_S002_initial.jpg"
+    },
+    {
+      "local_id": "C3_S003",
+      "cctv": "cctv3",
+      "point": [
+        155,
+        219
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G020",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        155.0,
+        219.0
+      ],
+      "anchor_center_raw": [
+        121.1,
+        217.94
+      ],
+      "anchor_center": [
+        155.0,
+        219.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>16.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        11.05,
+        0.87
+      ],
+      "anchor_std_px": 5.96,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 35.85,
+      "expected_box_wh": [
+        241.16,
+        125.56
+      ],
+      "assignment_radius_px": 29.39,
+      "region": [
+        109,
+        190,
+        201,
+        248
+      ],
+      "learned_box_samples": 328,
+      "learned_center_samples_raw": 328,
+      "learned_center_samples": 232,
+      "template_initial": "templates\\C3_S003_initial.jpg"
+    },
+    {
+      "local_id": "C3_S004",
+      "cctv": "cctv3",
+      "point": [
+        240,
+        159
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G024",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        240.0,
+        159.0
+      ],
+      "anchor_center_raw": [
+        227.77,
+        159.8
+      ],
+      "anchor_center": [
+        227.77,
+        159.8
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        4.75,
+        3.06
+      ],
+      "anchor_std_px": 3.9,
+      "anchor_shift_px": 12.25,
+      "anchor_max_shift_px": 20.67,
+      "anchor_sample_gate_px": 62.0,
+      "nearest_manual_slot_distance_px": 68.88,
+      "expected_box_wh": [
+        233.74,
+        76.01
+      ],
+      "assignment_radius_px": 56.48,
+      "region": [
+        183,
+        142,
+        272,
+        177
+      ],
+      "learned_box_samples": 449,
+      "learned_center_samples_raw": 449,
+      "learned_center_samples": 448,
+      "template_initial": "templates\\C3_S004_initial.jpg"
+    },
+    {
+      "local_id": "C3_S005",
+      "cctv": "cctv3",
+      "point": [
+        301,
+        127
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G025",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        301.0,
+        127.0
+      ],
+      "anchor_center_raw": [
+        316.57,
+        136.75
+      ],
+      "anchor_center": [
+        316.57,
+        136.75
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        2.5,
+        1.68
+      ],
+      "anchor_std_px": 2.09,
+      "anchor_shift_px": 18.37,
+      "anchor_max_shift_px": 20.67,
+      "anchor_sample_gate_px": 62.0,
+      "nearest_manual_slot_distance_px": 68.88,
+      "expected_box_wh": [
+        195.02,
+        70.78
+      ],
+      "assignment_radius_px": 56.48,
+      "region": [
+        280,
+        120,
+        354,
+        153
+      ],
+      "learned_box_samples": 450,
+      "learned_center_samples_raw": 450,
+      "learned_center_samples": 450,
+      "template_initial": "templates\\C3_S005_initial.jpg"
+    },
+    {
+      "local_id": "C3_S006",
+      "cctv": "cctv3",
+      "point": [
+        389,
+        109
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G026",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        389.0,
+        109.0
+      ],
+      "anchor_center_raw": [
+        419.86,
+        123.54
+      ],
+      "anchor_center": [
+        389.0,
+        109.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>26.9",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        4.72,
+        1.89
+      ],
+      "anchor_std_px": 3.31,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 26.95,
+      "anchor_sample_gate_px": 80.84,
+      "nearest_manual_slot_distance_px": 89.82,
+      "expected_box_wh": [
+        152.94,
+        51.05
+      ],
+      "assignment_radius_px": 73.65,
+      "region": [
+        360,
+        97,
+        418,
+        121
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C3_S006_initial.jpg"
+    },
+    {
+      "local_id": "C3_S007",
+      "cctv": "cctv3",
+      "point": [
+        612,
+        126
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G027",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        612.0,
+        126.0
+      ],
+      "anchor_center_raw": [
+        620.99,
+        126.31
+      ],
+      "anchor_center": [
+        620.99,
+        126.31
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        5.38,
+        6.14
+      ],
+      "anchor_std_px": 5.76,
+      "anchor_shift_px": 9.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 17.89,
+      "expected_box_wh": [
+        100.83,
+        55.92
+      ],
+      "assignment_radius_px": 28.0,
+      "region": [
+        602,
+        113,
+        640,
+        139
+      ],
+      "learned_box_samples": 401,
+      "learned_center_samples_raw": 401,
+      "learned_center_samples": 401,
+      "template_initial": "templates\\C3_S007_initial.jpg"
+    },
+    {
+      "local_id": "C3_S008",
+      "cctv": "cctv3",
+      "point": [
+        620,
+        142
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G028",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        620.0,
+        142.0
+      ],
+      "anchor_center_raw": [
+        633.15,
+        128.05
+      ],
+      "anchor_center": [
+        620.0,
+        142.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>16.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        5.38,
+        4.04
+      ],
+      "anchor_std_px": 4.71,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 17.89,
+      "expected_box_wh": [
+        78.31,
+        56.84
+      ],
+      "assignment_radius_px": 28.0,
+      "region": [
+        605,
+        129,
+        635,
+        155
+      ],
+      "learned_box_samples": 55,
+      "learned_center_samples_raw": 55,
+      "learned_center_samples": 55,
+      "template_initial": "templates\\C3_S008_initial.jpg"
+    },
+    {
+      "local_id": "C3_S009",
+      "cctv": "cctv3",
+      "point": [
+        642,
+        153
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G029",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        642.0,
+        153.0
+      ],
+      "anchor_center_raw": [
+        643.86,
+        155.79
+      ],
+      "anchor_center": [
+        643.86,
+        155.79
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        6.87,
+        6.43
+      ],
+      "anchor_std_px": 6.65,
+      "anchor_shift_px": 3.35,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 35.0,
+      "nearest_manual_slot_distance_px": 24.6,
+      "expected_box_wh": [
+        53.63,
+        51.17
+      ],
+      "assignment_radius_px": 28.0,
+      "region": [
+        634,
+        144,
+        654,
+        168
+      ],
+      "learned_box_samples": 108,
+      "learned_center_samples_raw": 108,
+      "learned_center_samples": 108,
+      "template_initial": "templates\\C3_S009_initial.jpg"
+    },
+    {
+      "local_id": "C3_S010",
+      "cctv": "cctv3",
+      "point": [
+        679,
+        179
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G007",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        679.0,
+        179.0
+      ],
+      "anchor_center_raw": [
+        691.27,
+        147.4
+      ],
+      "anchor_center": [
+        679.0,
+        179.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>16.0",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        2.97,
+        1.18
+      ],
+      "anchor_std_px": 2.08,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 16.0,
+      "anchor_sample_gate_px": 40.7,
+      "nearest_manual_slot_distance_px": 45.22,
+      "expected_box_wh": [
+        184.51,
+        70.45
+      ],
+      "assignment_radius_px": 37.08,
+      "region": [
+        644,
+        163,
+        714,
+        195
+      ],
+      "learned_box_samples": 319,
+      "learned_center_samples_raw": 319,
+      "learned_center_samples": 319,
+      "template_initial": "templates\\C3_S010_initial.jpg"
+    },
+    {
+      "local_id": "C3_S011",
+      "cctv": "cctv3",
+      "point": [
+        736,
+        205
+      ],
+      "initial_state": "OCCUPIED",
+      "global_id": "G008",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        736.0,
+        205.0
+      ],
+      "anchor_center_raw": [
+        725.39,
+        171.32
+      ],
+      "anchor_center": [
+        736.0,
+        205.0
+      ],
+      "anchor_trusted": false,
+      "anchor_reason": "manual_fallback_raw_shift>18.8",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        4.66,
+        1.63
+      ],
+      "anchor_std_px": 3.14,
+      "anchor_shift_px": 0.0,
+      "anchor_max_shift_px": 18.79,
+      "anchor_sample_gate_px": 56.38,
+      "nearest_manual_slot_distance_px": 62.65,
+      "expected_box_wh": [
+        159.4,
+        94.04
+      ],
+      "assignment_radius_px": 51.37,
+      "region": [
+        706,
+        183,
+        766,
+        227
+      ],
+      "learned_box_samples": 450,
+      "learned_center_samples_raw": 450,
+      "learned_center_samples": 450,
+      "template_initial": "templates\\C3_S011_initial.jpg"
+    },
+    {
+      "local_id": "C3_S012",
+      "cctv": "cctv3",
+      "point": [
+        847,
+        269
+      ],
+      "initial_state": "EMPTY",
+      "global_id": "G009",
+      "source": "MANUAL",
+      "geometry_version": "v12_manual_voronoi",
+      "manual_point": [
+        847.0,
+        269.0
+      ],
+      "anchor_center_raw": [
+        860.09,
+        254.85
+      ],
+      "anchor_center": [
+        860.09,
+        254.85
+      ],
+      "anchor_trusted": true,
+      "anchor_reason": "trusted",
+      "anchor_clamped": false,
+      "anchor_std_xy_px": [
+        0.88,
+        2.48
+      ],
+      "anchor_std_px": 1.68,
+      "anchor_shift_px": 19.27,
+      "anchor_max_shift_px": 38.44,
+      "anchor_sample_gate_px": 115.32,
+      "nearest_manual_slot_distance_px": 128.13,
+      "expected_box_wh": [
+        130.34,
+        157.76
+      ],
+      "assignment_radius_px": 105.07,
+      "region": [
+        835,
+        219,
+        885,
+        291
+      ],
+      "learned_box_samples": 451,
+      "learned_center_samples_raw": 451,
+      "learned_center_samples": 451,
+      "template_initial": "templates\\C3_S012_initial.jpg"
+    }
+  ]
+}

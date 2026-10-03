@@ -1,0 +1,14 @@
+Parking Slot Engine v16
+
+Major changes
+-------------
+1. Startup UI now reserves a fixed bottom progress/status area. Progress bar + timing are visible immediately without manually enlarging the window. The long Controls help text is scrollable.
+2. Robustness GT sampling is redesigned to deliberately mix likely OCCUPIED and likely EMPTY samples (default 96 total) while still forcing G018/G029 and other operator-important slots.
+3. Robustness metrics now report Accuracy, Precision, F1, Occupied Recall, Empty Specificity, False Empty, False Occupied, TP/TN/FP/FN.
+4. Cross-preprocess fusion tables added: YOLO RAW/ADAPTIVE, SEG RAW/ADAPTIVE, ANY, 2-of-4, conservative fusion, and condition-ruled fusion.
+5. MONITOR_STRIPES: causal temporal median remains YOLO-only; SEG keeps the RAW stripe frame because temporal median damaged masks in labeled v15.4 results.
+6. LOW_RES: causal multi-frame aggregation is applied before conservative resample/unsharping.
+7. Operational SEG scheduling changes from eager weak-FULL checks to transition-time requests: baseline state transitions plus sparse EMPTY-reference/crop disagreement checks.
+8. Experimental EMPTY-reference assist added for slots that began EMPTY. Appearance change alone cannot create occupancy; it requires an independent vehicle sensor and a short causal streak. It is evaluation-only and does not bypass SAFE_BASELINE selection.
+9. Progress timing keeps all four values: Total Elapsed, Step Elapsed, Step ETA, Total Remaining.
+10. v15 FULL/AUX evidence cache remains reusable; segmentation/robustness caches are versioned separately and recompute only when their logic changes.

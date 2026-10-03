@@ -1,0 +1,6 @@
+ultralytics>=8.3.0
+opencv-python>=4.8.0
+numpy>=1.26
+pandas>=2.0
+pillow>=10.0
+matplotlib>=3.8

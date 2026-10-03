@@ -1,0 +1,16 @@
+Parking Slot Engine v15.3 changes
+
+- Keeps SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST safety rules.
+- Replaces the v15.2 generic ENHANCED SEG input with RAW + condition-specific ADAPTIVE SEG.
+- LOW_RES: conservative resample/unsharp recovery.
+- SUN_GLARE: highlight tone compression without CLAHE.
+- MONITOR_STRIPES robustness path: causal 5-frame temporal median de-stripe using current and previous frames only.
+- Adds CLEAN auto-condition selection from highlight ratio / stripe energy / sharpness.
+- Adds robustness GT review crops + keyboard label UI.
+- Stores robustness GT labels in shared LOCALAPPDATA labels cache.
+- When labels exist, reports actual YOLO vs SEG vs FUSION_OR accuracy by degradation condition.
+- Adds shared cross-version slot-learning cache and optional migration from a sibling previous-version folder.
+- Adds four timing fields to ALL-IN-ONE: Total Elapsed / Step Elapsed / Step ETA / Total Remaining.
+- Keeps CAND_001=FALSE pillar and CAND_002=DUPLICATE of C2_S004.
+- Keeps manual slot points immutable unless the user drags them.
+- Keeps full robustness GT sample crops local and omits them from UPLOAD_TO_CHATGPT.zip to control size.

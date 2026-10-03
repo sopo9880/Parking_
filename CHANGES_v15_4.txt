@@ -1,0 +1,9 @@
+Parking Slot Engine v15.4
+
+1. Per-CCTV relative degradation classifier (percentile based).
+2. Operational causal temporal median for monitor stripes.
+3. Model-specific recovery detector on glare/stripe adaptive inputs; protection-only.
+4. Robustness forced-slot truncation bug fixed.
+5. Cross-version slot-learning cache migration fixed for legacy v15.x folders.
+6. Real Step Elapsed tracking + Total Elapsed / Step ETA / Total Remaining.
+7. New segmentation condition threshold/count CSV diagnostics.

@@ -1,0 +1,33 @@
+Parking Slot Engine v16.2
+========================
+
+Evidence / appearance cache repair
+----------------------------------
+- Fixes the v16/v16.1 case where shared slot-learning templates were reused but the fresh package slots.json did not receive learned region/template metadata.
+- Shared slot-learning cache now stores learned_slots_snapshot.json and restores only learned geometry metadata; manual point/global link/initial state remain authoritative.
+- Old caches without a snapshot try to migrate learned metadata from a compatible sibling runtime. If that is impossible, v16.2 performs one fresh slot-learning pass instead of silently continuing.
+- Evidence extraction now refuses to run when a slot template or learned region is missing.
+- Cached evidence gets a sanity check before reuse. visual_diff_initial that is almost entirely the missing-template sentinel 1.0 is automatically rejected and recomputed.
+- Freshly recomputed evidence is sanity-checked before it is cached.
+- If corrupted evidence is rebuilt, inherited segmentation/robustness caches are not trusted for that run.
+- EVIDENCE_CACHE_SANITY.txt records the distribution and repair action.
+
+Non-regression audit
+--------------------
+- For the bundled/current 20:30 validation GT only, SAFE_BASELINE is compared with the known reference TEST result (exact 85.29%, MAE 0.1471).
+- NON_REGRESSION_CHECK.txt is warning/audit only. TEST is never used for model selection or tuning.
+
+Robustness GT balance repair
+----------------------------
+- Existing human O/E/U labels in %LOCALAPPDATA% are preserved.
+- If the human labels are still class-imbalanced, robustness sampling keeps the old sample IDs and adds only new candidates from the missing class.
+- Default target is at least 40% minority class, with at most 48 new review samples per run.
+- HUMAN_GT_BALANCE_PLAN.txt records the class counts and how many supplemental samples were added.
+
+Preserved from v16.1
+--------------------
+- U/UNKNOWN stored safely as O/E/U strings and excluded from binary metrics.
+- Immediate save after every label key.
+- State-search duplicate-column repair.
+- Lazy transition-time SEG, stripe Temporal-Median YOLO, glare RAW+adaptive YOLO, experimental EMPTY reference.
+- Initial window keeps Progress / Total Elapsed / Step Elapsed / Step ETA / Total Remaining visible without resizing.

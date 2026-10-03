@@ -1,0 +1,38 @@
+Parking Research Agent v16.3.0
+==============================
+
+Scope
+-----
+This is an infrastructure release. The parking-state algorithm remains the v16.2 SAFE_BASELINE on purpose.
+
+Agent shell
+-----------
+- Renames the development shell to Parking Research Agent.
+- Adds a compact Agent header with current version, SAFE_BASELINE status, Research History, update check and release-page controls.
+- Keeps the existing ALL-IN-ONE pipeline, GT labeler, progress bar and four timing fields.
+
+Research History
+----------------
+- Adds a canonical paper/research timeline from v1 through v16.2.
+- Keeps the later field-operation v20+ lineage separate so version numbers are not mixed.
+- Each history entry records goal, changes, results, issues, decision and confidence.
+- Future Agent runs can be appended to a local run journal under LOCALAPPDATA without modifying the canonical history shipped with updates.
+
+GitHub Auto Update
+------------------
+- Update source: https://github.com/sopo9880/Parking_
+- Checks the latest GitHub Release asynchronously.
+- Downloads a versioned ZIP plus matching .sha256 file.
+- Verifies SHA-256 before installation.
+- Runs replacement from update_helper.py only after the current app exits.
+- Preserves settings.json, slots.json, rois.json, ui_state.json, sample_ground_truth.csv, work/, output/, .venv/ and user_data/.
+- Updates can be checked manually from the Agent header. Startup checks are enabled by default and require confirmation before install.
+
+Release automation
+------------------
+- GitHub Actions packages a release whenever release_trigger.txt changes.
+- The workflow creates/updates the matching GitHub Release and attaches ZIP + SHA-256 assets.
+
+Next algorithm experiment
+-------------------------
+- Slot-level motion memory / track-ID-switch protection remains the next research experiment. It is intentionally not mixed into this infrastructure release so v16.2 non-regression remains clean.

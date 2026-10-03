@@ -1,0 +1,469 @@
+{
+  "dev_end_sec": 900,
+  "eval_end_sec": 1230,
+  "learn_sample_sec": 2.0,
+  "evidence_sample_sec": 1.0,
+  "candidate_min_presence": 0.65,
+  "candidate_cluster_dist_px": 45,
+  "candidate_max_std_px": 28,
+  "candidate_existing_slot_dist_px": 60,
+  "matching": {
+    "unmatched_cost": 1.15,
+    "invalid_cost": 5.0,
+    "min_match_score": 0.03,
+    "voronoi_boundary_slack_px": 8.0,
+    "manual_distance_weight": 0.82,
+    "anchor_distance_weight": 0.18,
+    "size_weight": 0.06,
+    "region_iou_bonus": 0.08,
+    "confidence_bonus": 0.1,
+    "point_containment_expand": 0.1,
+    "manual_gate_neighbor_factor": 0.82,
+    "manual_gate_min_px": 28.0,
+    "manual_gate_max_px": 120.0,
+    "anchor_max_shift_neighbor_factor": 0.3,
+    "anchor_max_shift_min_px": 16.0,
+    "anchor_max_shift_max_px": 40.0,
+    "anchor_sample_gate_neighbor_factor": 0.9,
+    "anchor_sample_gate_min_px": 35.0,
+    "anchor_sample_gate_max_px": 120.0,
+    "min_anchor_samples": 30,
+    "max_anchor_std_px": 30.0,
+    "visual_region_width_scale": 0.38,
+    "visual_region_height_scale": 0.46,
+    "slot_overlap_warning_iou": 0.25,
+    "slot_overlap_critical_iou": 0.6,
+    "slot_close_anchor_warning_px": 24,
+    "anchor_shift_warning_ratio": 0.24,
+    "anchor_reject_if_exceeds_max_shift": true
+  },
+  "detector": {
+    "model": "yolov8m.pt",
+    "imgsz": 1280,
+    "conf": 0.15,
+    "tiling": false,
+    "tile_overlap": 0.2,
+    "tile_nms_iou": 0.5,
+    "physical_vehicle_nms_iou": 0.42,
+    "physical_vehicle_overlap_min": 0.68,
+    "vehicle_class_ids": [
+      2,
+      3,
+      5,
+      7
+    ]
+  },
+  "detector_sweep": {
+    "models": [
+      "yolov8n.pt",
+      "yolov8s.pt",
+      "yolov8m.pt",
+      "yolov8l.pt"
+    ],
+    "imgsz": [
+      640,
+      960,
+      1280
+    ],
+    "conf": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3
+    ],
+    "tiling": [
+      false,
+      true
+    ],
+    "apply_best_to_settings": true,
+    "selection_policy": "MAE_THEN_UNDERCOUNT_THEN_MAX_ERROR_THEN_EXACT"
+  },
+  "state_search": {
+    "entry_hit_ratio": [
+      0.35
+    ],
+    "exit_hit_ratio": [
+      0.1
+    ],
+    "stable_track_ratio": [
+      0.55
+    ],
+    "occupied_visual_diff_threshold": [
+      0.08
+    ],
+    "global_merge": [
+      "ANY"
+    ],
+    "global_confidence_threshold": [
+      0.0
+    ],
+    "evidence_mode": [
+      "FULL"
+    ],
+    "selection_eligible_modes": [
+      "FULL"
+    ],
+    "entry_mean_conf_min": [
+      0.08
+    ],
+    "full_min_conf": [
+      0.0
+    ],
+    "crop_min_conf": [
+      0.1
+    ],
+    "crop_add_min_conf": [
+      0.25,
+      0.35
+    ],
+    "crop_add_high_conf": [
+      0.5
+    ],
+    "crop_add_min_scales": [
+      2
+    ],
+    "entry_no_appearance_conf": [
+      0.25
+    ]
+  },
+  "detector_by_cctv": {
+    "cctv1": {
+      "model": "yolov8m.pt",
+      "imgsz": 640,
+      "conf": 0.05,
+      "tiling": true,
+      "tile_overlap": 0.2,
+      "tile_nms_iou": 0.5,
+      "physical_vehicle_nms_iou": 0.42,
+      "physical_vehicle_overlap_min": 0.68,
+      "vehicle_class_ids": [
+        2,
+        3,
+        5,
+        7
+      ]
+    },
+    "cctv2": {
+      "model": "yolov8m.pt",
+      "imgsz": 960,
+      "conf": 0.1,
+      "tiling": false,
+      "tile_overlap": 0.2,
+      "tile_nms_iou": 0.5,
+      "physical_vehicle_nms_iou": 0.42,
+      "physical_vehicle_overlap_min": 0.68,
+      "vehicle_class_ids": [
+        2,
+        3,
+        5,
+        7
+      ]
+    },
+    "cctv3": {
+      "model": "yolov8l.pt",
+      "imgsz": 960,
+      "conf": 0.05,
+      "tiling": false,
+      "tile_overlap": 0.2,
+      "tile_nms_iou": 0.5,
+      "physical_vehicle_nms_iou": 0.42,
+      "physical_vehicle_overlap_min": 0.68,
+      "vehicle_class_ids": [
+        2,
+        3,
+        5,
+        7
+      ]
+    }
+  },
+  "evaluation_warmup_sec": 10.0,
+  "temporal": {
+    "window_sec": 10.0,
+    "recent_window_sec": 3.0,
+    "tracker_max_gap_sec": 3.0,
+    "tracker_match_max_px": 110.0,
+    "tracker_min_iou": 0.02,
+    "tracker_iou_weight": 0.25,
+    "stationary_speed_px_s": 14.0,
+    "stationary_motion_span_px": 32.0,
+    "max_track_switches_for_entry": 1,
+    "warmup_sec": 10.0,
+    "crop_stationary_motion_span_px": 28.0,
+    "zone_memory_sec": 10.0,
+    "zone_recent_sec": 4.0,
+    "zone_motion_step_px": 14.0,
+    "zone_recent_motion_max_px": 24.0,
+    "entry_zone_settle_sec": 6.0,
+    "exit_no_full_sec": 4.0,
+    "exit_force_no_full_sec": 9.0,
+    "exit_aux_window_sec": 5.0,
+    "exit_aux_min_checks": 2,
+    "aux_recovery_conf": 0.25,
+    "aux_recovery_min_scales": 2,
+    "transition_guard_window_sec": 10.0,
+    "transition_guard_recent_sec": 3.0,
+    "entry_guard_motion_span_px": 45.0,
+    "entry_guard_recent_motion_span_px": 22.0,
+    "entry_guard_settle_sec": 7.0,
+    "entry_guard_min_recent_hit_ratio": 0.5,
+    "entry_guard_min_mean_conf": 0.08,
+    "exit_guard_no_full_sec": 4.0,
+    "exit_guard_aux_window_sec": 5.0,
+    "exit_guard_aux_min_checks": 2,
+    "exit_guard_aux_conf": 0.25,
+    "exit_guard_aux_min_scales": 2
+  },
+  "slot_crop_detector": {
+    "imgsz": 640,
+    "inference_conf_floor": 0.03,
+    "batch_size": 12,
+    "width_neighbor_factor": 2.8,
+    "height_neighbor_factor": 3.35,
+    "vertical_center_offset_neighbor_factor": 0.38,
+    "core_radius_neighbor_factor": 0.66,
+    "core_radius_min_px": 24.0,
+    "core_radius_max_px": 105.0,
+    "neighbor_min_px": 36.0,
+    "neighbor_max_px": 180.0,
+    "min_width_px": 128.0,
+    "max_width_px": 520.0,
+    "min_height_px": 144.0,
+    "max_height_px": 620.0,
+    "point_containment_expand": 0.06,
+    "distance_penalty_weight": 0.3,
+    "scales": [
+      1.0,
+      1.55
+    ]
+  },
+  "research_screenshots": {
+    "enabled": true,
+    "max_paper_ready": 12,
+    "jpeg_quality": 92,
+    "focused_error_count": 3,
+    "focused_slots_per_error": 4
+  },
+  "mode_selection_guardrail": {
+    "min_dev_exact_gain": 0.06,
+    "min_dev_mae_gain": 0.03,
+    "max_dev_over_rate_increase": 0.01
+  },
+  "selective_aux": {
+    "enabled": true,
+    "history_sec": 10.0,
+    "weak_full_conf": 0.18,
+    "recent_miss_trigger_ratio": 0.25,
+    "occupied_recheck_interval_sec": 2.0,
+    "appearance_recheck_interval_sec": 3.0,
+    "periodic_audit_interval_sec": 10.0,
+    "appearance_trigger_threshold": 0.08,
+    "always_audit_initial_occupied": true,
+    "occupied_memory_sec": 12.0,
+    "occupied_memory_recheck_interval_sec": 2.0
+  },
+  "pipeline_cache": {
+    "enabled": true,
+    "reuse_detector_tuning": true,
+    "reuse_slot_learning": true,
+    "reuse_evidence": true,
+    "cache_version": "v16-empty-ref-transition-fusion-1",
+    "retune_detector_each_all_in_one": false,
+    "embedded_detector_source": "v12/v13 validated warped detector sweep",
+    "compatible_evidence_version": "v15-transition-guard-1",
+    "reuse_segmentation": true,
+    "segmentation_cache_version": "v16-transition-time-seg-1",
+    "reuse_robustness": true,
+    "robustness_cache_version": "v16-balanced-robustness-1"
+  },
+  "candidate_overrides": [
+    {
+      "cctv": "cctv3",
+      "point": [
+        812,
+        205
+      ],
+      "tolerance_px": 50,
+      "kind": "FALSE",
+      "reason": "Operator confirmed this is a pillar / fixed structure."
+    },
+    {
+      "cctv": "cctv3",
+      "point": [
+        915,
+        330
+      ],
+      "tolerance_px": 55,
+      "kind": "DUPLICATE",
+      "target_local_id": "C2_S004",
+      "target_global_id": "G010",
+      "reason": "Operator confirmed same physical parking space as C2_S004."
+    }
+  ],
+  "debug_render": {
+    "min_width_px": 2200,
+    "min_scale": 2.0,
+    "font_scale": 0.78,
+    "line_thickness": 2
+  },
+  "candidate_policy": {
+    "auto_add_new_slots": false,
+    "auto_edit_ground_truth": false,
+    "write_gt_review_note": true
+  },
+  "segmentation_assist": {
+    "enabled": true,
+    "model": "yolov8m-seg.pt",
+    "imgsz": 640,
+    "conf": 0.05,
+    "vehicle_class_ids": [
+      2,
+      3,
+      5,
+      7
+    ],
+    "weak_full_conf": 0.18,
+    "recent_full_hit_ratio_trigger": 0.25,
+    "appearance_trigger_threshold": 0.08,
+    "periodic_audit_interval_sec": 10.0,
+    "batch_size": 12,
+    "min_core_overlap_ratio": 0.08,
+    "positive_conf": 0.1,
+    "positive_core_overlap_ratio": 0.12,
+    "protect_occupied_conf": 0.1,
+    "protect_occupied_core_overlap_ratio": 0.12,
+    "entry_note_only": true,
+    "auto_add_candidate_from_seg": false,
+    "lazy_trigger_reasons": [
+      "RECENT_FULL_MISS",
+      "WEAK_FULL"
+    ],
+    "weak_full_seg_conf_max": 0.14,
+    "recent_full_hit_ratio_max": 0.55,
+    "enhancement": "per-CCTV relative condition classifier: lowres_resample_unsharp | glare_tone_compress_RAW_SEG_priority | causal_temporal_median_destripe",
+    "dual_input_raw_adaptive": true,
+    "auto_highlight_ratio": 0.1,
+    "auto_stripe_energy_ratio": 0.43,
+    "auto_low_sharpness": 55.0,
+    "condition_classifier": "per_cctv_percentile",
+    "condition_min_samples": 30,
+    "highlight_percentile": 0.9,
+    "stripe_percentile": 0.9,
+    "sharpness_percentile": 0.1,
+    "adaptive_detector_enabled": true,
+    "adaptive_detector_conditions": [
+      "SUN_GLARE",
+      "MONITOR_STRIPES",
+      "LOW_RES"
+    ],
+    "adaptive_detector_conf": 0.05,
+    "adaptive_detector_protect_conf": 0.12,
+    "temporal_clean_frames": 5,
+    "temporal_clean_step_sec": 1.0,
+    "absolute_thresholds_legacy_only": true,
+    "lazy_trigger_policy": "baseline_state_transition_plus_empty_ref_disagreement",
+    "transition_context_sec": 1.0,
+    "empty_ref_disagreement_interval_sec": 5.0,
+    "stripe_temporal_seg_enabled": false,
+    "lowres_temporal_frames": 5
+  },
+  "ground_truth_review": {
+    "enabled": true,
+    "jpeg_quality": 92,
+    "contact_sheet_columns": 5,
+    "contact_sheet_rows": 6,
+    "contact_thumb_width": 360,
+    "contact_thumb_height": 203,
+    "duplicate_review_times_sec": [
+      0,
+      450,
+      900,
+      1230
+    ],
+    "candidate_review_time_sec": 450,
+    "upload_review_stride_sec": 30.0
+  },
+  "robustness_experiment": {
+    "enabled": true,
+    "hard_slots_per_cctv": 2,
+    "max_slots": 6,
+    "force_slots": [
+      "C2_S003",
+      "C2_S012",
+      "C3_S009"
+    ],
+    "max_timestamps": 12,
+    "batch_size": 12,
+    "low_res_scale": 0.35,
+    "sun_glare_strength": 0.5,
+    "stripe_strength": 0.22,
+    "stripe_period_px": 5,
+    "sample_panels": 6,
+    "jpeg_quality": 92,
+    "detector": {
+      "model": "yolov8m.pt",
+      "imgsz": 640,
+      "conf": 0.05,
+      "vehicle_class_ids": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "tiling": false,
+      "physical_vehicle_nms_iou": 0.42,
+      "physical_vehicle_overlap_min": 0.68
+    },
+    "temporal_clean_frames": 5,
+    "temporal_clean_step_sec": 1.0,
+    "auto_highlight_ratio": 0.1,
+    "auto_stripe_energy_ratio": 0.43,
+    "auto_low_sharpness": 55.0,
+    "adaptive_preprocess": "condition_specific",
+    "gt_labeling": "use app button after first run; labels stored in shared LOCALAPPDATA cache",
+    "condition_classifier": "per_cctv_percentile",
+    "condition_min_samples": 8,
+    "highlight_percentile": 0.9,
+    "stripe_percentile": 0.9,
+    "sharpness_percentile": 0.1,
+    "force_slots_priority": true,
+    "balanced_gt_samples": 96,
+    "forced_samples_per_slot": 3,
+    "gt_occ_full_conf": 0.25,
+    "gt_occ_crop_conf": 0.25,
+    "gt_empty_recent_hit_max": 0.1,
+    "balanced_sampling": "human-GT-preserving balance repair: existing labels + minority-class supplemental candidates",
+    "stripe_temporal_seg_enabled": false,
+    "lowres_multiframe": true,
+    "human_balance_target_minority_fraction": 0.4,
+    "human_balance_max_new_per_run": 48
+  },
+  "empty_reference": {
+    "enabled": true,
+    "calibration_sec": 10.0,
+    "min_margin": 0.018,
+    "mad_multiplier": 3.0,
+    "entry_streak_sec": 3.0,
+    "protect_occupied": true,
+    "require_vehicle_sensor": true,
+    "vehicle_support_min_conf": 0.05
+  },
+  "non_regression_reference": {
+    "enabled": true,
+    "reference_name": "current 20m30s Connect Hyundai validation GT",
+    "gt_occupancy_fingerprint": "0fc07e67a3eca7627737deec5110c2f11f749cbb56b2eec9a15bcf6b8e491896",
+    "expected_test_exact_rate": 0.8529411764705882,
+    "expected_test_mae": 0.14705882352941177,
+    "exact_rate_tolerance": 0.005,
+    "mae_tolerance": 0.01,
+    "evaluation_only": true
+  },
+  "auto_update": {
+    "enabled": true,
+    "check_on_startup": true,
+    "ask_before_install": true,
+    "repo": "sopo9880/Parking_",
+    "asset_prefix": "ParkingResearchAgent-"
+  }
+}

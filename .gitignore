@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+output/
+work/
+user_data/
+LAST_ERROR.txt
+*.log
+.DS_Store
