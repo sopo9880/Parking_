@@ -79,9 +79,9 @@ def check_latest(settings: dict | None = None):
     sha_asset = None
     for a in assets:
         name = str(a.get("name", ""))
-        if name.startswith(prefix) and name.lower().endswith(".zip"):
+        if name == f"{prefix}{latest}.zip":
             zip_asset = a
-        if name.startswith(prefix) and name.lower().endswith(".sha256"):
+        if name == f"{prefix}{latest}.zip.sha256":
             sha_asset = a
     return {
         "current": cur,

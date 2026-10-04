@@ -917,3 +917,35 @@
 - Independent temporal validation and actual figure artifacts remain pending.
 
 **Decision:** Keep v16.2 SAFE_BASELINE and v16.4 CANDIDATE; grow papers only when research evidence changes.
+
+## v16.5.2
+
+**한국어 요약:** 외부 주석 중복 제거, 실제 결과 재계산, 대표 20장 추론 검증 및 한·영 논문에 33장 검증 이미지와 그래프 통합. 공간 검증 결과이며 독립 시간 검증은 미완료.
+
+**Status:** EXTERNAL_BASELINE_RELEASE | **Evidence:** frozen_prediction_recalculation_and_selected_20_image_inference_verified
+
+**Title:** Deduplicated CNRPark-EXT spatial evidence and bilingual Living Paper
+
+### Changes
+
+- Canonical image/spot deduplication at conversion and evaluation, with conflict detection and audit
+- Frozen detector/overlap settings and model fingerprint; no target-label tuning
+- Image-count metrics, camera/weather breakdowns, 33 actual overlays, montage and charts
+- Synchronized bilingual papers, immutable snapshots, PDFs and evidence ZIP release automation
+- Exact version ZIP selection for updater compatibility
+
+### Results
+
+- 200,657 archived rows - 35,127 duplicates = 165,530 unique pairs across 4,073 images
+- Accuracy 95.0770%; F1 95.4401%; TP 85,280 / TN 72,101 / FP 5,940 / FN 2,209
+- Count Exact 33.9553%; MAE 1.44095; median 1; P90 4; P95 5; max 14
+- Representative 20 images re-inferred with matching archived predictions; full 4,073-image inference not rerun
+
+### Issues
+
+- Original full-run parameter snapshot unavailable; replay parameters and model hash documented separately
+- Counts are occupied annotated parking spaces, not total or cross-camera unique vehicles
+- Camera1/9 false positives remain; group comparisons are descriptive, not causal
+- Spatial benchmark does not validate temporal transitions; independent temporal validation pending
+
+**Decision:** Freeze EXTERNAL_BASELINE; retain v16.2 SAFE_BASELINE and v16.4 CANDIDATE.

@@ -1,0 +1,4 @@
+scope,name,images,count_exact,count_mae,count_median_abs_error,count_p90_error,count_p95_error,count_max_error,over_count_rate,under_count_rate,count_bias
+WEATHER,OVERCAST,1240,34.52,1.4153,1.0,3.0,4.0,12,0.5467741935483871,0.1080645161290322,1.1169
+WEATHER,RAINY,1053,35.42,1.4046,1.0,4.0,5.0,14,0.5508072174738842,0.0949667616334283,1.0513
+WEATHER,SUNNY,1780,32.70,1.4803,1.0,4.0,5.0,11,0.4612359550561797,0.2117977528089887,0.6961

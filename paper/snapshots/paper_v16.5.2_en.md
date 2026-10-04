@@ -2,7 +2,7 @@
 
 Living Paper | v16.5.2 | Research revision retained-temporal-plus-frozen-external-r2
 
-[한국어](paper_ko.md) | [English](paper_en.md)
+[한국어](paper_v16.5.2_ko.md) | [English](paper_v16.5.2_en.md)
 
 Research draft. Temporal scores are retained reported values; external spatial metrics were recomputed by this code from deduplicated archived predictions, without a full external inference rerun. Authors and affiliation remain unspecified.
 
@@ -231,27 +231,27 @@ Tables and real figures link to the CSVs, hashes, and selection history in [R6].
 | RAINY | 1053 | 35.42 | 1.4046 | 1.0513 | 14 |
 | SUNNY | 1780 | 32.70 | 1.4803 | 0.6961 | 11 |
 
-![Spatial occupancy accuracy by camera and weather](figures/v16_5_2/external_accuracy_by_camera_weather.png)
+![Spatial occupancy accuracy by camera and weather](../figures/v16_5_2/external_accuracy_by_camera_weather.png)
 
 Spatial occupancy accuracy by camera and weather
 
-![Occupied-space count MAE by camera and signed image-level errors](figures/v16_5_2/external_count_error.png)
+![Occupied-space count MAE by camera and signed image-level errors](../figures/v16_5_2/external_count_error.png)
 
 Occupied-space count MAE by camera and signed image-level errors
 
-![Actual camera1/camera9 FP, camera2 success, and TP/TN/FN cases](figures/v16_5_2/external_validation_montage.jpg)
+![Actual camera1/camera9 FP, camera2 success, and TP/TN/FN cases](../figures/v16_5_2/external_validation_montage.jpg)
 
 Actual camera1/camera9 FP, camera2 success, and TP/TN/FN cases
 
-![camera1 FP case: spot 21000000876, GT=0, Pred=1](figures/v16_5_2/camera1_fp.jpg)
+![camera1 FP case: spot 21000000876, GT=0, Pred=1](../figures/v16_5_2/camera1_fp.jpg)
 
 camera1 FP case: spot 21000000876, GT=0, Pred=1
 
-![camera9 FP case: spot 29000012580, GT=0, Pred=1](figures/v16_5_2/camera9_fp.jpg)
+![camera9 FP case: spot 29000012580, GT=0, Pred=1](../figures/v16_5_2/camera9_fp.jpg)
 
 camera9 FP case: spot 29000012580, GT=0, Pred=1
 
-![camera2 TP case: spot 22000004350, GT=1, Pred=1](figures/v16_5_2/camera2_tp.jpg)
+![camera2 TP case: spot 22000004350, GT=1, Pred=1](../figures/v16_5_2/camera2_tp.jpg)
 
 camera2 TP case: spot 22000004350, GT=1, Pred=1
 
@@ -261,7 +261,7 @@ camera2 TP case: spot 22000004350, GT=1, Pred=1
 
 v1-v4 explored detection/stabilization, smaller decision zones, high-resolution/tiled inference, and inference-frequency optimization. v4 is a partial proposal record without confirmed quantitative results. v5-v6 established points, duplicate linking, and perspective correction. v7-v10 progressed through baseline measurement, unsuccessful learned anchors, manual Voronoi constraints, and causal temporal tracking. v11-v14 compared FULL/CROP/HYBRID, protected auxiliary evidence, selective caching, and unsuccessful memory. v15-v16.2 strengthened transitions, segmentation/degradation conditions, GT balance, evidence-cache health, and regression checks. v16.3 added history/update tooling, v16.4 transition candidates, v16.5 expanded validation, v16.5.1 UI localization and this paper structure, and v16.5.2 deduplicated external spatial evidence.
 
-Goals, changes, results, issues, and decisions for each version are retained in the [full research-history appendix](appendix/full_experiment_history.md). New evidence is integrated by method, result, error, and limitation rather than appended as release diaries. Release ZIPs and SHA-256 support source-distribution reproducibility but do not automatically freeze input videos or model weights.
+Goals, changes, results, issues, and decisions for each version are retained in the [full research-history appendix](../appendix/full_experiment_history.md). New evidence is integrated by method, result, error, and limitation rather than appended as release diaries. Release ZIPs and SHA-256 support source-distribution reproducibility but do not automatically freeze input videos or model weights.
 
 <!-- section:limitations -->
 
@@ -289,4 +289,4 @@ The retained research progressed toward protecting manual slot identities, combi
 - [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.
 - [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).
 
-- [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.
+- [R6] [Frozen external baseline, recalculated evidence and source hashes](../data/external_v1652/external_summary.json), [source package](../data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](../data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.

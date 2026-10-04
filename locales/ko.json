@@ -85,7 +85,7 @@
   "Created:\n": "생성 완료:\n",
   "Public dataset ready": "공개 데이터셋 준비 완료",
   "Public dataset": "공개 데이터셋",
-  "Images: ": "이미지 수: ",
+  "Images: ": "이미지: ",
   "Download & Prepare the public dataset first.": "먼저 공개 데이터셋 다운로드 및 준비를 실행하세요.",
   "External validation": "외부 검증",
   "External validation complete": "외부 검증 완료",
@@ -253,5 +253,10 @@
   "Loading YOLO for ": "YOLO 로드 중: ",
   "Learning complete. Slot-overlap warnings: ": "학습 완료. 주차면 겹침 경고: ",
   "Manual-point slot learning complete. Review diagnostics/candidates/warnings before the final experiment.": "수동 기준점 주차면 학습 완료. 최종 실험 전에 진단/후보/경고를 검토하세요.",
-  "Experiment finished.": "실험을 완료했습니다."
+  "Experiment finished.": "실험을 완료했습니다.",
+  "Unique image/spot pairs: ": "고유 이미지/주차면 표본: ",
+  "Duplicate rows removed: ": "제거한 중복 행: ",
+  "Count Exact ": "점유 주차면 수 Exact ",
+  "Count MAE ": "점유 주차면 수 MAE ",
+  "Count = occupied annotated parking spaces, not total unique vehicles.": "Count = 주석이 있는 주차면의 점유 수이며 전체 고유 차량 수가 아닙니다."
 }

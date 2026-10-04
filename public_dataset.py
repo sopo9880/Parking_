@@ -32,6 +32,7 @@ import numpy as np
 import pandas as pd
 
 from detector import VehicleDetector
+from external_evidence import deduplicate_spots, freeze_baseline, binary_metrics, write_results, file_hash
 
 REPO = "DSBD-Research/MetaPKLot-Dataset"
 REPO_URL = f"https://github.com/{REPO}.git"
@@ -303,7 +304,10 @@ def convert_spot_annotations(root: str | Path, progress=None) -> Path:
             "The upstream archive layout may have changed."
         )
     out = root / "external_gt_spots.csv"
-    pd.DataFrame(rows).to_csv(out, index=False, encoding="utf-8-sig")
+    unique, audit = deduplicate_spots(pd.DataFrame(rows), 'annotation_conversion')
+    unique.to_csv(out, index=False, encoding="utf-8-sig")
+    (root/'annotation_deduplication.json').write_text(json.dumps(audit, indent=2)+'\n', encoding='utf-8')
+    _progress(progress, 1.0, f"Annotation deduplication: {audit['duplicates_removed']} removed; {audit['unique_pairs']} unique pairs")
     return out
 
 
@@ -450,118 +454,62 @@ def _det_intersects_spot(det, poly: np.ndarray, overlap_thr: float = 0.12) -> bo
 
 
 def _binary_metrics(df: pd.DataFrame) -> Dict[str, float]:
-    y = df["occupied_gt"].astype(int)
-    p = df["occupied_pred"].astype(int)
-    tp = int(((y == 1) & (p == 1)).sum())
-    tn = int(((y == 0) & (p == 0)).sum())
-    fp = int(((y == 0) & (p == 1)).sum())
-    fn = int(((y == 1) & (p == 0)).sum())
-    n = max(1, tp + tn + fp + fn)
-    precision = tp / max(1, tp + fp)
-    recall = tp / max(1, tp + fn)
-    specificity = tn / max(1, tn + fp)
-    f1 = 2 * precision * recall / max(1e-12, precision + recall)
-    return {
-        "N": int(tp + tn + fp + fn),
-        "accuracy": (tp + tn) / n,
-        "precision": precision,
-        "occupied_recall": recall,
-        "empty_specificity": specificity,
-        "f1": f1,
-        "TP": tp, "TN": tn, "FP": fp, "FN": fn,
-    }
+    return binary_metrics(df)
 
 
 def evaluate_external_cnr(root: str | Path, settings: Dict, output_dir: str | Path,
                           progress=None) -> Dict:
     root = Path(root).resolve()
-    gt_path = root / "external_gt_spots.csv"
+    gt_path = root / 'external_gt_spots.csv'
     if not gt_path.is_file():
-        raise FileNotFoundError("Prepare the public dataset first: external_gt_spots.csv missing")
-    gt = pd.read_csv(gt_path, encoding="utf-8-sig")
+        raise FileNotFoundError('Prepare the public dataset first: external_gt_spots.csv missing')
+    raw_gt = pd.read_csv(gt_path, encoding='utf-8-sig')
+    gt, input_audit = deduplicate_spots(raw_gt, 'evaluation_input_gt')
     if gt.empty:
-        raise RuntimeError("External GT is empty")
-
-    out = Path(output_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    general_cfg = dict(settings.get("detector", {}) or {})
-    external_cfg = dict(settings.get("external_validation", {}).get("detector", {}) or {})
-    cfg = dict(general_cfg)
-    cfg.update(external_cfg)
-    overlap_thr = float(settings.get("external_validation", {}).get("spot_overlap_threshold", 0.12))
-
-    detectors: Dict[str, VehicleDetector] = {}
-    rows = []
-    groups = list(gt.groupby("image_path", sort=True))
+        raise RuntimeError('External GT is empty')
+    _progress(progress, 0, f"Annotation deduplication: {input_audit['duplicates_removed']} removed; {input_audit['unique_pairs']} unique pairs")
+    cfg = dict(settings.get('detector', {}) or {})
+    external = settings.get('external_validation', {}) or {}
+    cfg.update(external.get('detector', {}) or {})
+    baseline, ignored = freeze_baseline(root, cfg, external.get('spot_overlap_threshold', 0.12))
+    if ignored:
+        _progress(progress, 0, 'External Baseline is frozen; changed detector settings are ignored')
+    cfg = dict(baseline['parameters']['detector'])
+    overlap_thr = baseline['parameters']['spot_overlap_threshold']
+    weights = Path(str(cfg.get('model', 'yolov8m.pt')))
+    if baseline.get('model_sha256') and (not weights.is_file() or file_hash(weights)!=baseline['model_sha256']):
+        raise ValueError('External Baseline model weights differ from the frozen fingerprint')
+    detectors = {}; rows = []; detections = {}; skipped = []
+    groups = list(gt.groupby('image_path', sort=True))
     for gi, (image_rel, spots) in enumerate(groups):
-        camera = str(spots.iloc[0].get("camera", "external"))
-        detector = detectors.get(camera)
-        if detector is None:
-            detector = VehicleDetector(cfg)
-            detectors[camera] = detector
-        image_path = root / str(image_rel)
+        image_path = (root/image_rel).resolve()
+        if not image_path.is_relative_to(root): raise ValueError('Image escapes dataset root')
         image = cv2.imread(str(image_path))
         if image is None:
-            continue
-        dets = detector.detect(image)
-        for r in spots.itertuples():
-            poly = _poly_array(str(r.polygon_json))
-            pred = int(any(_det_intersects_spot(d, poly, overlap_thr) for d in dets))
-            rows.append({
-                "image_path": str(image_rel),
-                "camera": str(getattr(r, "camera", "")),
-                "weather": str(getattr(r, "weather", "")),
-                "timestamp": str(getattr(r, "timestamp", "")),
-                "spot_id": int(r.spot_id),
-                "occupied_gt": int(r.occupied_gt),
-                "occupied_pred": pred,
-                "correct": int(pred == int(r.occupied_gt)),
-                "detections_in_image": len(dets),
-            })
-        _progress(progress, (gi + 1) / max(1, len(groups)), f"External validation {gi+1}/{len(groups)}")
-
-    pred_df = pd.DataFrame(rows)
-    if pred_df.empty:
-        raise RuntimeError("No external images could be evaluated")
-    pred_df.to_csv(out / "external_slot_predictions.csv", index=False, encoding="utf-8-sig")
-
-    overall = _binary_metrics(pred_df)
-    overall_df = pd.DataFrame([{"scope": "ALL", **overall}])
-    overall_df.to_csv(out / "external_metrics_overall.csv", index=False, encoding="utf-8-sig")
-
-    by_rows = []
-    for camera, d in pred_df.groupby("camera"):
-        by_rows.append({"scope": "CAMERA", "name": camera, **_binary_metrics(d)})
-    for weather, d in pred_df.groupby("weather"):
-        by_rows.append({"scope": "WEATHER", "name": weather, **_binary_metrics(d)})
-    pd.DataFrame(by_rows).to_csv(out / "external_metrics_by_camera_weather.csv", index=False, encoding="utf-8-sig")
-
-    report = [
-        "Parking Research Agent v16.5 external-environment validation",
-        "============================================================",
-        "",
-        "Dataset: MetaPKLot / CNRPark-EXT",
-        "Purpose: spatial occupancy generalization on unseen parking/camera conditions.",
-        "This is NOT a continuous temporal-transition benchmark.",
-        "",
-        f"Samples (parking spots): {overall['N']}",
-        f"Accuracy: {overall['accuracy']:.4f}",
-        f"Precision: {overall['precision']:.4f}",
-        f"Occupied recall: {overall['occupied_recall']:.4f}",
-        f"Empty specificity: {overall['empty_specificity']:.4f}",
-        f"F1: {overall['f1']:.4f}",
-        f"TP/TN/FP/FN: {overall['TP']}/{overall['TN']}/{overall['FP']}/{overall['FN']}",
-        "",
-        f"Source: {SOURCE_PAGE}",
-        "CNRPark-EXT license: ODbL v1.0; see upstream README.",
-    ]
-    (out / "EXTERNAL_VALIDATION_REPORT.txt").write_text("\n".join(report) + "\n", encoding="utf-8")
-    zip_path=out/"EXTERNAL_VALIDATION_TO_CHATGPT.zip"
-    with zipfile.ZipFile(zip_path,"w",zipfile.ZIP_DEFLATED) as zf:
-        for p in [
-            out/"external_slot_predictions.csv",out/"external_metrics_overall.csv",
-            out/"external_metrics_by_camera_weather.csv",out/"EXTERNAL_VALIDATION_REPORT.txt",
-            root/"manifest.json",root/"external_gt_spots.csv",root/"SOURCE_AND_LICENSE.txt",
-        ]:
-            if p.is_file(): zf.write(p,p.name)
-    return {"overall": overall, "output_dir": str(out), "samples": int(overall["N"]), "package": str(zip_path)}
+            skipped.append({'image_path':image_rel,'reason':'missing_or_unreadable_image'})
+        else:
+            camera = str(spots.iloc[0].get('camera', 'external'))
+            if camera not in detectors: detectors[camera] = VehicleDetector(cfg)
+            dets = detectors[camera].detect(image)
+            detections[image_rel] = [d.as_dict() for d in dets]
+            for row in spots.to_dict('records'):
+                poly = _poly_array(str(row['polygon_json']))
+                if len(poly)<3 or not np.isfinite(poly).all(): raise ValueError('Invalid annotation polygon')
+                pred = int(any(_det_intersects_spot(d, poly, overlap_thr) for d in dets))
+                rows.append({**row,'occupied_pred':pred,'correct':int(pred==int(row['occupied_gt'])),'detections_in_image':len(dets)})
+        _progress(progress, .9*(gi+1)/max(1,len(groups)), f'External validation {gi+1}/{len(groups)}')
+    if not rows: raise RuntimeError('No external images could be evaluated')
+    if weights.is_file() and not baseline.get('model_sha256'):
+        baseline['model_sha256'] = file_hash(weights)
+        (root/'external_baseline.json').write_text(json.dumps(baseline,indent=2)+'\n',encoding='utf-8')
+    preparation = root/'annotation_deduplication.json'
+    audits = {'evaluation_input':input_audit,
+              'annotation_conversion':json.loads(preparation.read_text(encoding='utf-8')) if preparation.is_file() else None}
+    # GT hash is captured before evaluation; unique pair counts are computed, never hardcoded.
+    baseline = {**baseline,'input_gt_sha256':file_hash(gt_path),'changed_settings_ignored':ignored}
+    _progress(progress,.92,'Saving external metrics and screenshot evidence')
+    result = write_results(pd.DataFrame(rows), output_dir, root, SOURCE_PAGE, baseline=baseline,
+                           detections=detections, upstream_audit=audits, skipped=skipped,
+                           screenshot_limit=external.get('screenshot_examples_per_class',3))
+    _progress(progress,1.,'External validation complete')
+    return result

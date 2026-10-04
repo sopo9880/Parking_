@@ -1,0 +1,2 @@
+﻿scope,images,count_exact,count_mae,count_median_abs_error,count_p90_error,count_p95_error,count_max_error,over_count_rate,under_count_rate,count_bias
+ALL,4073,0.3395531549226614,1.4409526147802603,1.0,4.0,5.0,14,0.5104345691136755,0.15001227596366315,0.9160324085440708

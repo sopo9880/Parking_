@@ -2,7 +2,7 @@
 
 [한국어 논문](paper_ko.md) | [English paper](paper_en.md) | [연구 부록 / History](appendix/full_experiment_history.md)
 
-The latest papers share one reviewed source: `data/sections.json`, with paired Korean/English headings and paragraphs. Tables come from common CSV files. The root `../paper_manifest.json` is canonical; `data/paper_manifest.json` is a generated mirror. `snapshots/paper_v16.5.1_ko.md` and `_en.md` preserve this release. Missing images remain explicit evidence placeholders.
+The latest papers share one reviewed source: `data/sections.json`, with paired Korean/English headings and paragraphs. Tables come from common CSV files. The root `../paper_manifest.json` is canonical; `data/paper_manifest.json` is a generated mirror. `snapshots/paper_v16.5.2_ko.md` and `_en.md` preserve this release; v16.5.1 snapshots stay immutable. Public CNRPark-EXT overlays and charts now accompany the evidence tables; unavailable private CCTV images remain placeholders.
 
 ## Release growth rule / 릴리스별 성장 규칙
 
@@ -16,4 +16,8 @@ The latest papers share one reviewed source: `data/sections.json`, with paired K
 
 ## PDF path
 
-Install `tools/requirements-paper.txt`, then run `python tools/build_paper_pdf.py --output-dir dist`. CI installs Noto CJK fonts, checks text/glyphs, renders page previews, and uploads both PDFs, Markdown snapshots, release ZIP and checksums. PDF previews remain workflow artifacts for visual inspection. A failing paper validation or PDF build blocks publication.
+Install `tools/requirements-paper.txt`, then run `python tools/build_paper_pdf.py --output-dir dist`. CI installs Nanum Korean fonts, checks text/glyphs, renders page previews, and uploads both PDFs, Markdown snapshots, release ZIP and checksums. PDF previews remain workflow artifacts for visual inspection. A failing paper validation or PDF build blocks publication.
+
+## Frozen external baseline / 외부 기준선
+
+Keep `data/external_v1652/` and `figures/v16_5_2/` immutable. `tools/check_external_evidence.py` verifies archive hashes and recomputes overall/camera/weather occupancy and image-count metrics. Record archived-prediction recalculation separately from full inference and selected-image replay. Future external runs store parameters/model hashes before inference, deduplicate both prepared annotations and evaluation input, report skipped images, and generate actual overlays. Never tune this baseline against target labels. Count metrics sum occupied annotated spaces per image, not all or cross-camera unique vehicles.

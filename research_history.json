@@ -617,6 +617,34 @@
         "Independent temporal validation and actual figure artifacts remain pending."
       ],
       "decision": "Keep v16.2 SAFE_BASELINE and v16.4 CANDIDATE; grow papers only when research evidence changes."
+    },
+    {
+      "version": "v16.5.2",
+      "period": "2026-10",
+      "status": "EXTERNAL_BASELINE_RELEASE",
+      "confidence": "frozen_prediction_recalculation_and_selected_20_image_inference_verified",
+      "title": "Deduplicated CNRPark-EXT spatial evidence and bilingual Living Paper",
+      "goal": "Correct duplicated external samples and preserve an auditable frozen external baseline.",
+      "changes": [
+        "Canonical image/spot deduplication at conversion and evaluation, with conflict detection and audit",
+        "Frozen detector/overlap settings and model fingerprint; no target-label tuning",
+        "Image-count metrics, camera/weather breakdowns, 33 actual overlays, montage and charts",
+        "Synchronized bilingual papers, immutable snapshots, PDFs and evidence ZIP release automation",
+        "Exact version ZIP selection for updater compatibility"
+      ],
+      "results": [
+        "200,657 archived rows - 35,127 duplicates = 165,530 unique pairs across 4,073 images",
+        "Accuracy 95.0770%; F1 95.4401%; TP 85,280 / TN 72,101 / FP 5,940 / FN 2,209",
+        "Count Exact 33.9553%; MAE 1.44095; median 1; P90 4; P95 5; max 14",
+        "Representative 20 images re-inferred with matching archived predictions; full 4,073-image inference not rerun"
+      ],
+      "issues": [
+        "Original full-run parameter snapshot unavailable; replay parameters and model hash documented separately",
+        "Counts are occupied annotated parking spaces, not total or cross-camera unique vehicles",
+        "Camera1/9 false positives remain; group comparisons are descriptive, not causal",
+        "Spatial benchmark does not validate temporal transitions; independent temporal validation pending"
+      ],
+      "decision": "Freeze EXTERNAL_BASELINE; retain v16.2 SAFE_BASELINE and v16.4 CANDIDATE."
     }
   ]
 }

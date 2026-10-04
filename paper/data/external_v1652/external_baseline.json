@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "name": "EXTERNAL_BASELINE",
+  "frozen_by_version": "v16.5.2",
+  "purpose": "spatial occupancy generalization only; no target-label tuning",
+  "parameters": {
+    "detector": {
+      "model": "yolov8m.pt",
+      "imgsz": 1280,
+      "conf": 0.15,
+      "tiling": false,
+      "tile_overlap": 0.2,
+      "tile_nms_iou": 0.5,
+      "physical_vehicle_nms_iou": 0.42,
+      "physical_vehicle_overlap_min": 0.68,
+      "vehicle_class_ids": [
+        2,
+        3,
+        5,
+        7
+      ]
+    },
+    "spot_overlap_threshold": 0.12
+  },
+  "parameter_sha256": "66ffbcc1d876ab6345017d4759882a45e19de187ed4fe50c769d1140114d6bd2",
+  "model_sha256": "5d4a90cdc7a21786cc59cd19778e9eafff836df9e2da32524737c7ee6efe4fe5",
+  "evaluation_status": "recomputed_from_frozen_predictions_selected_inference_verified",
+  "original_run_settings_snapshot_available": false,
+  "configuration_provenance": "current supplied settings; selected images must reproduce archived predictions",
+  "prediction_sha256": "2b717faaa02c6d8a80d9a65c3829669cbd61f0b8a0c627ade4fd350a1785419f",
+  "gt_sha256": "440c3ff53848eb2bdcf4304c603e478c6d07d1074e4e92ff1bd237e239f54fff",
+  "settings_sha256": "2919e021bae0479c2589059636d91708cd9dd64091bdfeb0ff7ec8cc1e2009c4",
+  "selected_images_verified": 20
+}

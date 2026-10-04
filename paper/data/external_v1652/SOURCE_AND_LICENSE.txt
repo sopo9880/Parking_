@@ -1,0 +1,4 @@
+MetaPKLot / CNRPark-EXT
+Source: https://github.com/DSBD-Research/MetaPKLot-Dataset
+CNRPark-EXT license: Open Data Commons Open Database License (ODbL) v1.0.
+MetaPKLot combines multiple upstream datasets; consult the upstream README before redistribution.

@@ -34,10 +34,14 @@ def render(language, manifest):
         if section.get('table') == 'failures':
             headers = ['실험','TEST Exact (%)','관찰','출처'] if language=='ko' else ['Experiment','TEST Exact (%)','Observation','Source']
             out.append(table('paper/data/failed_experiments.csv',headers,['experiment','exact_percent','observation_'+language,'source']))
+        for extra in section.get('tables', []):
+            out += ['### '+extra['title'][language],table(extra['path'],extra['headers'][language],extra['columns'])]
         for figure_id in section.get('figures', []):
             fig = next(f for f in manifest['figures'] if f['id']==figure_id)
             if fig['path']:
                 assert (ROOT/'paper'/fig['path']).is_file(), fig['path']
+                if fig.get('sha256'):
+                    assert hashlib.sha256((ROOT/'paper'/fig['path']).read_bytes()).hexdigest()==fig['sha256'], 'Figure evidence was modified'
                 out.append(f"![{fig['caption'][language]}]({fig['path']})\n\n{fig['caption'][language]}")
             else:
                 prefix = '그림 자리표시자' if language=='ko' else 'Figure placeholder'
@@ -52,7 +56,7 @@ def main():
     manifest = json.loads((ROOT/'paper_manifest.json').read_text(encoding='utf-8'))
     version = (ROOT/'VERSION.txt').read_text().strip()
     assert manifest['version']==version, 'Paper release version differs from application version'
-    assert set(manifest['snapshots'].get(version, {}))=={'ko','en'} or args.snapshot, 'Both release snapshots are required'
+    assert set(manifest['snapshots'].get(version, {}))=={'ko','en'} or not args.check, 'Both release snapshots are required'
     assert manifest['release_kind'] in ('research','presentation_patch','maintenance_patch')
     if manifest['research_changed']:
         assert manifest['evidence_updates'], 'A research release needs traceable new evidence'
@@ -83,6 +87,8 @@ def main():
                 assert digest((ROOT/snapshot['path']).read_text(encoding='utf-8'))==snapshot['sha256'], 'Snapshot modified'
         mirror = json.loads((ROOT/'paper/data/paper_manifest.json').read_text(encoding='utf-8'))
         assert mirror==manifest, 'Manifest mirror differs'
+        for artifact in manifest.get('external_evidence', {}).get('artifacts', []):
+            assert hashlib.sha256((ROOT/artifact['path']).read_bytes()).hexdigest()==artifact['sha256'], 'Frozen external evidence was modified'
         print('Living Paper: bilingual sections, tables, figures, hashes and immutable snapshots PASS')
     else:
         manifest['paper_sha256'] = generated

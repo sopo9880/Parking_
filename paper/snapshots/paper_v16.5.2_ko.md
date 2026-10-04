@@ -2,7 +2,7 @@
 
 Living Paper | v16.5.2 | Research revision retained-temporal-plus-frozen-external-r2
 
-[한국어](paper_ko.md) | [English](paper_en.md)
+[한국어](paper_v16.5.2_ko.md) | [English](paper_v16.5.2_en.md)
 
 연구 초안. 시간 성능은 보존 연구 기록의 보고값이며, 외부 공간 결과는 원본 예측의 중복 제거 후 이번 코드로 재계산한 값이다. 전체 외부 추론을 다시 실행하지는 않았다. 저자·소속은 미기재 상태다.
 
@@ -231,27 +231,27 @@ v16.2의 TEST 오차 5개는 전이 이벤트 2개에 집중되었다. 입차 �
 | RAINY | 1053 | 35.42 | 1.4046 | 1.0513 | 14 |
 | SUNNY | 1780 | 32.70 | 1.4803 | 0.6961 | 11 |
 
-![카메라별·날씨별 공간 점유 정확도](figures/v16_5_2/external_accuracy_by_camera_weather.png)
+![카메라별·날씨별 공간 점유 정확도](../figures/v16_5_2/external_accuracy_by_camera_weather.png)
 
 카메라별·날씨별 공간 점유 정확도
 
-![카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차](figures/v16_5_2/external_count_error.png)
+![카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차](../figures/v16_5_2/external_count_error.png)
 
 카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차
 
-![실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례](figures/v16_5_2/external_validation_montage.jpg)
+![실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례](../figures/v16_5_2/external_validation_montage.jpg)
 
 실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례
 
-![camera1 FP 사례: spot 21000000876, GT=0, Pred=1](figures/v16_5_2/camera1_fp.jpg)
+![camera1 FP 사례: spot 21000000876, GT=0, Pred=1](../figures/v16_5_2/camera1_fp.jpg)
 
 camera1 FP 사례: spot 21000000876, GT=0, Pred=1
 
-![camera9 FP 사례: spot 29000012580, GT=0, Pred=1](figures/v16_5_2/camera9_fp.jpg)
+![camera9 FP 사례: spot 29000012580, GT=0, Pred=1](../figures/v16_5_2/camera9_fp.jpg)
 
 camera9 FP 사례: spot 29000012580, GT=0, Pred=1
 
-![camera2 TP 사례: spot 22000004350, GT=1, Pred=1](figures/v16_5_2/camera2_tp.jpg)
+![camera2 TP 사례: spot 22000004350, GT=1, Pred=1](../figures/v16_5_2/camera2_tp.jpg)
 
 camera2 TP 사례: spot 22000004350, GT=1, Pred=1
 
@@ -261,7 +261,7 @@ camera2 TP 사례: spot 22000004350, GT=1, Pred=1
 
 v1-v4는 검출과 안정화, 작은 판정 영역, 고해상도/타일 추론과 실행 빈도 최적화를 탐색했다. v4는 제안 중심의 부분 기록이며 확정 실험 수치가 없다. v5-v6은 기준점, 중복 연결, 원근 보정을 구축했다. v7-v10은 기준 평가, 실패한 학습 앵커, 수동 Voronoi 제약, 인과적 시간 추적으로 발전했다. v11-v14는 FULL/CROP/HYBRID 비교, 보조 관측 보호, 선택적 캐시 최적화와 실패한 기억 실험을 다뤘다. v15-v16.2는 전이와 분할·열화 조건, GT 균형, 증거 캐시 건전성과 회귀 점검을 강화했다. v16.3은 연구 이력/자동 업데이트 도구, v16.4는 전이 후보, v16.5는 검증 확대, v16.5.1은 UI 현지화와 이 문서 구조, v16.5.2는 중복을 제거한 외부 공간 검증 근거를 추가한다.
 
-각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.
+각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](../appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.
 
 <!-- section:limitations -->
 
@@ -289,4 +289,4 @@ v1-v4는 검출과 안정화, 작은 판정 영역, 고해상도/타일 추론�
 - [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.
 - [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).
 
-- [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.
+- [R6] [Frozen external baseline, recalculated evidence and source hashes](../data/external_v1652/external_summary.json), [source package](../data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](../data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.

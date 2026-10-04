@@ -1,3 +1,22 @@
+# Parking Research Agent v16.5.2
+
+## 한국어 / English
+
+- 외부 주석의 동일 image/spot 중복을 변환·평가 단계에서 제거하고, 충돌과 제거 개수를 기록합니다. 제공된 기존 예측 200,657행에서 중복 35,127개를 제거하여 165,530개 고유 표본으로 재계산했습니다.
+- CNRPark-EXT: 4,073 images; Accuracy 95.08%, Precision 93.49%, Recall 97.48%, Specificity 92.39%, F1 95.44%, Balanced Accuracy 94.93%. TP 85,280 / TN 72,101 / FP 5,940 / FN 2,209.
+- Image Count Exact 33.96%, MAE 1.441, median 1, P90 4, P95 5, max 14; over 51.04%, under 15.00%. Count는 이미지별 점유된 주석 주차면 수입니다.
+- 실제 GT/Pred/polygon/detection overlay 33장, TP/TN/FP/FN·카메라·날씨별 사례, camera1/9 FP, camera2 성공 사례, montage와 그래프를 저장합니다.
+- EXTERNAL_BASELINE의 설정·모델 해시를 동결하고 외부 정답에 맞춘 임계값 튜닝을 막습니다. 한·영 Living Paper와 v16.5.2 Markdown/PDF snapshot, 재계산 근거 ZIP·체크섬을 공개합니다. 기존 snapshot은 보존합니다.
+- 업데이트 프로그램은 정확한 버전의 프로그램 ZIP을 선택하므로 외부 근거 ZIP이 함께 있어도 잘못 설치하지 않습니다.
+
+This release recomputes the complete supplied frozen prediction set after deduplication and verifies matching inference on 20 selected images. It does **not** rerun inference on all 4,073 images. The original full-run settings snapshot is unavailable; selected replay settings and model fingerprint are documented. Selected failure illustrations are deterministic, not a random sample. The external result evaluates spatial occupancy; independent temporal validation remains pending. v16.2 SAFE_BASELINE (85.29%, MAE 0.1471) and v16.4 CANDIDATE (97.06%, MAE 0.0294) remain unchanged.
+
+## Validation
+
+Application self-test, 13 unit/UI tests, complete frozen-archive integrity and metric recalculation, paired manuscript/table/figure/manifest checks, immutable snapshots, and bilingual PDF glyph/text/page rendering checks gate the Release. Public CNRPark-EXT evidence includes source and ODbL attribution. Original user files remain untouched.
+
+---
+
 # Parking Research Agent v16.5.1
 
 ## 한국어 릴리스

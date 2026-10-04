@@ -1,10 +1,17 @@
 {
   "schema_version": 1,
-  "version": "v16.5.1",
-  "research_revision": "retained-v16.5-r1",
-  "release_kind": "presentation_patch",
-  "research_changed": false,
-  "evidence_updates": [],
+  "version": "v16.5.2",
+  "research_revision": "retained-temporal-plus-frozen-external-r2",
+  "release_kind": "research",
+  "research_changed": true,
+  "evidence_updates": [
+    {
+      "type": "external_spatial_recalculation",
+      "source_zip_sha256": "260036c0045e2fc3a45553e3cbe11d08f1962042f0d24c9874a3cdc245ec46a7",
+      "summary": "paper/data/external_v1652/external_summary.json",
+      "method": "all retained predictions deduplicated; 20 selected images re-inferred and verified; no full inference rerun"
+    }
+  ],
   "languages": [
     "ko",
     "en"
@@ -103,11 +110,122 @@
         "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
       },
       "provenance": null
+    },
+    {
+      "id": "external_accuracy",
+      "number": 6,
+      "path": "figures/v16_5_2/external_accuracy_by_camera_weather.png",
+      "status": "verified_real_data",
+      "sha256": "980741d816fd938bb708ce13df8dcd16fdc4904ca4682b6bb4ab5c80d217ab6a",
+      "caption": {
+        "ko": "카메라별·날씨별 공간 점유 정확도",
+        "en": "Spatial occupancy accuracy by camera and weather"
+      },
+      "provenance": {
+        "dataset": "CNRPark-EXT / MetaPKLot",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "run": "archived 20261005_000138, recomputed by v16.5.2",
+        "selection_index": "data/external_v1652/screenshot_index.csv",
+        "overlay_predictions_verified": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
+    },
+    {
+      "id": "external_counts",
+      "number": 7,
+      "path": "figures/v16_5_2/external_count_error.png",
+      "status": "verified_real_data",
+      "sha256": "5739f4d7bbf1e485dcf21facac5975447027243ddc0b999c81798b6fea0ba57d",
+      "caption": {
+        "ko": "카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차",
+        "en": "Occupied-space count MAE by camera and signed image-level errors"
+      },
+      "provenance": {
+        "dataset": "CNRPark-EXT / MetaPKLot",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "run": "archived 20261005_000138, recomputed by v16.5.2",
+        "selection_index": "data/external_v1652/screenshot_index.csv",
+        "overlay_predictions_verified": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
+    },
+    {
+      "id": "external_montage",
+      "number": 8,
+      "path": "figures/v16_5_2/external_validation_montage.jpg",
+      "status": "verified_real_data",
+      "sha256": "a31b90da7eef89281b27d9708f4f103a60f87991ee79d6a47c827177c8143d49",
+      "caption": {
+        "ko": "실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례",
+        "en": "Actual camera1/camera9 FP, camera2 success, and TP/TN/FN cases"
+      },
+      "provenance": {
+        "dataset": "CNRPark-EXT / MetaPKLot",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "run": "archived 20261005_000138, recomputed by v16.5.2",
+        "selection_index": "data/external_v1652/screenshot_index.csv",
+        "overlay_predictions_verified": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
+    },
+    {
+      "id": "external_camera1",
+      "number": 9,
+      "path": "figures/v16_5_2/camera1_fp.jpg",
+      "status": "verified_real_data",
+      "sha256": "b1e769a879b118c9feb18736afb3c0628b3bae80843653260df640c8136b26a3",
+      "caption": {
+        "ko": "camera1 FP 사례: spot 21000000876, GT=0, Pred=1",
+        "en": "camera1 FP case: spot 21000000876, GT=0, Pred=1"
+      },
+      "provenance": {
+        "image_path": "upstream_full/CNRPark-EXT/camera1/OVERCAST/2015-11-16/2015-11-16_09_10_00.jpg",
+        "source_image_sha256": "dda75d44e26fe9e32b9cdac842ca91887eb8ed2f655192a0491838932b200bd1",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "selected_inference_matches_archive": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
+    },
+    {
+      "id": "external_camera9",
+      "number": 10,
+      "path": "figures/v16_5_2/camera9_fp.jpg",
+      "status": "verified_real_data",
+      "sha256": "2098ebb9925d4047bac434a2c52bcf4d516ac066c32aa172c8c73166629016ae",
+      "caption": {
+        "ko": "camera9 FP 사례: spot 29000012580, GT=0, Pred=1",
+        "en": "camera9 FP case: spot 29000012580, GT=0, Pred=1"
+      },
+      "provenance": {
+        "image_path": "upstream_full/CNRPark-EXT/camera9/SUNNY/2016-01-13/2016-01-13_12_22_00.jpg",
+        "source_image_sha256": "b7deba2f5d8bbf7ca917d71f930d8dc29ed16cea1b135e30484c788e076e7cd6",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "selected_inference_matches_archive": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
+    },
+    {
+      "id": "external_camera2",
+      "number": 11,
+      "path": "figures/v16_5_2/camera2_tp.jpg",
+      "status": "verified_real_data",
+      "sha256": "b6f4a66cc1e39e01d5c02207667667950194480d2902269b38197737171258bc",
+      "caption": {
+        "ko": "camera2 TP 사례: spot 22000004350, GT=1, Pred=1",
+        "en": "camera2 TP case: spot 22000004350, GT=1, Pred=1"
+      },
+      "provenance": {
+        "image_path": "upstream_full/CNRPark-EXT/camera2/SUNNY/2016-01-18/2016-01-18_17_04_00.jpg",
+        "source_image_sha256": "1b8672ceda66035ae64514ebb8cb2d408939c68df6e24079a2d3f8853d692a43",
+        "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+        "selected_inference_matches_archive": true,
+        "privacy_review": "public benchmark; no added personal information"
+      }
     }
   ],
   "paper_sha256": {
-    "ko": "d8441cef52d739c9591043e3306154c5d0e1f062ae6d8a7b3b47ef4f5f0f19a0",
-    "en": "23012b8bab922cc660cc74901caf896f119369ed696ef0fc979f58ea0679a631"
+    "ko": "39b12f1afc68f751d8748c649713a6e008d2ebae1d8733590b6ee986c2e2a77f",
+    "en": "cc6dd86c50f92becb080f8d1a0b1dec6ef4012ded8987e1e8f73b1541d026173"
   },
   "snapshots": {
     "v16.5.1": {
@@ -118,6 +236,16 @@
       "en": {
         "path": "paper/snapshots/paper_v16.5.1_en.md",
         "sha256": "410c0a1c25ce8cf32aa0019eea4ad0bc807be41ef806964ea09f2dadb7f7ccf4"
+      }
+    },
+    "v16.5.2": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.2_ko.md",
+        "sha256": "5ef0b41a040ae939ea07afe04e51a3a86f8e7eb33172345aae25b61a91b0d860"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.2_en.md",
+        "sha256": "e66418436edcf1fc06e07d36538edc0e695e318303a6d2611050e87cb5ca8874"
       }
     }
   },
@@ -145,8 +273,84 @@
       "en"
     ],
     "assets": [
-      "ParkingResearchAgent-v16.5.1-paper-ko.pdf",
-      "ParkingResearchAgent-v16.5.1-paper-en.pdf"
+      "ParkingResearchAgent-v16.5.2-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.2-paper-en.pdf"
     ]
+  },
+  "external_evidence": {
+    "status": "EXTERNAL_BASELINE",
+    "scope": "spatial_occupancy_only",
+    "artifacts": [
+      {
+        "path": "paper/data/external_v1652/camera_count_paper.csv",
+        "sha256": "d2da5f96eca9a8cb71aab07c18aaf38c4c460e37120b1697d39625347d79f480"
+      },
+      {
+        "path": "paper/data/external_v1652/camera_paper.csv",
+        "sha256": "5ed5e259e2eb526e93001a8b13eb26ec9c43fdc1cb41649499b83ba7147c024d"
+      },
+      {
+        "path": "paper/data/external_v1652/external_artifact_hashes.json",
+        "sha256": "088f2260c91322be0c273e995b36fb321a1c0c440461e655e21a59379ec77314"
+      },
+      {
+        "path": "paper/data/external_v1652/external_baseline.json",
+        "sha256": "888e941719714fe2ffbb3ce9ef19ead4802430fea6311f40ae6943d7bb585e99"
+      },
+      {
+        "path": "paper/data/external_v1652/external_count_metrics_by_camera_weather.csv",
+        "sha256": "d1c6ab1f468f5d2921ecb96a4c2d468383a05efc98a5829426b8caf2241ff790"
+      },
+      {
+        "path": "paper/data/external_v1652/external_count_metrics_overall.csv",
+        "sha256": "f81281d43c9306ade898ee03cad2f2432f938dcc93e5aaae165ebb1bde2645d4"
+      },
+      {
+        "path": "paper/data/external_v1652/external_metrics_by_camera_weather.csv",
+        "sha256": "78386d5ddd568e6dcec6b7fab242eb696afac2a53825e6d7c33c1aa0e5c37f08"
+      },
+      {
+        "path": "paper/data/external_v1652/external_metrics_overall.csv",
+        "sha256": "9dedaa6530a801e36de1ad5f5e726067e14cfd3c7b93ec3f506bef32486fc939"
+      },
+      {
+        "path": "paper/data/external_v1652/external_summary.json",
+        "sha256": "1e2c07f99e6fa34c84af4fb07774e72d970bacc05bc9eeaa9b4aa4c56d22ce44"
+      },
+      {
+        "path": "paper/data/external_v1652/EXTERNAL_VALIDATION_REPORT.txt",
+        "sha256": "7865f51c7b3488dc3c666df927d968e3da97e9df5fe6f22d4bbeb1162fde84a6"
+      },
+      {
+        "path": "paper/data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip",
+        "sha256": "63a0e1587c9ff397d66a1782a3dc19b2790e8e62477e4ac706ed81194382b731"
+      },
+      {
+        "path": "paper/data/external_v1652/overall_paper.csv",
+        "sha256": "6c02d5c54ea180a5473b30c68d964379eb9561457ecd96f81444a8a74c6ffc1b"
+      },
+      {
+        "path": "paper/data/external_v1652/screenshot_index.csv",
+        "sha256": "42c64a1fb358ec823baa8d7069538bae064a6bd12e1c1822bbdd6a96e7fad925"
+      },
+      {
+        "path": "paper/data/external_v1652/SOURCE_AND_LICENSE.txt",
+        "sha256": "98215854b8365f524c140c2d846856c1feb470cd209c6e5b251b2cb28e4ba325"
+      },
+      {
+        "path": "paper/data/external_v1652/weather_count_paper.csv",
+        "sha256": "d9872b36a6781c2ca06299614e9bd911011dbe0afdef235174695857b889b4e0"
+      },
+      {
+        "path": "paper/data/external_v1652/weather_paper.csv",
+        "sha256": "9ce13a8d33f1ef5aa10c8526057bd09f386d517182b1869712f7c540f449dae6"
+      }
+    ],
+    "images": 4073,
+    "unique_pairs": 165530,
+    "duplicates_removed": 35127,
+    "selected_images_reinferred": 20,
+    "parameters_tuned_on_external_results": false,
+    "original_run_settings_snapshot_available": false
   }
 }

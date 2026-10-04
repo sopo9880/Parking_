@@ -4,8 +4,8 @@
     "en": "Causal Parking-Space Occupancy Estimation from Re-recorded Multi-CCTV Video: Parking Research Agent Living Paper"
   },
   "notice": {
-    "ko": "연구 초안. 아래 수치는 보존 기록의 보고값이며 이번 릴리스에서 새로 측정한 값이 아니다. 저자·소속·원본 영상 배포 권한은 미기재 상태다.",
-    "en": "Research draft. Numbers below are reported values from retained records, not newly measured in this release. Authors, affiliation, and source-video distribution permissions are unspecified."
+    "ko": "연구 초안. 시간 성능은 보존 연구 기록의 보고값이며, 외부 공간 결과는 원본 예측의 중복 제거 후 이번 코드로 재계산한 값이다. 전체 외부 추론을 다시 실행하지는 않았다. 저자·소속은 미기재 상태다.",
+    "en": "Research draft. Temporal scores are retained reported values; external spatial metrics were recomputed by this code from deduplicated archived predictions, without a full external inference rerun. Authors and affiliation remain unspecified."
   },
   "sections": [
     {
@@ -14,8 +14,8 @@
         "ko": "초록",
         "en": "Abstract"
       },
-      "ko": "본 연구는 CCTV 모니터를 휴대전화로 재촬영한 영상에서 주차면 점유 수를 추정하는 연구 에이전트의 개발 과정을 정리한다. 흔들림, 원근 왜곡, 저해상도, 태양광 반사, 모니터 줄무늬와 차량 검출 누락이 동시에 존재하는 환경을 대상으로 한다. 수동 주차면 기준점, 원근 보정, Voronoi 기반 공간 제약, FULL 우선 검출과 선택적 AUX 복구, 인과적 시간 상태 추적을 결합한다. 보존된 연구 기록에서 v16.2 SAFE_BASELINE은 TEST Exact 85.29%, MAE 0.1471이며, 추적 ID 전환 시 입차 지연과 약한 출차 소유자 해제를 적용한 v16.4 CANDIDATE는 97.06%, MAE 0.0294이다. 다만 후보 규칙은 동일 검증 영상의 오류 분석 후 개발되었으므로 독립 일반화 성능으로 해석할 수 없다. v16.5는 새 영상, 구간, 반복 원본 및 공개 데이터 공간 평가 도구를 제공하며 새 정확도 결과는 아직 보고하지 않는다. v16.5.1은 한·영 UI와 동기화된 Living Paper를 추가하는 표현·문서 패치로, 연구 알고리즘이나 성능 주장을 추가하지 않는다.\n\n핵심어: 주차면 점유, CCTV 재촬영, 인과적 상태 추적, 다중 CCTV, 강건성, Living Paper.",
-      "en": "This paper documents the development of a research agent for estimating occupied parking spaces from phone recordings of a CCTV monitor. The setting combines shake, perspective distortion, low resolution, sun glare, monitor stripes, and missed vehicle detections. The method combines fixed manual slot points, perspective correction, Voronoi spatial constraints, FULL-first detection with selective AUX recovery, and causal temporal state tracking. Retained research records report TEST Exact 85.29% and MAE 0.1471 for v16.2 SAFE_BASELINE, and 97.06% and MAE 0.0294 for v16.4 CANDIDATE after track-switch entry holding and weak-owner departure release. Candidate rules were developed after reviewing errors on the same validation video; these results therefore cannot establish independent generalization. v16.5 provides tools for new-video, episode, repeated-source, and public spatial evaluation without reporting new accuracy. v16.5.1 adds bilingual UI and synchronized Living Papers as a presentation/documentation patch, without a new algorithm or performance claim.\n\nKeywords: parking occupancy, re-recorded CCTV, causal state tracking, multi-CCTV, robustness, Living Paper."
+      "ko": "본 연구는 CCTV 모니터를 휴대전화로 재촬영한 영상에서 주차면 점유 수를 추정하는 연구 에이전트의 개발 과정을 정리한다. 흔들림, 원근 왜곡, 저해상도, 태양광 반사, 모니터 줄무늬와 차량 검출 누락이 동시에 존재하는 환경을 대상으로 한다. 수동 주차면 기준점, 원근 보정, Voronoi 기반 공간 제약, FULL 우선 검출과 선택적 AUX 복구, 인과적 시간 상태 추적을 결합한다. 보존된 연구 기록에서 v16.2 SAFE_BASELINE은 TEST Exact 85.29%, MAE 0.1471이며, 추적 ID 전환 시 입차 지연과 약한 출차 소유자 해제를 적용한 v16.4 CANDIDATE는 97.06%, MAE 0.0294이다. 다만 후보 규칙은 동일 검증 영상의 오류 분석 후 개발되었으므로 독립 일반화 성능으로 해석할 수 없다. CNRPark-EXT 외부 공간 평가에서는 9개 카메라·3개 날씨·4,073장 이미지의 보존 예측을 재계산했다. 중복 35,127행을 제거한 165,530개 고유 이미지–주차면 쌍에서 Accuracy 95.0770%, F1 95.4401%를 얻었다. 이미지별 점유 수 Exact는 33.9553%, MAE는 1.440953이다. 대표 20장 재추론은 보존 판정과 일치했다. 공간 결과는 시간 전이 일반화의 증거가 아니며, 기준 파라미터는 External Baseline으로 동결한다.\n\n핵심어: 주차면 점유, CCTV 재촬영, 인과적 상태 추적, 다중 CCTV, 강건성, Living Paper.",
+      "en": "This paper documents the development of a research agent for estimating occupied parking spaces from phone recordings of a CCTV monitor. The setting combines shake, perspective distortion, low resolution, sun glare, monitor stripes, and missed vehicle detections. The method combines fixed manual slot points, perspective correction, Voronoi spatial constraints, FULL-first detection with selective AUX recovery, and causal temporal state tracking. Retained research records report TEST Exact 85.29% and MAE 0.1471 for v16.2 SAFE_BASELINE, and 97.06% and MAE 0.0294 for v16.4 CANDIDATE after track-switch entry holding and weak-owner departure release. Candidate rules were developed after reviewing errors on the same validation video; these results therefore cannot establish independent generalization. Archived CNRPark-EXT predictions were recomputed across nine cameras, three weather conditions, and 4,073 images. Removing 35,127 duplicate rows leaves 165,530 unique image–space pairs, with Accuracy 95.0770% and F1 95.4401%. Image-level occupied-space Count Exact is 33.9553% and MAE is 1.440953. Re-inference on 20 selected images reproduced archived decisions. Spatial results do not establish temporal-transition generalization, and parameters remain frozen as an External Baseline.\n\nKeywords: parking occupancy, re-recorded CCTV, causal state tracking, multi-CCTV, robustness, Living Paper."
     },
     {
       "id": "introduction",
@@ -54,8 +54,8 @@
         "ko": "4. 제안 방법",
         "en": "4. Proposed method"
       },
-      "ko": "### 4.1 공간 대응과 FULL 우선 관측\n\nROI 원근 보정 후 YOLO 관측을 수동 기준점으로 고정한 Voronoi 영역과 대응한다. 학습 앵커는 기준점을 대체하지 않으며 이동 범위와 표본 조건으로 제한한다. 중복 검출 억제와 일대일 대응으로 동일 차량의 다중 주차면 할당을 줄인다. FULL 검출은 주 관측이다. 주 관측이 약하거나 누락되거나 외관 변화가 의심스러울 때, 또는 드문 점검 시점에 선택적 CROP/AUX를 호출한다. AUX는 FULL 누락을 복구할 수 있지만 유효한 FULL 관측을 지우지 못한다.\n\n### 4.2 인과적 시간 상태\n\n온라인 추적과 최근 10초 이력을 사용하여 주차 동작과 정지 점유를 구분한다. 첫 10초는 준비 구간이며 미래 프레임을 사용하지 않는다. 장기 정지 후보는 사용자 검토용이며 실제 주차면 수에 자동으로 추가하지 않는다. 캐시에서 학습 기하와 외관 템플릿 메타데이터를 함께 복원하고, 템플릿 누락이나 비현실적인 증거 분포는 거절 후 재계산한다.\n\n### 4.3 추적 ID 전환과 출차 후보\n\nv16.4 ENTRY_TRACK_SWITCH_HOLD는 ID가 바뀌어도 최근 주차면 움직임 맥락을 유지한다. 큰 움직임 직후 갑자기 정지로 보이는 새 추적은 충분한 시간 동안 안정화되기 전 OCCUPIED로 확정하지 않는다. LEAVING_WEAK_OWNER_RELEASE는 기준 엔진의 LEAVING 상태, 약한 소유자 평균 신뢰도, 유의미한 움직임, 연결 CCTV의 EMPTY 의견이 함께 있는 경우에만 유령 점유를 해제한다. 재획득 안정화 간격으로 즉시 재입차를 방지한다. 두 규칙은 CANDIDATE 후처리이며 SAFE_BASELINE을 자동 승격하거나 수정하지 않는다 [R2].",
-      "en": "### 4.1 Spatial assignment and FULL-first observations\n\nAfter perspective correction, YOLO observations are assigned under Voronoi constraints fixed by manual slot points. Learned anchors do not replace those points and are restricted by shift and sample conditions. Duplicate suppression and one-to-one assignment reduce multiple-slot assignment of a physical vehicle. FULL detection is authoritative. Selective CROP/AUX runs when primary observations are weak, missing, visually suspicious, or due for sparse auditing. AUX may recover missed FULL evidence but cannot erase valid FULL evidence.\n\n### 4.2 Causal temporal states\n\nOnline tracking and a rolling ten-second history distinguish maneuvers from stable occupancy. The first ten seconds are warm-up; future frames are excluded. Long-stationary candidate slots are advisory until operator review and are not automatically added to the physical slot count. Cached geometry and appearance-template metadata are restored together; missing templates or implausible evidence distributions trigger rejection and recomputation.\n\n### 4.3 Track switches and departure candidates\n\nv16.4 ENTRY_TRACK_SWITCH_HOLD retains recent slot-motion context across tracker-ID switches. A newly stationary-looking track following substantial motion cannot immediately confirm OCCUPIED before sufficient stabilization. LEAVING_WEAK_OWNER_RELEASE requires the baseline's LEAVING transition, weak mean owner confidence, meaningful movement, and an EMPTY vote from a linked CCTV before releasing ghost occupancy. A reacquisition settling interval blocks immediate re-entry. These rules are CANDIDATE postprocessing and neither automatically promote nor modify SAFE_BASELINE [R2]."
+      "ko": "### 4.1 공간 대응과 FULL 우선 관측\n\nROI 원근 보정 후 YOLO 관측을 수동 기준점으로 고정한 Voronoi 영역과 대응한다. 학습 앵커는 기준점을 대체하지 않으며 이동 범위와 표본 조건으로 제한한다. 중복 검출 억제와 일대일 대응으로 동일 차량의 다중 주차면 할당을 줄인다. FULL 검출은 주 관측이다. 주 관측이 약하거나 누락되거나 외관 변화가 의심스러울 때, 또는 드문 점검 시점에 선택적 CROP/AUX를 호출한다. AUX는 FULL 누락을 복구할 수 있지만 유효한 FULL 관측을 지우지 못한다.\n\n### 4.2 인과적 시간 상태\n\n온라인 추적과 최근 10초 이력을 사용하여 주차 동작과 정지 점유를 구분한다. 첫 10초는 준비 구간이며 미래 프레임을 사용하지 않는다. 장기 정지 후보는 사용자 검토용이며 실제 주차면 수에 자동으로 추가하지 않는다. 캐시에서 학습 기하와 외관 템플릿 메타데이터를 함께 복원하고, 템플릿 누락이나 비현실적인 증거 분포는 거절 후 재계산한다.\n\n### 4.3 추적 ID 전환과 출차 후보\n\nv16.4 ENTRY_TRACK_SWITCH_HOLD는 ID가 바뀌어도 최근 주차면 움직임 맥락을 유지한다. 큰 움직임 직후 갑자기 정지로 보이는 새 추적은 충분한 시간 동안 안정화되기 전 OCCUPIED로 확정하지 않는다. LEAVING_WEAK_OWNER_RELEASE는 기준 엔진의 LEAVING 상태, 약한 소유자 평균 신뢰도, 유의미한 움직임, 연결 CCTV의 EMPTY 의견이 함께 있는 경우에만 유령 점유를 해제한다. 재획득 안정화 간격으로 즉시 재입차를 방지한다. 두 규칙은 CANDIDATE 후처리이며 SAFE_BASELINE을 자동 승격하거나 수정하지 않는다 [R2].\n\n### 4.4 외부 공간 기준과 고유 표본\n\n정지 이미지 공간 평가에는 동일한 검출·polygon 교차 판단을 사용하고 시간 상태 추적을 실행하지 않는다. annotation 변환과 평가 입력에서 경로 구분자를 정규화한 (image_path, spot_id)를 고유 키로 사용한다. 동일 키의 GT·polygon·예측이 충돌하면 첫 행을 임의로 선택하지 않고 평가를 중단한다. 폴더별 중복 수와 입력·고유 표본 수를 감사 기록에 남긴다. 이미지별 총량은 고유 주차면의 OCCUPIED 값을 합산하며, 주차면 밖 차량이나 카메라 간 고유 차량 총수와 구분한다. External Baseline은 최초 파라미터와 모델 해시를 저장하고 이후 설정 변경을 평가에 적용하지 않는다.",
+      "en": "### 4.1 Spatial assignment and FULL-first observations\n\nAfter perspective correction, YOLO observations are assigned under Voronoi constraints fixed by manual slot points. Learned anchors do not replace those points and are restricted by shift and sample conditions. Duplicate suppression and one-to-one assignment reduce multiple-slot assignment of a physical vehicle. FULL detection is authoritative. Selective CROP/AUX runs when primary observations are weak, missing, visually suspicious, or due for sparse auditing. AUX may recover missed FULL evidence but cannot erase valid FULL evidence.\n\n### 4.2 Causal temporal states\n\nOnline tracking and a rolling ten-second history distinguish maneuvers from stable occupancy. The first ten seconds are warm-up; future frames are excluded. Long-stationary candidate slots are advisory until operator review and are not automatically added to the physical slot count. Cached geometry and appearance-template metadata are restored together; missing templates or implausible evidence distributions trigger rejection and recomputation.\n\n### 4.3 Track switches and departure candidates\n\nv16.4 ENTRY_TRACK_SWITCH_HOLD retains recent slot-motion context across tracker-ID switches. A newly stationary-looking track following substantial motion cannot immediately confirm OCCUPIED before sufficient stabilization. LEAVING_WEAK_OWNER_RELEASE requires the baseline's LEAVING transition, weak mean owner confidence, meaningful movement, and an EMPTY vote from a linked CCTV before releasing ghost occupancy. A reacquisition settling interval blocks immediate re-entry. These rules are CANDIDATE postprocessing and neither automatically promote nor modify SAFE_BASELINE [R2].\n\n### 4.4 External spatial baseline and unique samples\n\nStill-image evaluation uses the unchanged detector/polygon-intersection decision without temporal tracking. Annotation conversion and evaluation normalize path separators and enforce a unique (image_path, spot_id) key. Conflicting GT, polygons, or predictions for a key halt evaluation instead of arbitrarily keeping one value. Audits record per-camera duplicates and input/unique sizes. Image counts sum OCCUPIED over unique annotated spaces, distinct from off-slot vehicles or cross-camera unique-vehicle totals. The External Baseline saves initial parameters/model hashes and does not apply subsequent setting changes to evaluation."
     },
     {
       "id": "protocol",
@@ -63,8 +63,8 @@
         "ko": "5. 실험 구성 및 근거 수준",
         "en": "5. Experimental protocol and evidence status"
       },
-      "ko": "보존 프로토콜은 15:00 이전 DEV로 파라미터를 선택하고, 선택 후 15:00-20:30 TEST를 평가한다. 전체 실험에서 최초 10초를 준비 구간으로 처리한다. 기록의 TEST 표본 수는 34개이며 인접 표본은 시간적으로 상관될 수 있다. Exact와 MAE 외에 최대 오차, 과소/과대 집계, 전이 이벤트별 지표를 구분한다.\n\n이 문서의 수치는 research_history.json과 변경 기록에 보고된 결과를 정리한 것이다. 이번 문서 패치에서 원본 영상이나 전체 실행 결과를 확보하여 재실험하지 않았다. sample_ground_truth.csv는 참고 파일이며 원본 영상·실행 파라미터·전체 예측 파일을 대체하지 않는다. 재현 시 버전, 입력 해시, 설정, ROI, 슬롯, GT, DEV 선택 결과, TEST 예측, 캐시 검증과 실행 환경을 함께 보존해야 한다. v16.4 규칙을 동일 영상의 TEST 오류 분석 후 설계했으므로 TEST의 절대 수치를 미사용 holdout 결과로 표현하지 않는다.",
-      "en": "The retained protocol selects parameters on DEV before 15:00, then evaluates TEST from 15:00 to 20:30 after selection. The first ten seconds are treated as warm-up. The record contains 34 TEST checkpoints, with possible temporal correlation between adjacent samples. Maximum error, under/over-count rates, and event-balanced transition metrics complement Exact and MAE.\n\nNumbers here summarize reported results in research_history.json and change records. This documentation patch does not rerun the original video or recover complete runtime artifacts. sample_ground_truth.csv is a reference, not a replacement for the source video, parameters, and predictions. Reproduction must retain version, input hashes, settings, ROIs, slots, GT, DEV selection, TEST predictions, cache audits, and environment. Because v16.4 rules were designed after reviewing TEST errors on the same video, its absolute TEST score is not presented as an untouched holdout result."
+      "ko": "보존 프로토콜은 15:00 이전 DEV로 파라미터를 선택하고, 선택 후 15:00-20:30 TEST를 평가한다. 전체 실험에서 최초 10초를 준비 구간으로 처리한다. 기록의 TEST 표본 수는 34개이며 인접 표본은 시간적으로 상관될 수 있다. Exact와 MAE 외에 최대 오차, 과소/과대 집계, 전이 이벤트별 지표를 구분한다.\n\n이 문서의 수치는 research_history.json과 변경 기록에 보고된 결과를 정리한 것이다. 이번 문서 패치에서 원본 영상이나 전체 실행 결과를 확보하여 재실험하지 않았다. sample_ground_truth.csv는 참고 파일이며 원본 영상·실행 파라미터·전체 예측 파일을 대체하지 않는다. 재현 시 버전, 입력 해시, 설정, ROI, 슬롯, GT, DEV 선택 결과, TEST 예측, 캐시 검증과 실행 환경을 함께 보존해야 한다. v16.4 규칙을 동일 영상의 TEST 오류 분석 후 설계했으므로 TEST의 절대 수치를 미사용 holdout 결과로 표현하지 않는다.\n\n외부 근거 [R6]는 사용자가 제공한 EXTERNAL_VALIDATION_TO_CHATGPT.zip과 일치하는 원본 예측 CSV다. 원본 ZIP, 예측, GT, 설정과 모델 해시를 보존했다. 전체 예측의 GT 일치와 중복 충돌을 검사한 후 변경하지 않은 예측에서 지표를 다시 산출했다. 원래 실행 당시의 별도 설정 snapshot은 없었으므로 현재 제공된 설정·원래 가중치로 대표 이미지 20장을 재추론했다. 선택한 이미지의 모든 점유 판정과 검출 수가 보존 예측과 일치하여 오버레이 증거로 사용했다. 4,073장 전체를 새로 추론한 것은 아니며, 이 결과는 동결된 예측의 공식 지표 재계산이다. 스크린샷은 오류 분석용 결정적 선택으로 무작위 표본이 아니다.",
+      "en": "The retained protocol selects parameters on DEV before 15:00, then evaluates TEST from 15:00 to 20:30 after selection. The first ten seconds are treated as warm-up. The record contains 34 TEST checkpoints, with possible temporal correlation between adjacent samples. Maximum error, under/over-count rates, and event-balanced transition metrics complement Exact and MAE.\n\nNumbers here summarize reported results in research_history.json and change records. This documentation patch does not rerun the original video or recover complete runtime artifacts. sample_ground_truth.csv is a reference, not a replacement for the source video, parameters, and predictions. Reproduction must retain version, input hashes, settings, ROIs, slots, GT, DEV selection, TEST predictions, cache audits, and environment. Because v16.4 rules were designed after reviewing TEST errors on the same video, its absolute TEST score is not presented as an untouched holdout result.\n\nExternal evidence [R6] is the original prediction CSV verified identical to the user-supplied EXTERNAL_VALIDATION_TO_CHATGPT.zip. ZIP, prediction, GT, settings, and model hashes are retained. GT reconciliation and conflict checks precede metric recomputation from unchanged predictions. A separate original-run settings snapshot was unavailable; current supplied settings and original weights were used to re-infer 20 representative images. All slot decisions and detection counts in these images matched archived predictions and were accepted as overlay evidence. This is the official recalculation of a frozen prediction baseline, not a new inference pass over all 4,073 images. Screenshots are deterministically chosen for error analysis rather than random sampling."
     },
     {
       "id": "results",
@@ -72,8 +72,8 @@
         "ko": "6. 실험 결과",
         "en": "6. Results"
       },
-      "ko": "표 1은 보존 기록의 버전별 점유 수 성능이다 [R1, R2]. MAE 반올림 정밀도는 원래 기록을 유지한다. v12와 v13은 Exact가 같아도 MAE와 최대 오차가 다르다. v16.2의 29/34와 v16.4의 33/34는 약 11.77%p 차이이며, MAE는 0.1471에서 0.0294로 낮아졌다. 두 방법 모두 최대 오차 1과 과소 집계 0%를 보고한다. 후보의 과대 집계는 2.94%이며 DEV 지표는 변하지 않았다는 기록이다.\n\nv16.5 및 v16.5.1의 새 영상·공개 데이터 정확도는 미보고이다. 문서의 숫자를 새 실험 완료의 증거로 사용해서는 안 된다. 연구 원시 결과가 없는 초기 버전에는 수치를 부여하지 않는다.",
-      "en": "Table 1 summarizes retained occupied-count results [R1, R2], preserving original MAE rounding. v12 and v13 share Exact but differ in MAE and maximum error. v16.2's 29/34 and v16.4's 33/34 differ by approximately 11.77 percentage points; MAE decreases from 0.1471 to 0.0294. Both report maximum error 1 and zero under-count. The candidate reports 2.94% over-count, while DEV metrics are recorded as unchanged.\n\nNew-video and public-data accuracy for v16.5 and v16.5.1 is unreported. These historical numbers must not be treated as evidence of a newly completed experiment. Early versions lacking quantitative records are not assigned fabricated values.",
+      "ko": "표 1은 보존 기록의 버전별 점유 수 성능이다 [R1, R2]. MAE 반올림 정밀도는 원래 기록을 유지한다. v12와 v13은 Exact가 같아도 MAE와 최대 오차가 다르다. v16.2의 29/34와 v16.4의 33/34는 약 11.77%p 차이이며, MAE는 0.1471에서 0.0294로 낮아졌다. 두 방법 모두 최대 오차 1과 과소 집계 0%를 보고한다. 후보의 과대 집계는 2.94%이며 DEV 지표는 변하지 않았다는 기록이다.\n\n새 현대 연속 영상의 시간 정확도는 미보고이다. CNRPark-EXT 공간 결과는 별도 분모와 표로 10절에 보고한다. 문서의 숫자를 새 실험 완료의 증거로 사용해서는 안 된다. 연구 원시 결과가 없는 초기 버전에는 수치를 부여하지 않는다.",
+      "en": "Table 1 summarizes retained occupied-count results [R1, R2], preserving original MAE rounding. v12 and v13 share Exact but differ in MAE and maximum error. v16.2's 29/34 and v16.4's 33/34 differ by approximately 11.77 percentage points; MAE decreases from 0.1471 to 0.0294. Both report maximum error 1 and zero under-count. The candidate reports 2.94% over-count, while DEV metrics are recorded as unchanged.\n\nAccuracy on new Hyundai continuous videos remains unreported. CNRPark-EXT spatial results use separate denominators and tables in Section 10. These historical numbers must not be treated as evidence of a newly completed experiment. Early versions lacking quantitative records are not assigned fabricated values.",
       "table": "metrics"
     },
     {
@@ -117,8 +117,171 @@
         "ko": "10. 외부 검증 및 반복 안정성 설계",
         "en": "10. External validation and repeated-source stability design"
       },
-      "ko": "v16.5 검증 센터는 새 로컬 영상별 Dataset Profile, CCTV 개수, 동적 count-GT 양식과 대화형 라벨링을 지원한다. 장면 전환 시각과 전환 후 준비 구간을 기록하고 episode_evaluation_mask.csv 및 episode_metrics.csv로 전환 주변을 평가에서 제외한다. 4분 원본을 반복한 경우 repeat_period_sec=240으로 repeat_stability.csv와 REPEAT_STABILITY_REPORT.txt를 만든다. 반복 원본은 상태 누적의 재현성·안정성 실험이며 독립 표본 증가가 아니다.\n\n외부 공간 평가 경로는 MetaPKLot/CNRPark-EXT의 선택된 공식 이미지와 주차면 주석을 준비하고 카메라·날씨별 점유 지표를 보고한다. Quick/Standard는 제한된 표본이고 Full은 직접 선택하는 전체 준비 경로다. 실제 준비한 파일과 분할, 제외 사유, 모델 설정, 표본 수를 결과에 기록해야 한다. 독립 시간 검증에서는 알고리즘과 설정을 먼저 고정하고, 기존 오류 영상과 분리된 날짜·카메라·영상 및 실제 입출차 사건을 확보하여 SAFE와 Candidate를 같은 프로토콜로 비교한다. 이 설계의 실행 결과는 아직 미보고이며 Candidate 승격 조건도 아직 충족했다고 주장하지 않는다.",
-      "en": "The v16.5 Validation Center supports Dataset Profiles for new local videos, camera counts, dynamic count-GT templates, and interactive labeling. Cut times and post-cut warm-up exclusions generate episode_evaluation_mask.csv and episode_metrics.csv. For a repeated four-minute source, repeat_period_sec=240 produces repeat_stability.csv and REPEAT_STABILITY_REPORT.txt. Repetition tests state-accumulation reproducibility and stability; it does not increase independent evidence.\n\nThe external spatial path prepares selected official MetaPKLot/CNRPark-EXT images and slot annotations, then reports occupancy metrics by camera and weather. Quick/Standard use restricted samples; Full is explicitly selected for broader preparation. Actual files, splits, exclusions, model settings, and sample sizes must accompany results. Independent temporal evaluation must freeze the algorithm/settings first, collect distinct dates, cameras, videos, and real entry/departure events apart from the error-analysis video, then compare SAFE and Candidate under one protocol. Execution results remain unreported, and Candidate promotion requirements are not claimed as satisfied."
+      "ko": "### 10.1 독립 시간 검증 및 반복 안정성\n\n검증 센터는 새 로컬 영상의 CCTV 수, GT와 장면 전환 후 준비 구간을 설정하여 episode_evaluation_mask.csv와 episode_metrics.csv를 생성한다. 반복 원본의 repeat_stability.csv는 상태 누적의 재현성과 안정성을 검사하며 독립 표본을 늘리지 않는다. 현대의 SAFE 85.29%/0.1471과 Candidate 97.06%/0.0294는 동일 보존 영상의 시간·전이 평가이다. 독립 연속 영상의 Candidate 승격 근거는 아직 확보되지 않았다.\n\n### 10.2 CNRPark-EXT External Baseline\n\n보존된 Full 실행의 200,657행에는 camera1 15,820행, camera4 19,307행이 중복되었다. 동일 annotation이 다른 압축 해제 폴더에서 읽힌 것이 원인이다. 이번 코드에서 35,127행을 제거해 4,073장, 9개 카메라, 3개 날씨의 고유 이미지–주차면 쌍 165,530개를 평가했다. 동일 키의 GT/예측 충돌은 없었다. 재계산된 Accuracy는 95.0770%, Precision 93.4883%, 점유 Recall 97.4751%, 빈 주차면 Specificity 92.3886%, F1 95.4401%, Balanced Accuracy 94.9319%다. TP/TN/FP/FN은 85,280/72,101/5,940/2,209이다. 이 결과를 보고 threshold를 조절하지 않았다.\n\n### 10.3 주차면 분류와 이미지별 점유 수\n\n이미지별 주차면 점유 수 Exact는 33.9553%, MAE 1.440953, 중앙 절대 오차 1, P90 4, P95 5, 최대 14다. 과대 집계 이미지 비율 51.0435%, 과소 15.0012%, Bias +0.916032다. 95.08% 주차면 분류와 33.96% 이미지 총량 Exact는 서로 다른 평가 단위이며 모순되지 않는다. 주차면 밖 차량까지 센 총 차량 수의 GT는 없으므로 이 값을 총 고유 차량 수 정확도로 표현하지 않는다.\n\n### 10.4 카메라·날씨별 기술적 관찰\n\n카메라 Accuracy 범위는 약 9.8594%p (camera1 87.7118%–camera2 97.5711%), 날씨 범위는 약 1.0253%p다. FP는 FN의 약 2.689배다. camera1은 FP/FN 1,758/186, Count MAE 3.623894와 Bias +3.477876이며 camera9는 1,054/148, MAE 2.084257와 Bias +2.008869이다. camera2는 Count Exact 79.6499%, MAE 0.229759이다. 실제 FP 사례의 이웃 차량 검출과 주차면 기하의 겹침은 오류 분석 가설을 제공한다. 카메라/날씨 그룹은 구성과 표본 분포가 서로 달라 이 차이로 기하의 인과 효과를 증명할 수는 없다. 추가 연구가 외부 결과에 맞춰 개선되면 별도 holdout에서 평가해야 한다.\n\n표와 실제 그림은 [R6]의 CSV·해시·선택 이력에 연결되어 있다. montage는 camera1/camera9 FP, camera2 성공, TP/TN/FN을 함께 보여준다. 모든 실사진 패널에는 검출, 주차면 polygon, 선택 주차면 GT/Pred가 표시된다.",
+      "en": "### 10.1 Independent temporal validation and repeated-source stability\n\nThe Validation Center configures camera counts, GT, and post-cut warm-up to generate episode_evaluation_mask.csv and episode_metrics.csv for new local videos. repeat_stability.csv tests accumulated-state reproducibility, without increasing independent evidence. Hyundai SAFE 85.29%/0.1471 and Candidate 97.06%/0.0294 remain temporal/transition results on the same retained video. Evidence for promotion on independent continuous videos is still unavailable.\n\n### 10.2 CNRPark-EXT External Baseline\n\nThe retained Full run contained 200,657 rows, including 15,820 duplicate camera1 rows and 19,307 duplicate camera4 rows. The same annotations were loaded from different extraction directories. This code removes 35,127 rows and evaluates 165,530 unique image–space pairs over 4,073 images, nine cameras, and three weather conditions, with no conflicting duplicate GT/predictions. Recomputed Accuracy is 95.0770%, Precision 93.4883%, Occupied Recall 97.4751%, Empty Specificity 92.3886%, F1 95.4401%, and Balanced Accuracy 94.9319%. TP/TN/FP/FN are 85,280/72,101/5,940/2,209. Thresholds were not adjusted after inspecting these results.\n\n### 10.3 Slot classification versus image occupied-space counts\n\nImage-level occupied-space Count Exact is 33.9553%, MAE 1.440953, median absolute error 1, P90 4, P95 5, and maximum 14. Over-count rate is 51.0435%, under-count 15.0012%, and Bias +0.916032. Slot accuracy near 95.08% and image-count Exact near 33.96% use different evaluation units and are compatible. Without GT for off-slot vehicles, these metrics cannot be described as total unique-vehicle counting accuracy.\n\n### 10.4 Descriptive camera/weather observations\n\nThe camera Accuracy range is approximately 9.8594 percentage points (camera1 87.7118%–camera2 97.5711%); the weather range is approximately 1.0253 points. FP is approximately 2.689 times FN. camera1 has FP/FN 1,758/186, Count MAE 3.623894, and Bias +3.477876; camera9 has 1,054/148, MAE 2.084257, and Bias +2.008869. camera2 has Count Exact 79.6499% and MAE 0.229759. Neighboring detections intersecting slot geometry in real FP examples provide hypotheses for error analysis. Camera/weather groups differ in composition and sampling, so these ranges do not prove a causal geometry effect. Any future improvement informed by these external results requires a separate holdout.\n\nTables and real figures link to the CSVs, hashes, and selection history in [R6]. The montage combines camera1/camera9 FP, camera2 success, and TP/TN/FN. Real panels show detections, parking polygons, and selected-space GT/Pred.",
+      "tables": [
+        {
+          "path": "paper/data/external_v1652/overall_paper.csv",
+          "title": {
+            "ko": "외부 공간 및 이미지별 집계 지표",
+            "en": "External spatial and image-count metrics"
+          },
+          "columns": [
+            "metric",
+            "value"
+          ],
+          "headers": {
+            "ko": [
+              "지표",
+              "값"
+            ],
+            "en": [
+              "Metric",
+              "Value"
+            ]
+          }
+        },
+        {
+          "path": "paper/data/external_v1652/camera_paper.csv",
+          "title": {
+            "ko": "카메라별 주차면 평가",
+            "en": "Slot evaluation by camera"
+          },
+          "columns": [
+            "name",
+            "N",
+            "accuracy",
+            "f1",
+            "occupied_recall",
+            "empty_specificity"
+          ],
+          "headers": {
+            "ko": [
+              "카메라",
+              "주차면 표본",
+              "Accuracy %",
+              "F1 %",
+              "Recall %",
+              "Specificity %"
+            ],
+            "en": [
+              "Camera",
+              "Slot pairs",
+              "Accuracy %",
+              "F1 %",
+              "Recall %",
+              "Specificity %"
+            ]
+          }
+        },
+        {
+          "path": "paper/data/external_v1652/weather_paper.csv",
+          "title": {
+            "ko": "날씨별 주차면 평가",
+            "en": "Slot evaluation by weather"
+          },
+          "columns": [
+            "name",
+            "N",
+            "accuracy",
+            "f1",
+            "occupied_recall",
+            "empty_specificity"
+          ],
+          "headers": {
+            "ko": [
+              "날씨",
+              "주차면 표본",
+              "Accuracy %",
+              "F1 %",
+              "Recall %",
+              "Specificity %"
+            ],
+            "en": [
+              "Weather",
+              "Slot pairs",
+              "Accuracy %",
+              "F1 %",
+              "Recall %",
+              "Specificity %"
+            ]
+          }
+        },
+        {
+          "path": "paper/data/external_v1652/camera_count_paper.csv",
+          "title": {
+            "ko": "카메라별 이미지 점유 수",
+            "en": "Image occupied-space counts by camera"
+          },
+          "columns": [
+            "name",
+            "images",
+            "count_exact",
+            "count_mae",
+            "count_bias",
+            "count_max_error"
+          ],
+          "headers": {
+            "ko": [
+              "카메라",
+              "이미지",
+              "Exact %",
+              "MAE",
+              "Bias",
+              "최대 오차"
+            ],
+            "en": [
+              "Camera",
+              "Images",
+              "Exact %",
+              "MAE",
+              "Bias",
+              "Max error"
+            ]
+          }
+        },
+        {
+          "path": "paper/data/external_v1652/weather_count_paper.csv",
+          "title": {
+            "ko": "날씨별 이미지 점유 수",
+            "en": "Image occupied-space counts by weather"
+          },
+          "columns": [
+            "name",
+            "images",
+            "count_exact",
+            "count_mae",
+            "count_bias",
+            "count_max_error"
+          ],
+          "headers": {
+            "ko": [
+              "날씨",
+              "이미지",
+              "Exact %",
+              "MAE",
+              "Bias",
+              "최대 오차"
+            ],
+            "en": [
+              "Weather",
+              "Images",
+              "Exact %",
+              "MAE",
+              "Bias",
+              "Max error"
+            ]
+          }
+        }
+      ],
+      "figures": [
+        "external_accuracy",
+        "external_counts",
+        "external_montage",
+        "external_camera1",
+        "external_camera9",
+        "external_camera2"
+      ]
     },
     {
       "id": "history",
@@ -126,8 +289,8 @@
         "ko": "11. 연구 이력의 통합 및 재현성",
         "en": "11. Research lineage and reproducibility"
       },
-      "ko": "v1-v4는 검출과 안정화, 작은 판정 영역, 고해상도/타일 추론과 실행 빈도 최적화를 탐색했다. v4는 제안 중심의 부분 기록이며 확정 실험 수치가 없다. v5-v6은 기준점, 중복 연결, 원근 보정을 구축했다. v7-v10은 기준 평가, 실패한 학습 앵커, 수동 Voronoi 제약, 인과적 시간 추적으로 발전했다. v11-v14는 FULL/CROP/HYBRID 비교, 보조 관측 보호, 선택적 캐시 최적화와 실패한 기억 실험을 다뤘다. v15-v16.2는 전이와 분할·열화 조건, GT 균형, 증거 캐시 건전성과 회귀 점검을 강화했다. v16.3은 연구 이력/자동 업데이트 도구, v16.4는 전이 후보, v16.5는 검증 확대, v16.5.1은 UI 현지화와 이 문서 구조를 추가한다.\n\n각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.",
-      "en": "v1-v4 explored detection/stabilization, smaller decision zones, high-resolution/tiled inference, and inference-frequency optimization. v4 is a partial proposal record without confirmed quantitative results. v5-v6 established points, duplicate linking, and perspective correction. v7-v10 progressed through baseline measurement, unsuccessful learned anchors, manual Voronoi constraints, and causal temporal tracking. v11-v14 compared FULL/CROP/HYBRID, protected auxiliary evidence, selective caching, and unsuccessful memory. v15-v16.2 strengthened transitions, segmentation/degradation conditions, GT balance, evidence-cache health, and regression checks. v16.3 added history/update tooling, v16.4 transition candidates, v16.5 expanded validation, and v16.5.1 UI localization and this paper structure.\n\nGoals, changes, results, issues, and decisions for each version are retained in the [full research-history appendix](appendix/full_experiment_history.md). New evidence is integrated by method, result, error, and limitation rather than appended as release diaries. Release ZIPs and SHA-256 support source-distribution reproducibility but do not automatically freeze input videos or model weights."
+      "ko": "v1-v4는 검출과 안정화, 작은 판정 영역, 고해상도/타일 추론과 실행 빈도 최적화를 탐색했다. v4는 제안 중심의 부분 기록이며 확정 실험 수치가 없다. v5-v6은 기준점, 중복 연결, 원근 보정을 구축했다. v7-v10은 기준 평가, 실패한 학습 앵커, 수동 Voronoi 제약, 인과적 시간 추적으로 발전했다. v11-v14는 FULL/CROP/HYBRID 비교, 보조 관측 보호, 선택적 캐시 최적화와 실패한 기억 실험을 다뤘다. v15-v16.2는 전이와 분할·열화 조건, GT 균형, 증거 캐시 건전성과 회귀 점검을 강화했다. v16.3은 연구 이력/자동 업데이트 도구, v16.4는 전이 후보, v16.5는 검증 확대, v16.5.1은 UI 현지화와 이 문서 구조, v16.5.2는 중복을 제거한 외부 공간 검증 근거를 추가한다.\n\n각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.",
+      "en": "v1-v4 explored detection/stabilization, smaller decision zones, high-resolution/tiled inference, and inference-frequency optimization. v4 is a partial proposal record without confirmed quantitative results. v5-v6 established points, duplicate linking, and perspective correction. v7-v10 progressed through baseline measurement, unsuccessful learned anchors, manual Voronoi constraints, and causal temporal tracking. v11-v14 compared FULL/CROP/HYBRID, protected auxiliary evidence, selective caching, and unsuccessful memory. v15-v16.2 strengthened transitions, segmentation/degradation conditions, GT balance, evidence-cache health, and regression checks. v16.3 added history/update tooling, v16.4 transition candidates, v16.5 expanded validation, v16.5.1 UI localization and this paper structure, and v16.5.2 deduplicated external spatial evidence.\n\nGoals, changes, results, issues, and decisions for each version are retained in the [full research-history appendix](appendix/full_experiment_history.md). New evidence is integrated by method, result, error, and limitation rather than appended as release diaries. Release ZIPs and SHA-256 support source-distribution reproducibility but do not automatically freeze input videos or model weights."
     },
     {
       "id": "limitations",
@@ -135,8 +298,8 @@
         "ko": "12. 한계 및 향후 연구",
         "en": "12. Limitations and future work"
       },
-      "ko": "가장 큰 한계는 단일 보존 영상, 작은 TEST 표본 수, 전이 시점의 시간 상관, 후보의 사후 오류 분석, 정량 근거가 불완전한 강건성 결과다. v16.5의 기능 구현은 새로운 데이터에서의 성공을 의미하지 않는다. 공개 이미지의 공간 검증만으로 시간 전이 안정성이나 현장 운영 안전성을 주장할 수 없다. 실패 실험의 수치도 조건이 완전히 동일한 절제 결과로 과해석하지 않는다.\n\n향후 연구는 독립 연속 영상의 이벤트 균형 평가, O/E 균형 강건성 표본, 과소 집계와 거짓 점유 비용, 처리 시간과 캐시 재사용 비용, 카메라 수 및 시점 변화, 개인정보를 검토한 실제 전후 그림을 우선한다. 독립 검증 후에만 SAFE_BASELINE 승격을 논의하며, 성능이 회귀하면 후보로 유지하고 실패 근거를 남긴다.",
-      "en": "The central limitations are a single retained video, a small TEST set, temporal correlation around transitions, post-hoc candidate error analysis, and incomplete quantitative robustness evidence. Implementing v16.5 features does not establish success on new data. Public-image spatial evaluation alone cannot establish temporal-transition stability or field-operation safety. Failed-experiment numbers are not overinterpreted as perfectly controlled ablations.\n\nPriorities are event-balanced evaluation on independent continuous videos, balanced O/E robustness samples, under-count and false-occupancy costs, runtime/cache costs, camera-count/viewpoint changes, and real before/after figures reviewed for privacy. SAFE_BASELINE promotion is considered only after independent validation; regressions keep the method a candidate with documented evidence."
+      "ko": "가장 큰 한계는 단일 보존 영상, 작은 TEST 표본 수, 전이 시점의 시간 상관, 후보의 사후 오류 분석, 정량 근거가 불완전한 강건성 결과다. v16.5의 기능 구현은 새로운 데이터에서의 성공을 의미하지 않는다. 공개 이미지의 공간 검증만으로 시간 전이 안정성이나 현장 운영 안전성을 주장할 수 없다. 실패 실험의 수치도 조건이 완전히 동일한 절제 결과로 과해석하지 않는다.\n\n향후 연구는 독립 연속 영상의 이벤트 균형 평가, O/E 균형 강건성 표본, 과소 집계와 거짓 점유 비용, 처리 시간과 캐시 재사용 비용, 카메라 수 및 시점 변화, 개인정보를 검토한 실제 전후 그림을 우선한다. 독립 검증 후에만 SAFE_BASELINE 승격을 논의하며, 성능이 회귀하면 후보로 유지하고 실패 근거를 남긴다.\n\n외부 결과의 재계산은 기존 0/1 예측에 근거하며 전체 모델 추론 재실행과 구분된다. 원래 실행 설정 snapshot의 부재는 선택된 20장 재현으로 일부 점검했지만 전체 실행 설정의 완전한 복구를 증명하지는 못한다. 카메라와 날씨는 혼재된 조건이며 그룹 범위 비교는 기술적 관찰이다. camera1/9의 과점유와 전체 이미지 Count Exact 33.96%는 남은 한계다. 공간 외부 결과로 입출차 규칙의 일반화나 SAFE 승격을 주장하지 않는다.",
+      "en": "The central limitations are a single retained video, a small TEST set, temporal correlation around transitions, post-hoc candidate error analysis, and incomplete quantitative robustness evidence. Implementing v16.5 features does not establish success on new data. Public-image spatial evaluation alone cannot establish temporal-transition stability or field-operation safety. Failed-experiment numbers are not overinterpreted as perfectly controlled ablations.\n\nPriorities are event-balanced evaluation on independent continuous videos, balanced O/E robustness samples, under-count and false-occupancy costs, runtime/cache costs, camera-count/viewpoint changes, and real before/after figures reviewed for privacy. SAFE_BASELINE promotion is considered only after independent validation; regressions keep the method a candidate with documented evidence.\n\nExternal recalculation uses retained binary predictions and is distinct from a complete inference rerun. Reproducing 20 selected images partially audits the missing original-run settings snapshot but does not prove full reconstruction of that run. Camera and weather conditions are confounded, and group-range comparisons are descriptive. camera1/9 over-occupancy and overall image Count Exact 33.96% remain limitations. Spatial external results establish neither transition-rule generalization nor SAFE promotion."
     },
     {
       "id": "conclusion",
@@ -144,8 +307,8 @@
         "ko": "13. 결론",
         "en": "13. Conclusion"
       },
-      "ko": "본 연구 기록은 수동 주차면 식별자를 보호하고 공간 제약과 인과적 시간 판단을 결합하며 보조 검출의 권한을 제한하는 방향으로 발전했다. 보존 영상에서 SAFE 85.29%에서 Candidate 97.06%로 개선되었지만 일반화는 미확인이다. 한·영 Living Paper는 동일한 연구 근거와 한계를 유지하고, 이후 릴리스에서 의미 있는 새 방법·표·그림을 적절한 본문 위치에 통합한다. 연구 변화가 없는 patch는 길이를 늘리지 않아도 된다.",
-      "en": "The retained research progressed toward protecting manual slot identities, combining spatial constraints with causal temporal decisions, and limiting auxiliary-detection authority. SAFE 85.29% improved to Candidate 97.06% on the retained video, while generalization remains unverified. The bilingual Living Paper preserves identical evidence and limitations, integrating meaningful new methods, tables, and figures into the appropriate sections as releases evolve. Patches without research changes need not increase paper length."
+      "ko": "본 연구 기록은 수동 주차면 식별자를 보호하고 공간 제약과 인과적 시간 판단을 결합하며 보조 검출의 권한을 제한하는 방향으로 발전했다. 보존 영상에서 SAFE 85.29%에서 Candidate 97.06%로 개선되었지만 독립 시간 일반화는 미확인이다. CNRPark-EXT의 165,530개 고유 쌍에서 공간 Accuracy 95.0770%를 재계산했으며, 카메라별 FP와 이미지 총량 오차를 별도로 보고한다. 한·영 Living Paper는 동일한 연구 근거와 한계를 유지하고, 이후 릴리스에서 의미 있는 새 방법·표·그림을 적절한 본문 위치에 통합한다. 연구 변화가 없는 patch는 길이를 늘리지 않아도 된다.",
+      "en": "The retained research progressed toward protecting manual slot identities, combining spatial constraints with causal temporal decisions, and limiting auxiliary-detection authority. SAFE 85.29% improved to Candidate 97.06% on the retained video, while independent temporal generalization remains unverified. Spatial Accuracy 95.0770% is recomputed over 165,530 unique CNRPark-EXT pairs, with camera-specific FP and image-count errors reported separately. The bilingual Living Paper preserves identical evidence and limitations, integrating meaningful new methods, tables, and figures into the appropriate sections as releases evolve. Patches without research changes need not increase paper length."
     },
     {
       "id": "references",
@@ -153,8 +316,8 @@
         "ko": "참고 문헌 및 근거 자료",
         "en": "References and evidence"
       },
-      "ko": "- [R1] [Canonical research history](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/research_history.json), retained records v1-v16.5.\n- [R2] [v16.4 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_4.txt) and [v16.2 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_2.txt).\n- [R3] [Ultralytics YOLO prediction documentation](https://docs.ultralytics.com/modes/predict/).\n- [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.\n- [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).\n",
-      "en": "- [R1] [Canonical research history](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/research_history.json), retained records v1-v16.5.\n- [R2] [v16.4 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_4.txt) and [v16.2 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_2.txt).\n- [R3] [Ultralytics YOLO prediction documentation](https://docs.ultralytics.com/modes/predict/).\n- [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.\n- [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).\n"
+      "ko": "- [R1] [Canonical research history](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/research_history.json), retained records v1-v16.5.\n- [R2] [v16.4 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_4.txt) and [v16.2 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_2.txt).\n- [R3] [Ultralytics YOLO prediction documentation](https://docs.ultralytics.com/modes/predict/).\n- [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.\n- [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).\n\n- [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.",
+      "en": "- [R1] [Canonical research history](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/research_history.json), retained records v1-v16.5.\n- [R2] [v16.4 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_4.txt) and [v16.2 change record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_2.txt).\n- [R3] [Ultralytics YOLO prediction documentation](https://docs.ultralytics.com/modes/predict/).\n- [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.\n- [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).\n\n- [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05."
     }
   ]
 }

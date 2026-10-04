@@ -2,7 +2,7 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.1**
+Current release: **v16.5.2**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
@@ -21,11 +21,15 @@ The default language is Korean. Choose **Settings → Language → ko/en** to up
 
 Research changes grow the appropriate sections; patches without research changes need no padding. Update both reviewed language paragraphs, evidence tables, figure provenance and `paper_manifest.json`, then generate and check both papers before publishing. The release workflow builds Korean/English PDFs, Markdown snapshots, a source ZIP and SHA-256 assets.
 
-Current image evidence is unavailable, so figures use explicit descriptions instead of fabricated images. Retained SAFE **85.29% / MAE 0.1471** and Candidate **97.06% / MAE 0.0294** are historical, same-video results. Independent temporal validation and v16.5 external runtime results remain pending.
+CNRPark-EXT frozen predictions were recalculated after removing **35,127** duplicate image/spot pairs: **4,073 images / 165,530 unique pairs**, occupancy Accuracy **95.08%**, F1 **95.44%**; image Count Exact **33.96%**, MAE **1.441**. Count means occupied annotated parking spaces. These are external spatial results, separate from retained SAFE **85.29% / MAE 0.1471** and Candidate **97.06% / MAE 0.0294** temporal results. Independent temporal validation remains pending.
+
+실제 TP/TN/FP/FN, 카메라별·날씨별 이미지 33장, camera1/9 FP와 camera2 성공 사례, montage 및 그래프를 한·영 논문에 추가했습니다. 전체 4,073장 추론을 다시 실행한 것은 아니며, 기존 예측 재계산과 대표 20장 재추론 일치 확인을 구분해 기록했습니다. 외부 결과로 임계값을 조정하지 않습니다.
+
+[Frozen external evidence](paper/data/external_v1652/external_summary.json) | [Auditable evidence ZIP](paper/data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip). This reviewed derivative contains public CNRPark-EXT benchmark annotations, predictions and selected overlays, with source/license attribution; original private CCTV imagery is unavailable and remains a placeholder.
 
 ## Verification
 
-`python self_test.py`, `python -m unittest discover -s tests -v`, and `python tools/build_paper.py --check` validate source behavior, language persistence, open-form preservation, identifier/cache compatibility, and paper synchronization. On Linux use `xvfb-run -a` for UI tests. PDF build instructions are in [paper/README.md](paper/README.md).
+`python self_test.py`, `python -m unittest discover -s tests -v`, and `python tools/build_paper.py --check`, and `python tools/check_external_evidence.py` validate source behavior, language persistence, open-form preservation, identifier/cache compatibility, and paper synchronization. On Linux use `xvfb-run -a` for UI tests. PDF build instructions are in [paper/README.md](paper/README.md).
 
 ## Start on Windows
 1. Extract the release ZIP.

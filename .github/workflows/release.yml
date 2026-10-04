@@ -40,6 +40,7 @@ jobs:
           python self_test.py
           xvfb-run -a python -m unittest discover -s tests -v
           python tools/build_paper.py --check
+          python tools/check_external_evidence.py
           if [ "${{ github.event_name }}" = "push" ]; then
             test -z "$(git diff --name-only --diff-filter=MD HEAD^ HEAD -- paper/snapshots/)"
           fi
@@ -59,10 +60,14 @@ jobs:
           set -euo pipefail
           cp "paper/snapshots/paper_${VERSION}_ko.md" "dist/ParkingResearchAgent-${VERSION}-paper-ko.md"
           cp "paper/snapshots/paper_${VERSION}_en.md" "dist/ParkingResearchAgent-${VERSION}-paper-en.md"
+          # Reviewed archive: public CNRPark-EXT benchmark derivatives, ODbL attribution included.
+          # No local user paths, credentials or private CCTV imagery; not the original user upload.
+          cp paper/data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip "dist/ParkingResearchAgent-${VERSION}-CNRPark-External-Baseline.zip"
           zip -r "dist/$NAME" . -x ".git/*" ".github/*" "bundle/*" "dist/*" "__pycache__/*" "*/__pycache__/*" "work/*" "output/*" "user_data/*" ".venv/*" "LAST_ERROR.txt" "release_trigger.txt"
           (
             cd dist
             sha256sum "$NAME" > "$NAME.sha256"
+            sha256sum "ParkingResearchAgent-${VERSION}-CNRPark-External-Baseline.zip" > "ParkingResearchAgent-${VERSION}-CNRPark-External-Baseline.zip.sha256"
             sha256sum *.zip *.pdf *.md > SHA256SUMS.txt
           )
       - name: Publish validated GitHub Release

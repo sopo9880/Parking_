@@ -112,11 +112,18 @@ def build(markdown, target, language, version):
                 if t.type=='tr_close': rows.append(row)
                 i+=1
             width=170*mm
-            proportions=[.25,.14,.12,.12,.37] if len(rows[0])==5 else [.24,.14,.32,.30]
+            proportions=([.25,.14,.12,.12,.37] if len(rows[0])==5 else
+                         [.24,.14,.32,.30] if len(rows[0])==4 else [1/len(rows[0])]*len(rows[0]))
             table=Table(rows,colWidths=[width*p for p in proportions],repeatRows=1,hAlign='LEFT')
             table.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('BACKGROUND',(0,0),(-1,0),colors.HexColor('#e7eef6')),('LINEBELOW',(0,0),(-1,0),.6,colors.HexColor('#7092b1')),('ROWBACKGROUNDS',(0,1),(-1,-1),[colors.white,colors.HexColor('#f7f9fc')]),('BOTTOMPADDING',(0,0),(-1,-1),6),('TOPPADDING',(0,0),(-1,-1),6)]))
-            story += [KeepTogether([table]),Spacer(1,10)]
+            # Long evidence tables may span pages; repeat the header and retain headings.
+            story += [table,Spacer(1,10)]
         i+=1
+    # Keep the short references section together instead of leaving its title stranded.
+    last_heading = next((n for n in range(len(story)-1,-1,-1)
+                         if isinstance(story[n],Paragraph) and story[n].style.name=='PaperH2'),None)
+    if last_heading is not None:
+        story[last_heading:] = [KeepTogether(story[last_heading:])]
     def footer(canvas,doc):
         canvas.saveState();canvas.setStrokeColor(colors.HexColor('#c7d4e2'));canvas.line(20*mm,16*mm,190*mm,16*mm)
         canvas.setFont('PaperEN',7.5);canvas.setFillColor(colors.HexColor('#526174'))
@@ -140,6 +147,9 @@ def verify_and_render(pdf,previews,language):
     text='\n'.join(texts)
     for required in ('85.29','97.06','0.1471','0.0294','CANDIDATE','SAFE_BASELINE'):
         assert required in text, f'PDF missing {required}'
+    if 'v16.5.2' in pdf.name:
+        for required in ('165530','95.0770','95.4401','33.9553','1.440953'):
+            assert required in text, f'PDF missing external result {required}'
     assert '\ufffd' not in text, 'Replacement glyph found'
     assert len(text)>3000 and len(pages)>1, 'Paper unexpectedly empty'
     if language=='ko': assert '초록' in text and '결론' in text, 'Korean text missing'

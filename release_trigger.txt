@@ -1,1 +1,1 @@
-Build Parking Research Agent v16.5.1: bilingual UI + synchronized Living Paper + PDF assets
+v16.5.2

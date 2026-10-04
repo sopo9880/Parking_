@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "app_version": "v16.5.2",
+  "dataset": "MetaPKLot/CNRPark-EXT",
+  "evidence_scope": "external_spatial_occupancy",
+  "evaluation_status": "recomputed_from_frozen_predictions_selected_inference_verified",
+  "source": "https://github.com/DSBD-Research/MetaPKLot-Dataset",
+  "baseline": {
+    "schema_version": 1,
+    "name": "EXTERNAL_BASELINE",
+    "frozen_by_version": "v16.5.2",
+    "purpose": "spatial occupancy generalization only; no target-label tuning",
+    "parameters": {
+      "detector": {
+        "model": "yolov8m.pt",
+        "imgsz": 1280,
+        "conf": 0.15,
+        "tiling": false,
+        "tile_overlap": 0.2,
+        "tile_nms_iou": 0.5,
+        "physical_vehicle_nms_iou": 0.42,
+        "physical_vehicle_overlap_min": 0.68,
+        "vehicle_class_ids": [
+          2,
+          3,
+          5,
+          7
+        ]
+      },
+      "spot_overlap_threshold": 0.12
+    },
+    "parameter_sha256": "66ffbcc1d876ab6345017d4759882a45e19de187ed4fe50c769d1140114d6bd2",
+    "model_sha256": "5d4a90cdc7a21786cc59cd19778e9eafff836df9e2da32524737c7ee6efe4fe5",
+    "evaluation_status": "recomputed_from_frozen_predictions_selected_inference_verified",
+    "original_run_settings_snapshot_available": false,
+    "configuration_provenance": "current supplied settings; selected images must reproduce archived predictions",
+    "prediction_sha256": "2b717faaa02c6d8a80d9a65c3829669cbd61f0b8a0c627ade4fd350a1785419f",
+    "gt_sha256": "440c3ff53848eb2bdcf4304c603e478c6d07d1074e4e92ff1bd237e239f54fff",
+    "settings_sha256": "2919e021bae0479c2589059636d91708cd9dd64091bdfeb0ff7ec8cc1e2009c4",
+    "selected_images_verified": 20,
+    "source_zip_sha256": "260036c0045e2fc3a45553e3cbe11d08f1962042f0d24c9874a3cdc245ec46a7"
+  },
+  "overall": {
+    "N": 165530,
+    "accuracy": 0.9507702531263215,
+    "precision": 0.9348827011620259,
+    "occupied_recall": 0.9747511115683114,
+    "empty_specificity": 0.9238861624018144,
+    "f1": 0.9544007296778562,
+    "balanced_accuracy": 0.9493186369850629,
+    "TP": 85280,
+    "TN": 72101,
+    "FP": 5940,
+    "FN": 2209
+  },
+  "count_metrics": {
+    "images": 4073,
+    "count_exact": 0.3395531549226614,
+    "count_mae": 1.4409526147802603,
+    "count_median_abs_error": 1.0,
+    "count_p90_error": 4.0,
+    "count_p95_error": 5.0,
+    "count_max_error": 14,
+    "over_count_rate": 0.5104345691136755,
+    "under_count_rate": 0.15001227596366315,
+    "count_bias": 0.9160324085440708
+  },
+  "deduplication": {
+    "schema_version": 1,
+    "context": "evaluation_predictions",
+    "key": [
+      "canonical_image_path",
+      "spot_id"
+    ],
+    "input_rows": 165530,
+    "unique_pairs": 165530,
+    "duplicates_removed": 0,
+    "unique_images": 4073,
+    "duplicates_by_camera": {},
+    "conflicting_pairs": 0
+  },
+  "upstream_deduplication": {
+    "archived_predictions": {
+      "schema_version": 1,
+      "context": "archived_prediction_recalculation",
+      "key": [
+        "canonical_image_path",
+        "spot_id"
+      ],
+      "input_rows": 200657,
+      "unique_pairs": 165530,
+      "duplicates_removed": 35127,
+      "unique_images": 4073,
+      "duplicates_by_camera": {
+        "camera1": 15820,
+        "camera4": 19307
+      },
+      "conflicting_pairs": 0
+    },
+    "archived_gt": {
+      "schema_version": 1,
+      "context": "archived_gt_reconciliation",
+      "key": [
+        "canonical_image_path",
+        "spot_id"
+      ],
+      "input_rows": 200657,
+      "unique_pairs": 165530,
+      "duplicates_removed": 35127,
+      "unique_images": 4073,
+      "duplicates_by_camera": {
+        "camera1": 15820,
+        "camera4": 19307
+      },
+      "conflicting_pairs": 0
+    }
+  },
+  "source_duplicate_rows_removed": 35127,
+  "skipped_images": 0,
+  "screenshots": {
+    "requested": 33,
+    "generated": 33,
+    "unavailable": 0,
+    "categories_present": [
+      "fn",
+      "fp",
+      "tn",
+      "tp"
+    ],
+    "selection_policy": "deterministic category/camera/weather cases; maximum observed errors for failure illustrations, not a random sample"
+  },
+  "count_definition": "sum of occupied annotated parking spaces per image; not all vehicles or cross-camera unique vehicles",
+  "descriptive_analysis": {
+    "camera_accuracy_range_pp": 9.859358704462407,
+    "weather_accuracy_range_pp": 1.0253122508257273,
+    "fp_to_fn_ratio": 2.6889995473064734,
+    "warning": "Group ranges are descriptive and confounded; they do not prove camera geometry causes performance differences."
+  }
+}

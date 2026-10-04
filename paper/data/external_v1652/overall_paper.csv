@@ -1,0 +1,23 @@
+metric,value
+Images,4073
+Unique image/spot pairs,165530
+Duplicate rows removed,35127
+accuracy,95.0770%
+precision,93.4883%
+occupied_recall,97.4751%
+empty_specificity,92.3886%
+f1,95.4401%
+balanced_accuracy,94.9319%
+TP,85280
+TN,72101
+FP,5940
+FN,2209
+count_exact,33.9553%
+count_mae,1.440953
+count_median_abs_error,1.000000
+count_p90_error,4.000000
+count_p95_error,5.000000
+count_max_error,14.000000
+over_count_rate,51.0435%
+under_count_rate,15.0012%
+count_bias,0.916032

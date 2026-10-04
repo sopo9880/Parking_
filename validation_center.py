@@ -599,7 +599,12 @@ def open_validation_center(app):
                 m=result["overall"]
                 msg=(f"External validation complete\n\nAccuracy {m['accuracy']*100:.2f}%\n"
                      f"F1 {m['f1']:.4f}\nOccupied Recall {m['occupied_recall']:.4f}\n"
-                     f"Empty Specificity {m['empty_specificity']:.4f}\n\n{out}")
+                     f"Empty Specificity {m['empty_specificity']:.4f}\n"
+                     f"Images: {result['count_metrics']['images']}\nUnique image/spot pairs: {m['N']}\n"
+                     f"Duplicate rows removed: {result['source_duplicate_rows_removed']}\n"
+                     f"Count Exact {result['count_metrics']['count_exact']*100:.2f}%\n"
+                     f"Count MAE {result['count_metrics']['count_mae']:.4f}\n"
+                     f"Count = occupied annotated parking spaces, not total unique vehicles.\n\n{out}")
                 win.after(0,lambda: messagebox.showinfo(tr("External validation"),tr(msg),parent=win))
             except Exception as exc:
                 win.after(0,lambda e=exc: messagebox.showerror(tr("External validation"),tr(f"{type(e).__name__}: {e}"),parent=win))
