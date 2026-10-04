@@ -1,22 +1,40 @@
-# Parking Research Agent v16.3.0
+# Parking Research Agent v16.4.0
 
-This release turns the v16.2 research engine into a versioned local research Agent while deliberately keeping the **v16.2 SAFE_BASELINE algorithm unchanged**.
+This is a **CANDIDATE algorithm release**. The protected **v16.2 SAFE_BASELINE remains unchanged**.
 
 ## Added
-- Research History viewer with the paper/research lineage from v1 through v16.2.
-- Local future-run journal that survives program updates.
-- GitHub Releases update checker.
-- SHA-256 verified update download and replacement helper.
-- Persistent protection for settings, slots, ROI, GT, work/output, venv and user data.
-- GitHub Actions release packaging.
+- `ENTRY_TRACK_SWITCH_HOLD`
+  - Carries slot-level motion context across tracker-ID switches.
+  - Prevents a newly assigned track from instantly looking like a stationary parked vehicle after a large maneuver.
+- `LEAVING_WEAK_OWNER_RELEASE`
+  - Only activates when the baseline itself enters LEAVING.
+  - Requires weak mean confidence, meaningful motion, and an EMPTY sibling view for the same global slot.
+  - Releases stale ghost occupancy after confirmation and requires a settle interval before reacquisition.
+- Event-balanced transition evaluation outputs.
+- Dedicated candidate runner: `RUN_V16_4_CANDIDATE.cmd`.
+- Auditable transition-event CSV and candidate summary/report files.
+- Release workflow now packages the current `main` source directly instead of reconstructing the old v16.3 bootstrap bundle.
 
-## Baseline carried forward
-- TEST Exact Match: **85.29%**
+## Retained validation result
+### v16.2 SAFE_BASELINE
+- TEST Exact Match: **85.29% (29/34)**
 - MAE: **0.1471**
 - Max error: **1**
 - Under-count: **0%**
 
-The rejected v16.2 candidates remain rejected: TRANSITION_GUARD 70.59%, SEG_ASSIST 70.59%, EMPTY_REF_ASSIST 0%.
+### v16.4 candidate
+- TEST Exact Match: **97.06% (33/34)**
+- MAE: **0.0294**
+- Max error: **1**
+- Under-count: **0%**
+- Over-count: **2.94%**
+- **4 of the previous 5 TEST errors removed**
+- DEV metrics unchanged
 
-## Next research target
-The next algorithm experiment will target transition errors caused by track-ID switches using slot-level motion memory, inside this Agent shell.
+The corrected retained TEST timestamps are 16:00, 16:10, 17:10 and 17:20. One over-count event at 17:00 remains.
+
+## Important limitation
+The rules were developed after analyzing the same retained validation video. Ground truth is **not used by the transition decisions**, but independent-video validation is still required before any SAFE_BASELINE promotion.
+
+## Auto Update
+GitHub Releases ZIP + SHA-256 verification remains enabled. User settings, slot/ROI configuration, outputs, venv and user data remain preserved during update.
