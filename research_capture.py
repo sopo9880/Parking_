@@ -28,6 +28,15 @@ def _letterbox(img: np.ndarray, w: int, h: int) -> np.ndarray:
     return canvas
 
 
+def _panel_grid(panels: List[np.ndarray], cols: int = 2) -> np.ndarray:
+    if not panels:
+        return np.full((720,1280,3),28,np.uint8)
+    h,w=panels[0].shape[:2]; cols=max(1,int(cols)); rows=int(math.ceil(len(panels)/cols))
+    padded=list(panels)
+    while len(padded)<rows*cols: padded.append(np.full((h,w,3),28,np.uint8))
+    return np.vstack([np.hstack(padded[r*cols:(r+1)*cols]) for r in range(rows)])
+
+
 def _nearest_row(df: pd.DataFrame, t: float, tol: float = 0.51) -> pd.DataFrame:
     if df is None or df.empty or 'time_sec' not in df.columns:
         return pd.DataFrame()
@@ -214,7 +223,7 @@ def generate_research_screenshots(video_path: str, rois: Dict, slots_path: str, 
 
     # Preserve setup figures that are useful in methodology sections.
     copied=[]
-    for c in ['cctv1','cctv2','cctv3']:
+    for c in sorted(rois.keys()):
         for suffix in ['manual_voronoi_preview.jpg','slot_overlap_preview.jpg','candidate_preview.jpg','slot_configuration_diagnostics.jpg']:
             src=learn_dir/f'{c}_{suffix}'
             if src.exists():
@@ -227,7 +236,7 @@ def generate_research_screenshots(video_path: str, rois: Dict, slots_path: str, 
             frame=read_frame_at(cap,t)
             gt,pred,err=_count_info(count_df,t)
             panels=[_letterbox(frame,1280,720)]
-            for c in ['cctv1','cctv2','cctv3']:
+            for c in sorted(rois.keys()):
                 if c not in rois:
                     panels.append(np.full((720,1280,3),28,np.uint8));continue
                 warped=crop_roi(frame,rois[c])
@@ -235,8 +244,8 @@ def generate_research_screenshots(video_path: str, rois: Dict, slots_path: str, 
                 er=_nearest_row(ev_df[(ev_df['cctv'].astype(str)==c)] if (not ev_df.empty and 'cctv' in ev_df.columns) else pd.DataFrame(),t)
                 ann=_draw_warped(warped,c,slots,sr,er)
                 panels.append(_letterbox(ann,1280,720))
-            canvas=np.vstack([np.hstack(panels[:2]),np.hstack(panels[2:4])])
-            bar=np.full((105,2560,3),18,np.uint8)
+            canvas=_panel_grid(panels,2)
+            bar=np.full((105,canvas.shape[1],3),18,np.uint8)
             text=f'{kind} | t={format_timestamp(t)} | GT={gt} PRED={pred} ERR={err} | mode={mode} | F=FULL, A=multi-scale AUX, S=scale support'
             cv2.putText(bar,text,(22,68),cv2.FONT_HERSHEY_SIMPLEX,0.92,(245,245,245),3,cv2.LINE_AA)
             final=np.vstack([bar,canvas])
@@ -343,12 +352,13 @@ def generate_ground_truth_review(video_path: str, rois: Dict, gt_path: str, slot
             occ=r.get('ground_truth_occupied_space_count','?');uniq=r.get('ground_truth_unique_vehicle_count','?')
             base=f'{sec:04d}_{ts.replace(":","m")}s'
             raw_name=f'{base}.jpg';cv2.imwrite(str(raw_dir/raw_name),frame,[int(cv2.IMWRITE_JPEG_QUALITY),quality])
-            lines=[f'TIME {ts}',f'GT OCCUPIED {occ}',f'GT UNIQUE {uniq}',
-                   f'CCTV1 {r.get("cctv1_count","?")} | CCTV2 {r.get("cctv2_count","?")} | CCTV3 {r.get("cctv3_count","?")}',
+            camera_line=' | '.join(f'{c.upper()} {r.get(f"{c}_count","?")}' for c in sorted(rois.keys()))
+            lines=[f'TIME {ts}',f'GT OCCUPIED {occ}',f'GT UNIQUE {uniq}',camera_line,
                    f'TAGS {r.get("tags","")} | OVERLAP {r.get("overlap_cctv","")}']
             ann=_draw_text_box(frame,lines,(22,22),1.02,44);ann_name=f'{base}_GT{occ}.jpg';cv2.imwrite(str(ann_dir/ann_name),ann,[int(cv2.IMWRITE_JPEG_QUALITY),quality])
             row={'time_sec':t,'timestamp':ts,'raw_file_local':f'ground_truth_review/raw/{raw_name}','annotated_file_local':f'ground_truth_review/annotated/{ann_name}',
-                 'ground_truth_occupied_space_count':occ,'ground_truth_unique_vehicle_count':uniq,'cctv1_count':r.get('cctv1_count',''),'cctv2_count':r.get('cctv2_count',''),'cctv3_count':r.get('cctv3_count',''),'tags':r.get('tags',''),'overlap_cctv':r.get('overlap_cctv',''),'notes':r.get('notes','')}
+                 'ground_truth_occupied_space_count':occ,'ground_truth_unique_vehicle_count':uniq,'tags':r.get('tags',''),'overlap_cctv':r.get('overlap_cctv',''),'notes':r.get('notes','')}
+            for c in sorted(rois.keys()): row[f'{c}_count']=r.get(f'{c}_count','')
             warped_names=[]
             for cctv,roi in rois.items():
                 rr=_raw_roi_bbox(frame,roi);ww=crop_roi(frame,roi)
@@ -359,7 +369,7 @@ def generate_ground_truth_review(video_path: str, rois: Dict, gt_path: str, slot
             index.append(row);raw_entries.append((raw_dir/raw_name,f'{ts} | GT {occ}'))
 
             tag_text=str(r.get('tags',''));tag_tokens=set(x.strip() for x in tag_text.replace(',',';').split(';') if x.strip())
-            cams=(r.get('cctv1_count',''),r.get('cctv2_count',''),r.get('cctv3_count',''))
+            cams=tuple(r.get(f'{c}_count','') for c in sorted(rois.keys()))
             count_change = (prev_occ is not None and str(occ)!=str(prev_occ)) or (prev_unique is not None and str(uniq)!=str(prev_unique)) or (prev_cam is not None and tuple(map(str,cams))!=tuple(map(str,prev_cam)))
             tagged=bool(tag_tokens.intersection({'21','22','23','31'}))
             event=tagged or bool(count_change)
