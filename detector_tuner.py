@@ -94,7 +94,7 @@ def run_warped_detector_sweep(
     best_rows: List[Dict] = []
     cctvs = [c for c in rois if _gt_column_for_cctv(c) in dev_gt.columns]
     if not cctvs:
-        raise ValueError('Ground Truth CSV needs cctv1_count / cctv2_count / cctv3_count columns for detector tuning.')
+        raise ValueError('Ground Truth CSV needs at least one configured CCTV count column (for example cctv1_count).')
 
     total_base = len(cctvs) * len(models) * len(imgszs) * len(tilings)
     done_base = 0
