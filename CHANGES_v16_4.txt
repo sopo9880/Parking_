@@ -1,0 +1,56 @@
+Parking Research Agent v16.4.0
+==============================
+
+Status
+------
+CANDIDATE release. The v16.2 SAFE_BASELINE remains protected and is not promoted automatically.
+
+New transition refiner
+----------------------
+- ENTRY_TRACK_SWITCH_HOLD
+  - Preserves slot-level motion context across a tracker ID switch.
+  - If a new track suddenly looks stationary immediately after large slot motion, OCCUPIED confirmation is delayed until the new track is old/stable enough.
+- LEAVING_WEAK_OWNER_RELEASE
+  - Applies only when the baseline itself enters LEAVING.
+  - Requires weak mean confidence, meaningful motion, and an EMPTY sibling vote from another CCTV for the same global slot.
+  - Releases stale ghost occupancy after a short confirmation delay.
+  - Requires a settle interval before baseline OCCUPIED is trusted again.
+
+Evaluation outputs
+------------------
+- candidate_v164_slot_timeseries.csv
+- candidate_v164_global_slot_timeseries.csv
+- candidate_v164_count_timeseries.csv
+- candidate_v164_metrics.csv
+- candidate_v164_transition_events.csv
+- candidate_v164_event_balanced_metrics.csv
+- candidate_v164_summary.json
+- CANDIDATE_v16_4_REPORT.txt
+
+Current validation clip
+-----------------------
+v16.2 SAFE_BASELINE:
+- TEST Exact Match: 85.29%
+- TEST MAE: 0.1471
+- Max error: 1
+- Under-count: 0%
+
+v16.4 candidate:
+- TEST Exact Match: 97.06% (33/34)
+- TEST MAE: 0.0294
+- Max error: 1
+- Under-count: 0%
+- Over-count: 2.94%
+- Four of the five previous TEST errors were removed.
+- DEV metrics were unchanged.
+
+Important limitation
+--------------------
+The candidate rules were developed from error analysis on the same retained validation video.
+Therefore this release is NOT promoted to SAFE_BASELINE. Independent-video validation is required.
+
+Release system
+--------------
+- Release workflow now packages the current main source directly.
+- The old v16.3 bootstrap bundle is retained only as historical bootstrap material.
+- GitHub Auto Update continues to use versioned ZIP + SHA-256 verification.
