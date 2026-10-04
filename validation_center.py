@@ -196,7 +196,11 @@ class CountGTLabeler(tk.Toplevel):
     def _row_time(self) -> float:
         s = str(self.df.iloc[self.index]["timestamp"])
         parts = [float(x) for x in s.split(":")]
-        return parts[0]*60 + parts[1] if len(parts) == 2 else parts[0]
+        if len(parts) == 3:
+            return parts[0] * 3600 + parts[1] * 60 + parts[2]
+        if len(parts) == 2:
+            return parts[0] * 60 + parts[1]
+        return parts[0]
 
     def _load_row(self):
         r = self.df.iloc[self.index]
