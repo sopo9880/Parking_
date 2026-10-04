@@ -22,6 +22,7 @@ import tarfile
 import time
 import urllib.error
 import urllib.request
+import zipfile
 from collections import defaultdict
 from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -555,4 +556,12 @@ def evaluate_external_cnr(root: str | Path, settings: Dict, output_dir: str | Pa
         "CNRPark-EXT license: ODbL v1.0; see upstream README.",
     ]
     (out / "EXTERNAL_VALIDATION_REPORT.txt").write_text("\n".join(report) + "\n", encoding="utf-8")
-    return {"overall": overall, "output_dir": str(out), "samples": int(overall["N"])}
+    zip_path=out/"EXTERNAL_VALIDATION_TO_CHATGPT.zip"
+    with zipfile.ZipFile(zip_path,"w",zipfile.ZIP_DEFLATED) as zf:
+        for p in [
+            out/"external_slot_predictions.csv",out/"external_metrics_overall.csv",
+            out/"external_metrics_by_camera_weather.csv",out/"EXTERNAL_VALIDATION_REPORT.txt",
+            root/"manifest.json",root/"external_gt_spots.csv",root/"SOURCE_AND_LICENSE.txt",
+        ]:
+            if p.is_file(): zf.write(p,p.name)
+    return {"overall": overall, "output_dir": str(out), "samples": int(overall["N"]), "package": str(zip_path)}
