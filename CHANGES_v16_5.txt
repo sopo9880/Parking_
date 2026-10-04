@@ -1,0 +1,53 @@
+Parking Research Agent v16.5.0
+================================
+
+Role
+----
+Validation/infrastructure release. v16.2 remains the protected SAFE_BASELINE and v16.4 remains a CANDIDATE until independent evidence supports promotion.
+
+Validation Center
+-----------------
+- Local Dataset Profiles for video/GT/camera-count/cut/repeat settings.
+- Configurable 1-12 CCTV views instead of assuming exactly three.
+- Dynamic ROI setup, preview, duplicate linker, diagnostics and paper screenshots.
+- Dynamic count-GT template generator and interactive 10-second GT labeler.
+
+Episode / cut-boundary evaluation
+---------------------------------
+- Cut boundaries such as 4:00, 8:00, 12:00, 16:00.
+- Post-cut warm-up mask so artificial clip jumps are excluded from episode metrics.
+- episode_evaluation_mask.csv and episode_metrics.csv.
+
+Repeated-source stability
+-------------------------
+- repeat_period_sec / repeat_count settings.
+- Compares each repeated segment against repeat 1.
+- Reports agreement, MAE-vs-first and max drift.
+- Explicitly a stability/reproducibility stress test, NOT independent validation.
+
+v16.4 automatic evaluation
+---------------------------
+- ALL-IN-ONE automatically runs the v16.4 transition refiner after v16.2 SAFE_BASELINE.
+- Candidate metrics, transition audit and event-balanced metrics are packaged in UPLOAD_TO_CHATGPT.zip.
+- No automatic SAFE promotion.
+
+Public external validation
+--------------------------
+- Automatic MetaPKLot / CNRPark-EXT preparation.
+- Quick and Standard modes download selected official images plus matching spot annotations.
+- Full mode is explicit opt-in and shallow-clones the upstream repository.
+- Resume + size verification for targeted downloads.
+- COCO-style parking-space annotations are converted to external_gt_spots.csv.
+- Reports Accuracy, Precision, F1, Occupied Recall, Empty Specificity and TP/TN/FP/FN, including camera/weather breakdown.
+- Builds EXTERNAL_VALIDATION_TO_CHATGPT.zip.
+- Public results are external spatial generalization, not continuous temporal-transition validation.
+
+Cache visibility
+----------------
+- Main UI shows a compact CACHE audit summary.
+- Existing detector/slot/evidence/SEG/robustness cache separation remains intact.
+
+Data/update safety
+------------------
+- user_data/ remains update-preserved and stores profiles/public datasets.
+- Existing settings/slots/ROI/output/work/.venv preservation remains unchanged.
