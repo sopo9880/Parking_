@@ -20,7 +20,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile             app.py             research_history.py             update_manager.py             update_helper.py             transition_refiner_v164.py
+          python -m py_compile \
+            app.py \
+            research_history.py \
+            update_manager.py \
+            update_helper.py \
+            transition_refiner_v164.py \
+            validation_center.py \
+            public_dataset.py \
+            research_capture.py \
+            detector_tuner.py
           python -m json.tool research_history.json >/dev/null
           VERSION="$(tr -d '\r\n' < VERSION.txt)"
           test -n "$VERSION"
