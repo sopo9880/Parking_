@@ -2,8 +2,8 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.3.0**  
-Algorithm baseline: **v16.2 SAFE_BASELINE**
+Current release: **v16.4.0 CANDIDATE**  
+Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 
 ## Start on Windows
 1. Extract the release ZIP.
@@ -16,6 +16,33 @@ Algorithm baseline: **v16.2 SAFE_BASELINE**
 - Use **ALL-IN-ONE** for unattended cache/tuning/evidence/robustness/state evaluation and ZIP packaging.
 - Use **Research History** to review the research lineage and previous decisions.
 - Use **Check Update** to query the latest GitHub Release.
+
+## v16.4 candidate transition refiner
+v16.4.0 adds a narrow post-baseline candidate that targets transition timing without replacing the v16.2 SAFE_BASELINE.
+
+After an ALL-IN-ONE run has produced `baseline_slot_timeseries.csv` and `baseline_count_timeseries.csv` in `output\`, run:
+
+`RUN_V16_4_CANDIDATE.cmd`
+
+The candidate writes:
+- `candidate_v164_slot_timeseries.csv`
+- `candidate_v164_global_slot_timeseries.csv`
+- `candidate_v164_count_timeseries.csv`
+- `candidate_v164_metrics.csv`
+- `candidate_v164_transition_events.csv`
+- `candidate_v164_event_balanced_metrics.csv`
+- `candidate_v164_summary.json`
+- `CANDIDATE_v16_4_REPORT.txt`
+
+### Current retained-video result
+- v16.2 SAFE_BASELINE TEST Exact: **85.29%**
+- v16.4 candidate TEST Exact: **97.06%**
+- v16.2 MAE: **0.1471**
+- v16.4 candidate MAE: **0.0294**
+- Max error: **1**
+- Under-count: **0%**
+
+This is **not** a SAFE_BASELINE promotion. The same retained validation video was used for error analysis, so an independent video is required before promotion.
 
 ## Auto Update
 The updater reads the latest release from `sopo9880/Parking_`, downloads the matching ZIP and `.sha256`, verifies SHA-256, then installs only after the current app exits.
