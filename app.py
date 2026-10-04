@@ -25,6 +25,13 @@ from research_capture import generate_research_screenshots, generate_ground_trut
 from degradation_robustness import run_degradation_robustness_experiment, label_robustness_ground_truth
 from research_history import open_history_window, append_run
 from update_manager import current_version, check_latest, prepare_update, launch_apply, load_update_config
+from transition_refiner_v164 import run as run_v164_candidate, RefinerConfig
+from validation_center import (
+    open_validation_center as launch_validation_center,
+    configured_camera_names,
+    write_episode_metrics,
+    write_repeat_stability,
+)
 
 from slot_engine import (
     extract_evidence,
@@ -344,7 +351,7 @@ def _nearest_slot(slots, cctv, x, y, max_dist=32):
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title(f'Parking Research Agent {APP_VERSION} | v16.2 SAFE_BASELINE')
+        self.title(f'Parking Research Agent {APP_VERSION} | v16.2 SAFE + v16.4 CANDIDATE')
         sw=max(1024,int(self.winfo_screenwidth())); sh=max(720,int(self.winfo_screenheight()))
         init_w=max(980,min(1180,sw-80)); init_h=max(700,min(900,sh-100))
         self.geometry(f'{init_w}x{init_h}')
@@ -368,6 +375,7 @@ class App(tk.Tk):
         self.status_var = tk.StringVar(value='Ready')
         self.progress_var = tk.DoubleVar(value=0.0)
         self.timing_var = tk.StringVar(value='Total Elapsed -- | Step Elapsed -- | Step ETA -- | Total Remaining --')
+        self.cache_status_var = tk.StringVar(value='CACHE | not audited yet')
         self._pipeline_started_at = None
         self._step_started_at = None
         self._step_key = None
@@ -386,9 +394,10 @@ class App(tk.Tk):
         left = ttk.Frame(agent)
         left.pack(side='left', fill='x', expand=True)
         ttk.Label(left, text='Parking Research Agent', font=('Segoe UI', 15, 'bold')).pack(side='left')
-        ttk.Label(left, text=f'{APP_VERSION}  |  Algorithm: v16.2 SAFE_BASELINE').pack(side='left', padx=(12, 0))
+        ttk.Label(left, text=f'{APP_VERSION}  |  v16.2 SAFE + v16.4 Candidate + External Validation').pack(side='left', padx=(12, 0))
         right = ttk.Frame(agent)
         right.pack(side='right')
+        ttk.Button(right, text='Validation Center', command=self.open_validation_center).pack(side='left', padx=3)
         ttk.Button(right, text='Research History', command=self.open_research_history).pack(side='left', padx=3)
         ttk.Button(right, text='Check Update', command=lambda: self.check_for_updates(manual=True)).pack(side='left', padx=3)
         ttk.Button(right, text='Releases', command=lambda: webbrowser.open(GITHUB_RELEASES_URL)).pack(side='left', padx=3)
@@ -439,7 +448,7 @@ class App(tk.Tk):
         run = ttk.LabelFrame(self, text='4. After setup: unattended pipeline')
         run.pack(fill='x', **pad)
         self.all_in_one_btn = tk.Button(
-            run, text='ALL-IN-ONE  |  Cache -> FULL/AUX -> balanced robustness -> transition-time fusion -> ZIP',
+            run, text='ALL-IN-ONE  |  Cache -> SAFE -> v16.4 Candidate -> episode/repeat validation -> ZIP',
             command=self.start_all_in_one, font=('Segoe UI', 11, 'bold'),
             bg='#16784a', fg='white', activebackground='#12653e', activeforeground='white',
             relief='raised', padx=10, pady=10
@@ -460,6 +469,7 @@ class App(tk.Tk):
         ttk.Progressbar(bottom, variable=self.progress_var, maximum=100).pack(fill='x', side='top')
         ttk.Label(bottom, textvariable=self.status_var).pack(anchor='w', pady=(4,0))
         ttk.Label(bottom, textvariable=self.timing_var).pack(anchor='w', pady=(2,0))
+        ttk.Label(bottom, textvariable=self.cache_status_var, font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(2,0))
 
         info = ttk.LabelFrame(self, text='Controls')
         info.pack(fill='both', expand=True, **pad)
@@ -467,12 +477,12 @@ class App(tk.Tk):
             'ROI editor: click 4 corners in any order, drag to adjust, right click to remove, ENTER/S to confirm.\n'
             'Slot point editor: Left empty = add, Left existing + drag = move, Right = delete, T = toggle, U = undo current CCTV, S = save/next, Q = cancel\n'
             'Candidate review: Left click = accept candidate, Right click = reject candidate, S = save/next\n'
-            'Visual duplicate-slot linker: click matching slots directly on the 3 CCTV views, then Link selected.\n\n'
+            'Visual duplicate-slot linker: click matching slots directly on all configured CCTV views, then Link selected. Camera count is set in Validation Center.\n\n'
             'Each tilted CCTV is first perspective-corrected from a 4-point quadrilateral into a rectangular image. '
             'The manual slot point stays fixed as the slot identity. Optional learned anchors are constrained inside that manual geometry, and Voronoi gating prevents a detection from hopping to a neighboring slot. The program keeps full-CCTV YOLO as the primary detector. Expensive per-slot crop YOLO is called only when FULL is weak, suddenly missing, appearance is suspicious, or a sparse audit is due. AUX can recover a missed FULL detection but can never delete a FULL detection. Selective instance segmentation now compares RAW with a condition-specific ADAPTIVE input (low-res recovery / glare tone compression / stripe-safe cleanup); it never creates occupancy by itself. Detector/evidence and segmentation caches are separated. Long-stationary candidate slots remain advisory only, '
             'merges user-linked duplicate slots, tracks vehicles online, and uses a rolling 10-second history to distinguish parking maneuvers from stable occupancy. '
             'The first 10 seconds are warm-up; every later decision uses only current/past frames, never future frames.\n'
-            'After ROI/slot/link setup, the green ALL-IN-ONE button automatically reuses valid cache, then runs missing detector/slot work, selective AUX+SEG checks, causal temporal de-moire robustness tests, temporal DEV comparison, frozen TEST evaluation, every-GT-frame review capture, and ZIP packaging without further input.\n'
+            'After ROI/slot/link setup, the green ALL-IN-ONE button automatically reuses valid cache, runs the protected v16.2 SAFE baseline, automatically evaluates the v16.4 transition candidate, adds episode/cut and repeated-source stability metrics when configured, captures GT review figures, and builds the ZIP without further input.\n'
             'At the end, upload output/.../UPLOAD_TO_CHATGPT.zip to ChatGPT for analysis. The ZIP also contains automatically selected paper-ready screenshots.'
         )
         help_wrap = ttk.Frame(info)
@@ -484,6 +494,9 @@ class App(tk.Tk):
         help_text.configure(state='disabled')
         help_scroll.pack(side='right', fill='y')
         help_text.pack(side='left', fill='both', expand=True)
+
+    def open_validation_center(self):
+        launch_validation_center(self)
 
     def open_research_history(self):
         open_history_window(self)
@@ -730,8 +743,9 @@ class App(tk.Tk):
         if not self._validate_inputs(need_gt=False):
             return
         frame = self._load_first_frame()
-        names = ['cctv1', 'cctv2', 'cctv3']
+        self.settings = load_json(SETTINGS_PATH, self.settings) or self.settings
         existing = load_json(ROIS_PATH, {}) or {}
+        names = configured_camera_names(self.settings, existing)
         rois = dict(existing)
         messagebox.showinfo(
             '4-point perspective ROI',
@@ -760,7 +774,7 @@ class App(tk.Tk):
             messagebox.showerror('Error', 'Set 4-point CCTV ROI first.')
             return
         frame = self._load_first_frame()
-        for name in ['cctv1', 'cctv2', 'cctv3']:
+        for name in configured_camera_names(self.settings, rois):
             if name not in rois:
                 continue
             img = crop_roi(frame, rois[name])
@@ -872,10 +886,7 @@ class App(tk.Tk):
             return
 
         frame = self._load_first_frame()
-        cctvs = [c for c in ['cctv1', 'cctv2', 'cctv3'] if c in rois]
-        for c in sorted(rois):
-            if c not in cctvs:
-                cctvs.append(c)
+        cctvs = [c for c in configured_camera_names(self.settings, rois) if c in rois]
         images = {}
         for c in cctvs:
             try:
@@ -1188,14 +1199,15 @@ class App(tk.Tk):
             for _, r in df.head(12).iterrows():
                 lines.append(f"{r.get('cctv','')} {r.get('slot_a','')} <-> {r.get('slot_b','')} | IoU={float(r.get('region_iou',0)):.2f} | {r.get('severity','')}")
             messagebox.showwarning('Overlap warnings', f'CRITICAL={crit}, WARNING={warn}\n\n' + '\n'.join(lines) + ('\n...' if len(df)>12 else ''))
-        for cctv in ['cctv1','cctv2','cctv3']:
+        camera_names = configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {})
+        for cctv in camera_names:
             p = LEARN_DIR / f'{cctv}_slot_overlap_preview.jpg'
             if p.exists():
                 img = cv2.imread(str(p))
                 if img is not None:
                     cv2.namedWindow(f'Overlap preview - {cctv}', cv2.WINDOW_NORMAL)
                     cv2.imshow(f'Overlap preview - {cctv}', img)
-        if any((LEARN_DIR / f'{c}_slot_overlap_preview.jpg').exists() for c in ['cctv1','cctv2','cctv3']):
+        if any((LEARN_DIR / f'{c}_slot_overlap_preview.jpg').exists() for c in camera_names):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
@@ -1362,7 +1374,7 @@ class App(tk.Tk):
             f'Low-sample slots={len(few)}\nMax applied anchor shift={max_shift:.1f}px\n\n' + '\n'.join(lines)
         )
         opened = False
-        for cctv in ['cctv1','cctv2','cctv3']:
+        for cctv in configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {}):
             vp = LEARN_DIR / f'{cctv}_manual_voronoi_preview.jpg'
             if vp.exists():
                 img = cv2.imread(str(vp))
@@ -1479,7 +1491,7 @@ class App(tk.Tk):
         safe_copy(LEARN_DIR/'candidate_slots.json', run_dir/'candidate_slots.json')
         safe_copy(LEARN_DIR/'GT_REVIEW_REQUIRED.txt', run_dir/'GT_REVIEW_REQUIRED.txt')
         safe_copy(LEARN_DIR/'gt_review_candidate_times.csv', run_dir/'gt_review_candidate_times.csv')
-        for cctv_name in ['cctv1','cctv2','cctv3']:
+        for cctv_name in configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {}):
             safe_copy(LEARN_DIR/f'{cctv_name}_manual_voronoi_preview.jpg', run_dir/f'{cctv_name}_manual_voronoi_preview.jpg')
             safe_copy(LEARN_DIR/f'{cctv_name}_slot_overlap_preview.jpg', run_dir/f'{cctv_name}_slot_overlap_preview.jpg')
         for tune_name in ['warped_detector_sweep.csv','warped_detector_best.csv','warped_detector_selected.json','WARPED_DETECTOR_REPORT.txt']:
@@ -1495,17 +1507,23 @@ class App(tk.Tk):
             'slot_learning_diagnostics.csv','candidate_slots.csv','candidate_slots.json','GT_REVIEW_REQUIRED.txt','gt_review_candidate_times.csv','slot_gt_events.csv','slot_crop_geometry.csv','slot_detector_diagnostics.csv','detection_mode_comparison.csv','mode_selection_audit.json','CANDIDATE_REVIEW_REQUIRED.txt',
             'warped_detector_sweep.csv','warped_detector_best.csv','warped_detector_selected.json','WARPED_DETECTOR_REPORT.txt','camera_detector_metrics.csv','camera_detector_timeseries.csv',
             'ALL_IN_ONE_LOG.txt','CACHE_INFO.txt','temporal_variant_comparison.csv','baseline_count_timeseries.csv','baseline_global_slot_timeseries.csv','baseline_slot_timeseries.csv','transition_guard_count_timeseries.csv','transition_guard_global_slot_timeseries.csv','transition_guard_slot_timeseries.csv',
-            'cctv1_manual_voronoi_preview.jpg','cctv2_manual_voronoi_preview.jpg','cctv3_manual_voronoi_preview.jpg',
-            'cctv1_slot_overlap_preview.jpg','cctv2_slot_overlap_preview.jpg','cctv3_slot_overlap_preview.jpg',
             'slot_level_metrics.csv','slot_level_by_slot.csv','slot_level_comparison.csv','slot_level_test_errors.csv',
             'segmentation_evidence.csv','segmentation_summary.csv','segmentation_condition_thresholds.csv','segmentation_condition_counts.csv','SEGMENTATION_UNAVAILABLE.txt',
             'seg_assist_count_timeseries.csv','seg_assist_global_slot_timeseries.csv','seg_assist_slot_timeseries.csv','seg_assist_state_transitions.csv',
             'empty_ref_assist_global_slot_timeseries.csv','empty_ref_assist_slot_timeseries.csv','empty_ref_assist_state_transitions.csv','EMPTY_REF_EXPERIMENT.txt',
-            'transition_guard_state_transitions.csv','baseline_state_transitions.csv','STATE_SEARCH_REPAIR.log','EVIDENCE_CACHE_SANITY.txt','NON_REGRESSION_CHECK.txt'
+            'transition_guard_state_transitions.csv','baseline_state_transitions.csv','STATE_SEARCH_REPAIR.log','EVIDENCE_CACHE_SANITY.txt','NON_REGRESSION_CHECK.txt',
+            'candidate_v164_slot_timeseries.csv','candidate_v164_global_slot_timeseries.csv','candidate_v164_count_timeseries.csv',
+            'candidate_v164_metrics.csv','candidate_v164_transition_events.csv','candidate_v164_event_balanced_metrics.csv',
+            'candidate_v164_summary.json','candidate_v164_config.json','CANDIDATE_v16_4_REPORT.txt',
+            'episode_evaluation_mask.csv','episode_metrics.csv','repeat_stability.csv','REPEAT_STABILITY_REPORT.txt'
         ]:
             pp=run_dir/name
             if pp.exists():
                 upload_files.append((pp,name))
+        for cctv_name in configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {}):
+            for suffix in ['manual_voronoi_preview.jpg','slot_overlap_preview.jpg']:
+                pp=run_dir/f'{cctv_name}_{suffix}'
+                if pp.exists(): upload_files.append((pp,pp.name))
         for root_name in ['screenshots','ground_truth_review','candidate_review','duplicate_review','robustness']:
             tree_root = run_dir/root_name
             if tree_root.exists():
@@ -1548,8 +1566,8 @@ class App(tk.Tk):
             '3) Extract FULL CCTV at 1 FPS + AUX crop only on ambiguous slots\n'
             '4) Run lazy RAW + per-CCTV relative ADAPTIVE slot segmentation only on transition-relevant ambiguity\n'
             '5) Run bounded degradation robustness test (low-res / glare / causal temporal de-moire)\n'
-            '6) Compare SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST on DEV and frozen TEST\n'
-            '7) Capture GT review + paper/debug screenshots + build UPLOAD_TO_CHATGPT.zip\n\n'
+            '6) Compare SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST, then auto-run v16.4 Candidate\n'
+            '7) Add episode/cut + repeated-source stability metrics, capture review figures, and build ZIP\n\n'
             'No more clicks are required after starting. Candidate slots are discovered but NOT auto-accepted. '
             'You can minimize this window while it runs.\n\nContinue?'
         ):
@@ -1561,6 +1579,7 @@ class App(tk.Tk):
         self.timing_var.set('Total Elapsed 00:00:00 | Step Elapsed 00:00:00 | Step ETA --:--:-- | Total Remaining --:--:--')
         self.settings = load_json(SETTINGS_PATH, self.settings)
         self.settings.setdefault('robustness_experiment',{})['gt_file']=str(ROBUSTNESS_GT_PATH)
+        self.cache_status_var.set('CACHE | auditing current dataset/profile...')
         video = self.video_var.get().strip()
         gt_path = self.gt_var.get().strip()
         slot_gt_path = self.slot_gt_var.get().strip()
@@ -1575,7 +1594,7 @@ class App(tk.Tk):
                 f.write(f'[{ts}] {text}\n')
 
         def job():
-            log('Parking Slot Engine v16.2 ALL-IN-ONE started.')
+            log(f'Parking Research Agent {APP_VERSION} ALL-IN-ONE started. v16.2 SAFE + v16.4 candidate validation.')
             cache_cfg=self.settings.get('pipeline_cache',{}) or {}
             cache_enabled=bool(cache_cfg.get('enabled',True))
             slots_for_sig=load_slots(SLOTS_PATH)
@@ -1815,6 +1834,11 @@ class App(tk.Tk):
                     log(f'Stage 5/7 robustness experiment unavailable: {type(exc).__name__}: {exc}')
 
             (run_dir/'CACHE_INFO.txt').write_text('\n'.join(cache_lines)+'\n',encoding='utf-8')
+            short_cache=[]
+            for line in cache_lines:
+                if '=' in line and not line.startswith('shared_cache='):
+                    k,v=line.split('=',1); short_cache.append(f'{k}:{v.split(":",1)[0]}')
+            self.after(0,lambda txt='CACHE | '+' | '.join(short_cache): self.cache_status_var.set(txt))
 
             log('Stage 6/7: SAFE_BASELINE vs TRANSITION_GUARD vs SEG_ASSIST DEV comparison and frozen TEST evaluation started.')
             state_result=search_state_parameters(
@@ -1832,6 +1856,19 @@ class App(tk.Tk):
             # Refresh cache audit after the non-regression result was appended.
             (run_dir/'CACHE_INFO.txt').write_text('\n'.join(cache_lines)+'\n',encoding='utf-8')
             log('Stage 6/7 temporal evaluation complete.')
+            try:
+                cand_summary=run_v164_candidate(Path(run_dir),RefinerConfig())
+                log(f"Stage 6/7 v16.4 candidate complete: TEST exact={cand_summary.get('candidate_test_exact_rate')} MAE={cand_summary.get('candidate_test_mae')} decision={cand_summary.get('decision')}")
+            except Exception as exc:
+                (run_dir/'CANDIDATE_v16_4_UNAVAILABLE.txt').write_text(f'{type(exc).__name__}: {exc}\n',encoding='utf-8')
+                log(f'Stage 6/7 v16.4 candidate unavailable: {type(exc).__name__}: {exc}')
+            try:
+                ep_path=write_episode_metrics(run_dir,self.settings)
+                rep_path=write_repeat_stability(run_dir,self.settings)
+                log(f'Stage 6/7 validation extras: episode={ep_path} repeat={rep_path}')
+            except Exception as exc:
+                (run_dir/'VALIDATION_EXTRAS_UNAVAILABLE.txt').write_text(f'{type(exc).__name__}: {exc}\n',encoding='utf-8')
+                log(f'Stage 6/7 validation extras unavailable: {type(exc).__name__}: {exc}')
             log('Stage 7/7: GT review package + automatic paper/debug figures started.')
             generate_ground_truth_review(video,rois,gt_path,str(SLOTS_PATH),self.settings,run_dir,LEARN_DIR)
             generate_research_screenshots(video, rois, str(SLOTS_PATH), self.settings, run_dir, LEARN_DIR, evidence_dir)
@@ -1884,6 +1921,12 @@ class App(tk.Tk):
             self._progress(0.84,'Comparing SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST on DEV...')
             slot_gt_path=self.slot_gt_var.get().strip()
             search_state_parameters(evidence,gt,self.settings,str(run_dir),progress=self._mapped_progress(0.84,0.94,'Temporal comparison'),slot_gt_events_path=slot_gt_path if slot_gt_path and Path(slot_gt_path).exists() else None)
+            try:
+                run_v164_candidate(Path(run_dir),RefinerConfig())
+                write_episode_metrics(run_dir,self.settings)
+                write_repeat_stability(run_dir,self.settings)
+            except Exception:
+                pass
             write_camera_detector_metrics(evidence_dir/'frame_detection_summary.csv',gt,self.settings,run_dir)
             generate_ground_truth_review(video,rois,gt_path,str(SLOTS_PATH),self.settings,run_dir,LEARN_DIR)
             generate_research_screenshots(video, rois, str(SLOTS_PATH), self.settings, run_dir, LEARN_DIR, evidence_dir)
