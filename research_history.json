@@ -565,6 +565,37 @@
         "One TEST over-count event at 17:00 remains"
       ],
       "decision": "Release as CANDIDATE only; keep v16.2 as SAFE_BASELINE until independent validation."
+    },
+    {
+      "version": "v16.5.0",
+      "period": "2026-10",
+      "status": "VALIDATION_RELEASE",
+      "confidence": "implementation_validated_release_pending_runtime_dataset_results",
+      "title": "Multi-CCTV Validation Center + public external benchmark",
+      "goal": "Validate the protected SAFE and v16.4 candidate across new local layouts, repeated-source stability tests, episode-aware concatenated clips, and a public external parking benchmark without tuning on the external target.",
+      "changes": [
+        "Configurable 1-12 CCTV local profiles",
+        "Dataset Profile save/load",
+        "Dynamic count-GT template and interactive GT labeler",
+        "Cut-boundary / episode evaluation mask and per-episode metrics",
+        "Repeated-source reproducibility/stability metrics",
+        "Automatic v16.4 candidate evaluation inside ALL-IN-ONE",
+        "MetaPKLot/CNRPark-EXT Quick/Standard/Full downloader",
+        "Automatic COCO parking-space annotation conversion",
+        "External occupancy metrics by camera/weather",
+        "External validation ChatGPT ZIP packaging",
+        "Cache audit summary in the main UI"
+      ],
+      "results": [
+        "No new accuracy claim is assigned before v16.5 is run on new/public validation data.",
+        "Retained v16.2 SAFE and v16.4 Candidate results remain unchanged and separately labeled."
+      ],
+      "issues": [
+        "Repeated copies of one source clip remain a stability test, not independent evidence.",
+        "MetaPKLot/CNRPark-EXT is a still-image spatial benchmark and does not validate continuous maneuvering transitions.",
+        "v16.4 SAFE promotion still requires genuinely independent temporal evidence."
+      ],
+      "decision": "Release validation tooling while keeping v16.2 SAFE_BASELINE and v16.4 CANDIDATE statuses unchanged."
     }
   ]
 }
