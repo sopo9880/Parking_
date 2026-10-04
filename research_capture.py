@@ -352,7 +352,7 @@ def generate_ground_truth_review(video_path: str, rois: Dict, gt_path: str, slot
             occ=r.get('ground_truth_occupied_space_count','?');uniq=r.get('ground_truth_unique_vehicle_count','?')
             base=f'{sec:04d}_{ts.replace(":","m")}s'
             raw_name=f'{base}.jpg';cv2.imwrite(str(raw_dir/raw_name),frame,[int(cv2.IMWRITE_JPEG_QUALITY),quality])
-            camera_line=' | '.join(f'{c.upper()} {r.get(f"{c}_count","?")}' for c in sorted(rois.keys()))
+            camera_line=' | '.join(f'{c.upper()} {r.get(c + "_count","?")}' for c in sorted(rois.keys()))
             lines=[f'TIME {ts}',f'GT OCCUPIED {occ}',f'GT UNIQUE {uniq}',camera_line,
                    f'TAGS {r.get("tags","")} | OVERLAP {r.get("overlap_cctv","")}']
             ann=_draw_text_box(frame,lines,(22,22),1.02,44);ann_name=f'{base}_GT{occ}.jpg';cv2.imwrite(str(ann_dir/ann_name),ann,[int(cv2.IMWRITE_JPEG_QUALITY),quality])
