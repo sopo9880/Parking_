@@ -5,56 +5,76 @@ on:
     branches: [main]
     paths:
       - release_trigger.txt
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: parking-release
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout exact release source
         uses: actions/checkout@v4
-
-      - name: Validate source
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validation and PDF dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-nanum fonts-dejavu-core xvfb xauth python3-tk
+          python -m pip install numpy pandas pillow opencv-python matplotlib -r tools/requirements-paper.txt
+      - name: Validate application and synchronized Living Paper
+        # Integrate new evidence into paired research sections. Patches need no padding.
+        # Published snapshots are immutable; CANDIDATE cannot be auto-promoted.
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile \
-            app.py \
-            research_history.py \
-            update_manager.py \
-            update_helper.py \
-            transition_refiner_v164.py \
-            validation_center.py \
-            public_dataset.py \
-            research_capture.py \
-            detector_tuner.py
-          python -m json.tool research_history.json >/dev/null
+          python -m compileall -q -x '/(bundle|dist|work|output|user_data)/' .
+          python self_test.py
+          xvfb-run -a python -m unittest discover -s tests -v
+          python tools/build_paper.py --check
+          if [ "${{ github.event_name }}" = "push" ]; then
+            test -z "$(git diff --name-only --diff-filter=MD HEAD^ HEAD -- paper/snapshots/)"
+          fi
           VERSION="$(tr -d '\r\n' < VERSION.txt)"
-          test -n "$VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "NAME=ParkingResearchAgent-$VERSION.zip" >> "$GITHUB_ENV"
-
-      - name: Build release package
+      - name: Build bilingual Markdown-based PDFs and previews
+        run: python tools/build_paper_pdf.py --output-dir dist
+      - name: Keep rendered paper previews for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-preview-${{ env.VERSION }}
+          path: dist/paper-previews/
+      - name: Build release package and checksums
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p dist
-          zip -r "dist/$NAME" .             -x ".git/*" ".github/*" "bundle/*" "dist/*"                "__pycache__/*" "work/*" "output/*" "user_data/*"                ".venv/*" "LAST_ERROR.txt" "release_trigger.txt"
+          cp "paper/snapshots/paper_${VERSION}_ko.md" "dist/ParkingResearchAgent-${VERSION}-paper-ko.md"
+          cp "paper/snapshots/paper_${VERSION}_en.md" "dist/ParkingResearchAgent-${VERSION}-paper-en.md"
+          zip -r "dist/$NAME" . -x ".git/*" ".github/*" "bundle/*" "dist/*" "__pycache__/*" "*/__pycache__/*" "work/*" "output/*" "user_data/*" ".venv/*" "LAST_ERROR.txt" "release_trigger.txt"
           (
             cd dist
             sha256sum "$NAME" > "$NAME.sha256"
+            sha256sum *.zip *.pdf *.md > SHA256SUMS.txt
           )
-
-      - name: Create GitHub Release
+      - name: Publish validated GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           if gh release view "$VERSION" >/dev/null 2>&1; then
-            gh release upload "$VERSION" "dist/$NAME" "dist/$NAME.sha256" --clobber
+            TAG_SHA="$(git ls-remote origin "refs/tags/$VERSION" | cut -f1)"
+            test "$TAG_SHA" = "$GITHUB_SHA"
+            gh release upload "$VERSION" dist/*.zip dist/*.sha256 dist/*.pdf dist/*.md dist/SHA256SUMS.txt --clobber
           else
-            gh release create "$VERSION"               "dist/$NAME"               "dist/$NAME.sha256"               --target main               --title "Parking Research Agent $VERSION"               --notes-file RELEASE_NOTES.md
+            gh release create "$VERSION" dist/*.zip dist/*.sha256 dist/*.pdf dist/*.md dist/SHA256SUMS.txt --target "$GITHUB_SHA" --title "Parking Research Agent $VERSION | 한국어·English + Living Paper" --notes-file RELEASE_NOTES.md
           fi

@@ -1,0 +1,7 @@
+experiment,exact_percent,observation_ko,observation_en,source
+CROP,14.71,FULL보다 불안정,Less stable than FULL,research_history.json:v11
+HYBRID,23.53,채택하지 않음,Not adopted,research_history.json:v11
+ZONE_MEMORY,14.71,장기간 EMPTY 고착,Long EMPTY lock-ins,research_history.json:v14
+TRANSITION_GUARD,70.59,SAFE보다 낮아 거절,Rejected below SAFE,research_history.json:v16.2
+SEG_ASSIST,70.59,SAFE보다 낮아 거절,Rejected below SAFE,research_history.json:v16.2
+EMPTY_REF (EMPTY_REF_ASSIST),0,SAFE보다 낮아 거절,Rejected below SAFE,research_history.json:v16.2

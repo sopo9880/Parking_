@@ -13,6 +13,7 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 import tkinter as tk
+from localization import tr, set_language, get_language, refresh_tree
 from tkinter import filedialog, messagebox, ttk
 
 import cv2
@@ -351,13 +352,15 @@ def _nearest_slot(slots, cctv, x, y, max_dist=32):
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title(f'Parking Research Agent {APP_VERSION} | v16.2 SAFE + v16.4 CANDIDATE')
+        self.title(tr(f'Parking Research Agent {APP_VERSION} | v16.2 SAFE + v16.4 CANDIDATE'))
         sw=max(1024,int(self.winfo_screenwidth())); sh=max(720,int(self.winfo_screenheight()))
         init_w=max(980,min(1180,sw-80)); init_h=max(700,min(900,sh-100))
         self.geometry(f'{init_w}x{init_h}')
         self.minsize(900, 650)
 
         self.settings = load_json(SETTINGS_PATH, {})
+        set_language((self.settings.get('ui', {}) or {}).get('language', 'ko'))
+        self.language_var = tk.StringVar(value=get_language())
         ui_state = load_json(UI_STATE_PATH, {}) or {}
         last_video = str(ui_state.get('video_path', '') or '').strip()
         last_gt = str(ui_state.get('gt_path', '') or '').strip()
@@ -372,7 +375,7 @@ class App(tk.Tk):
         self.video_var = tk.StringVar(value=last_video)
         self.gt_var = tk.StringVar(value=last_gt)
         self.slot_gt_var = tk.StringVar(value=last_slot_gt)
-        self.status_var = tk.StringVar(value='Ready')
+        self.status_var = tk.StringVar(value=tr('Ready'))
         self.progress_var = tk.DoubleVar(value=0.0)
         self.timing_var = tk.StringVar(value='Total Elapsed -- | Step Elapsed -- | Step ETA -- | Total Remaining --')
         self.cache_status_var = tk.StringVar(value='CACHE | not audited yet')
@@ -381,6 +384,7 @@ class App(tk.Tk):
         self._step_key = None
 
         self._build_ui()
+        refresh_tree(self)
         self.protocol('WM_DELETE_WINDOW', self.destroy)
         cfg = load_update_config(self.settings)
         if cfg.get('enabled', True) and cfg.get('check_on_startup', True):
@@ -392,32 +396,33 @@ class App(tk.Tk):
         agent = ttk.Frame(self)
         agent.pack(fill='x', padx=10, pady=(10, 2))
         left = ttk.Frame(agent)
-        left.pack(side='left', fill='x', expand=True)
-        ttk.Label(left, text='Parking Research Agent', font=('Segoe UI', 15, 'bold')).pack(side='left')
-        ttk.Label(left, text=f'{APP_VERSION}  |  v16.2 SAFE + v16.4 Candidate + External Validation').pack(side='left', padx=(12, 0))
+        left.pack(side='top', fill='x', expand=True)
+        ttk.Label(left, text=tr('Parking Research Agent'), font=('Segoe UI', 15, 'bold')).pack(side='left')
+        ttk.Label(left, text=tr(f'{APP_VERSION}  |  v16.2 SAFE + v16.4 Candidate + External Validation')).pack(side='left', padx=(12, 0))
         right = ttk.Frame(agent)
-        right.pack(side='right')
-        ttk.Button(right, text='Validation Center', command=self.open_validation_center).pack(side='left', padx=3)
-        ttk.Button(right, text='Research History', command=self.open_research_history).pack(side='left', padx=3)
-        ttk.Button(right, text='Check Update', command=lambda: self.check_for_updates(manual=True)).pack(side='left', padx=3)
-        ttk.Button(right, text='Releases', command=lambda: webbrowser.open(GITHUB_RELEASES_URL)).pack(side='left', padx=3)
-        top = ttk.LabelFrame(self, text='1. Input')
+        right.pack(side='top', anchor='e', pady=(5, 0))
+        ttk.Button(right, text=tr('Settings'), command=self.open_settings).pack(side='left', padx=3)
+        ttk.Button(right, text=tr('Validation Center'), command=self.open_validation_center).pack(side='left', padx=3)
+        ttk.Button(right, text=tr('Research History'), command=self.open_research_history).pack(side='left', padx=3)
+        ttk.Button(right, text=tr('Check Update'), command=lambda: self.check_for_updates(manual=True)).pack(side='left', padx=3)
+        ttk.Button(right, text=tr('Releases'), command=lambda: webbrowser.open(GITHUB_RELEASES_URL)).pack(side='left', padx=3)
+        top = ttk.LabelFrame(self, text=tr('1. Input'))
         top.pack(fill='x', **pad)
         top.columnconfigure(1, weight=1)
 
-        ttk.Label(top, text='Video').grid(row=0, column=0, sticky='w', padx=8, pady=6)
+        ttk.Label(top, text=tr('Video')).grid(row=0, column=0, sticky='w', padx=8, pady=6)
         ttk.Entry(top, textvariable=self.video_var).grid(row=0, column=1, sticky='ew', padx=8, pady=6)
-        ttk.Button(top, text='Browse', command=self.pick_video).grid(row=0, column=2, padx=8, pady=6)
+        ttk.Button(top, text=tr('Browse'), command=self.pick_video).grid(row=0, column=2, padx=8, pady=6)
 
-        ttk.Label(top, text='Ground Truth CSV').grid(row=1, column=0, sticky='w', padx=8, pady=6)
+        ttk.Label(top, text=tr('Ground Truth CSV')).grid(row=1, column=0, sticky='w', padx=8, pady=6)
         ttk.Entry(top, textvariable=self.gt_var).grid(row=1, column=1, sticky='ew', padx=8, pady=6)
-        ttk.Button(top, text='Browse', command=self.pick_gt).grid(row=1, column=2, padx=8, pady=6)
+        ttk.Button(top, text=tr('Browse'), command=self.pick_gt).grid(row=1, column=2, padx=8, pady=6)
 
-        ttk.Label(top, text='Slot GT events (optional)').grid(row=2, column=0, sticky='w', padx=8, pady=6)
+        ttk.Label(top, text=tr('Slot GT events (optional)')).grid(row=2, column=0, sticky='w', padx=8, pady=6)
         ttk.Entry(top, textvariable=self.slot_gt_var).grid(row=2, column=1, sticky='ew', padx=8, pady=6)
-        ttk.Button(top, text='Browse', command=self.pick_slot_gt).grid(row=2, column=2, padx=8, pady=6)
+        ttk.Button(top, text=tr('Browse'), command=self.pick_slot_gt).grid(row=2, column=2, padx=8, pady=6)
 
-        setup = ttk.LabelFrame(self, text='2. Initial setup')
+        setup = ttk.LabelFrame(self, text=tr('2. Initial setup'))
         setup.pack(fill='x', **pad)
         buttons = [
             ('Set 4-point CCTV ROI', self.setup_rois),
@@ -429,26 +434,26 @@ class App(tk.Tk):
         ]
         for i, (txt, cmd) in enumerate(buttons):
             row, col = divmod(i, 3)
-            ttk.Button(setup, text=txt, command=cmd).grid(row=row, column=col, padx=8, pady=6, sticky='ew')
+            ttk.Button(setup, text=tr(txt), command=cmd).grid(row=row, column=col, padx=8, pady=6, sticky='ew')
         for col in range(3):
             setup.columnconfigure(col, weight=1)
 
-        learn = ttk.LabelFrame(self, text='3. DEV tuning + slot learning (TEST is untouched)')
+        learn = ttk.LabelFrame(self, text=tr('3. DEV tuning + slot learning (TEST is untouched)'))
         learn.pack(fill='x', **pad)
-        ttk.Button(learn, text='Tune YOLO on warped CCTV (DEV)', command=self.start_detector_tuning).grid(row=0, column=0, padx=8, pady=8, sticky='ew')
-        ttk.Button(learn, text='Learn manual-point slots', command=self.start_learning).grid(row=0, column=1, padx=8, pady=8, sticky='ew')
-        ttk.Button(learn, text='Review learning diagnostics', command=self.review_learning_diagnostics).grid(row=0, column=2, padx=8, pady=8, sticky='ew')
-        ttk.Button(learn, text='Review candidate slots', command=self.review_candidates).grid(row=1, column=0, padx=8, pady=8, sticky='ew')
-        ttk.Button(learn, text='Review slot overlap warnings', command=self.review_overlap_warnings).grid(row=1, column=1, padx=8, pady=8, sticky='ew')
-        ttk.Button(learn, text='Open detector tuning folder', command=self.open_detector_tuning_folder).grid(row=1, column=2, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Tune YOLO on warped CCTV (DEV)'), command=self.start_detector_tuning).grid(row=0, column=0, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Learn manual-point slots'), command=self.start_learning).grid(row=0, column=1, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Review learning diagnostics'), command=self.review_learning_diagnostics).grid(row=0, column=2, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Review candidate slots'), command=self.review_candidates).grid(row=1, column=0, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Review slot overlap warnings'), command=self.review_overlap_warnings).grid(row=1, column=1, padx=8, pady=8, sticky='ew')
+        ttk.Button(learn, text=tr('Open detector tuning folder'), command=self.open_detector_tuning_folder).grid(row=1, column=2, padx=8, pady=8, sticky='ew')
         learn.columnconfigure(0, weight=1)
         learn.columnconfigure(1, weight=1)
         learn.columnconfigure(2, weight=1)
 
-        run = ttk.LabelFrame(self, text='4. After setup: unattended pipeline')
+        run = ttk.LabelFrame(self, text=tr('4. After setup: unattended pipeline'))
         run.pack(fill='x', **pad)
         self.all_in_one_btn = tk.Button(
-            run, text='ALL-IN-ONE  |  Cache -> SAFE -> v16.4 Candidate -> episode/repeat validation -> ZIP',
+            run, text=tr('ALL-IN-ONE  |  Cache -> SAFE -> v16.4 Candidate -> episode/repeat validation -> ZIP'),
             command=self.start_all_in_one, font=('Segoe UI', 11, 'bold'),
             bg='#16784a', fg='white', activebackground='#12653e', activeforeground='white',
             relief='raised', padx=10, pady=10
@@ -456,11 +461,11 @@ class App(tk.Tk):
         self.all_in_one_btn.pack(fill='x', padx=8, pady=(10,6))
         ttk.Label(
             run,
-            text='Once started, no more clicks are required. You can minimize the window; the final UPLOAD_TO_CHATGPT.zip is created automatically.'
+            text=tr('Once started, no more clicks are required. You can minimize the window; the final UPLOAD_TO_CHATGPT.zip is created automatically.')
         ).pack(anchor='w', padx=8, pady=(0,6))
-        ttk.Button(run, text='Manual: RUN FINAL EXPERIMENT ONLY', command=self.start_experiment).pack(fill='x', padx=8, pady=(0,5))
-        ttk.Button(run, text='Label / repair robustness GT balance (existing labels are kept)', command=self.label_robustness_gt).pack(fill='x', padx=8, pady=(0,8))
-        ttk.Label(run, text='DEV selects detector/state parameters. TEST 15:00-20:30 is evaluated only after selection. First 10s are warm-up.').pack(anchor='w', padx=8, pady=(0,8))
+        ttk.Button(run, text=tr('Manual: RUN FINAL EXPERIMENT ONLY'), command=self.start_experiment).pack(fill='x', padx=8, pady=(0,5))
+        ttk.Button(run, text=tr('Label / repair robustness GT balance (existing labels are kept)'), command=self.label_robustness_gt).pack(fill='x', padx=8, pady=(0,8))
+        ttk.Label(run, text=tr('DEV selects detector/state parameters. TEST 15:00-20:30 is evaluated only after selection. First 10s are warm-up.')).pack(anchor='w', padx=8, pady=(0,8))
 
         # Keep progress/timing visible from the first launch even as help text grows.
         # The bottom status area is packed before the expandable Controls panel so it always reserves screen space.
@@ -471,7 +476,7 @@ class App(tk.Tk):
         ttk.Label(bottom, textvariable=self.timing_var).pack(anchor='w', pady=(2,0))
         ttk.Label(bottom, textvariable=self.cache_status_var, font=('Segoe UI', 9, 'bold')).pack(anchor='w', pady=(2,0))
 
-        info = ttk.LabelFrame(self, text='Controls')
+        info = ttk.LabelFrame(self, text=tr('Controls'))
         info.pack(fill='both', expand=True, **pad)
         text = (
             'ROI editor: click 4 corners in any order, drag to adjust, right click to remove, ENTER/S to confirm.\n'
@@ -490,7 +495,7 @@ class App(tk.Tk):
         help_text = tk.Text(help_wrap, height=9, wrap='word', relief='flat', borderwidth=0)
         help_scroll = ttk.Scrollbar(help_wrap, orient='vertical', command=help_text.yview)
         help_text.configure(yscrollcommand=help_scroll.set)
-        help_text.insert('1.0', text)
+        help_text.insert('1.0', tr(text))
         help_text.configure(state='disabled')
         help_scroll.pack(side='right', fill='y')
         help_text.pack(side='left', fill='both', expand=True)
@@ -505,7 +510,7 @@ class App(tk.Tk):
         cfg = load_update_config(self.settings)
         if not cfg.get('enabled', True):
             if manual:
-                messagebox.showinfo('Updates disabled', 'Auto Update is disabled in settings.json.')
+                messagebox.showinfo(tr('Updates disabled'), tr('Auto Update is disabled in settings.json.'))
             return
 
         def job():
@@ -513,13 +518,13 @@ class App(tk.Tk):
                 info = check_latest(self.settings)
             except Exception as exc:
                 if manual:
-                    self.after(0, lambda: messagebox.showerror('Update check failed', f'{type(exc).__name__}: {exc}'))
+                    self.after(0, lambda: messagebox.showerror(tr('Update check failed'), tr(f'{type(exc).__name__}: {exc}')))
                 return
 
             def finish():
                 if not info.get('available'):
                     if manual:
-                        messagebox.showinfo('Up to date', f"Current version: {info.get('current')}\nLatest release: {info.get('latest') or 'none'}")
+                        messagebox.showinfo(tr('Up to date'), tr(f"Current version: {info.get('current')}\nLatest release: {info.get('latest') or 'none'}"))
                     return
                 notes = str(info.get('body') or '').strip()
                 preview = notes[:1200] + ('...' if len(notes) > 1200 else '')
@@ -527,9 +532,9 @@ class App(tk.Tk):
                        f"Current: {info.get('current')}\n\n{preview}\n\n"
                        'Download, verify and install this update? The Agent will close and restart.')
                 ask = bool(cfg.get('ask_before_install', True))
-                if ask and not messagebox.askyesno('Parking Research Agent Update', msg):
+                if ask and not messagebox.askyesno(tr('Parking Research Agent Update'), tr(msg)):
                     return
-                self.status_var.set(f"Downloading update {info.get('latest')}...")
+                self.status_var.set(tr(f"Downloading update {info.get('latest')}..."))
                 self._download_and_apply_update(info)
             self.after(0, finish)
 
@@ -539,12 +544,12 @@ class App(tk.Tk):
         def job():
             try:
                 zpath = prepare_update(info)
-                self.after(0, lambda: self.status_var.set('Update verified. Restarting to install...'))
+                self.after(0, lambda: self.status_var.set(tr('Update verified. Restarting to install...')))
                 launch_apply(zpath, restart=True)
                 self.after(250, self.destroy)
             except Exception as exc:
-                self.after(0, lambda: messagebox.showerror('Update failed', f'{type(exc).__name__}: {exc}'))
-                self.after(0, lambda: self.status_var.set('Update failed; current version was not changed.'))
+                self.after(0, lambda: messagebox.showerror(tr('Update failed'), tr(f'{type(exc).__name__}: {exc}')))
+                self.after(0, lambda: self.status_var.set(tr('Update failed; current version was not changed.')))
         threading.Thread(target=job, daemon=True).start()
 
     def _save_ui_state(self):
@@ -575,14 +580,14 @@ class App(tk.Tk):
     def export_slot_gt_template(self):
         slots = load_slots(SLOTS_PATH)
         if not slots:
-            messagebox.showwarning('No slots', 'Set slot points and duplicate links first.')
+            messagebox.showwarning(tr('No slots'), tr('Set slot points and duplicate links first.'))
             return
         p = filedialog.asksaveasfilename(defaultextension='.csv', initialfile='slot_gt_events.csv', filetypes=[('CSV','*.csv')])
         if not p:
             return
         make_slot_gt_template(slots, p)
         self.slot_gt_var.set(p)
-        messagebox.showinfo('Saved', 'Slot GT event template saved. Keep the 0:00 rows and add a new row only when a GLOBAL SLOT changes state.')
+        messagebox.showinfo(tr('Saved'), tr('Slot GT event template saved. Keep the 0:00 rows and add a new row only when a GLOBAL SLOT changes state.'))
 
     def _validate_inputs(self, need_gt=True):
         # Path('') resolves to the current directory and .exists() returns True.
@@ -590,20 +595,20 @@ class App(tk.Tk):
         # Require an explicit non-empty regular file before any background job starts.
         video_text = self.video_var.get().strip()
         if not video_text:
-            messagebox.showerror('Video required', 'Video is empty. Click Browse and select the test video first.')
+            messagebox.showerror(tr('Video required'), tr('Video is empty. Click Browse and select the test video first.'))
             return False
         video = Path(video_text)
         if not video.is_file():
-            messagebox.showerror('Invalid video', f'Video file was not found:\n{video_text}')
+            messagebox.showerror(tr('Invalid video'), tr(f'Video file was not found:\n{video_text}'))
             return False
         if need_gt:
             gt_text = self.gt_var.get().strip()
             if not gt_text:
-                messagebox.showerror('Ground Truth required', 'Ground Truth CSV is empty. Select the GT CSV first.')
+                messagebox.showerror(tr('Ground Truth required'), tr('Ground Truth CSV is empty. Select the GT CSV first.'))
                 return False
             gt = Path(gt_text)
             if not gt.is_file():
-                messagebox.showerror('Invalid Ground Truth', f'Ground Truth CSV was not found:\n{gt_text}')
+                messagebox.showerror(tr('Invalid Ground Truth'), tr(f'Ground Truth CSV was not found:\n{gt_text}'))
                 return False
         self._save_ui_state()
         return True
@@ -748,30 +753,30 @@ class App(tk.Tk):
         names = configured_camera_names(self.settings, existing)
         rois = dict(existing)
         messagebox.showinfo(
-            '4-point perspective ROI',
-            'For each CCTV, click the FOUR visible corners of that CCTV screen.\n\n'
+            tr('4-point perspective ROI'),
+            tr('For each CCTV, click the FOUR visible corners of that CCTV screen.\n\n'
             'The screen may be tilted or trapezoidal. Clicks can be in any order.\n'
             'Drag a point to fine-tune it, then press ENTER or S.\n'
-            'The program will perspective-correct it into a rectangular CCTV image.'
+            'The program will perspective-correct it into a rectangular CCTV image.')
         )
         for name in names:
             cfg = self._select_quad(frame, name)
             if cfg is None:
                 cv2.destroyAllWindows()
-                messagebox.showwarning('Canceled', f'{name} selection canceled. Previous ROI settings were not overwritten.')
+                messagebox.showwarning(tr('Canceled'), tr(f'{name} selection canceled. Previous ROI settings were not overwritten.'))
                 return
             rois[name] = cfg
         cv2.destroyAllWindows()
         save_json(ROIS_PATH, rois)
         self._save_roi_previews(frame, rois)
-        messagebox.showinfo('Saved', f'4-point perspective ROIs saved to {ROIS_PATH.name}.\nUse Preview warped CCTV to verify them.')
+        messagebox.showinfo(tr('Saved'), tr(f'4-point perspective ROIs saved to {ROIS_PATH.name}.\nUse Preview warped CCTV to verify them.'))
 
     def preview_rois(self):
         if not self._validate_inputs(need_gt=False):
             return
         rois = load_json(ROIS_PATH, {})
         if not rois:
-            messagebox.showerror('Error', 'Set 4-point CCTV ROI first.')
+            messagebox.showerror(tr('Error'), tr('Set 4-point CCTV ROI first.'))
             return
         frame = self._load_first_frame()
         for name in configured_camera_names(self.settings, rois):
@@ -785,7 +790,7 @@ class App(tk.Tk):
                 shown = cv2.resize(img, (max_w, nh), interpolation=cv2.INTER_AREA)
             cv2.namedWindow(f'Warped {name}', cv2.WINDOW_NORMAL)
             cv2.imshow(f'Warped {name}', shown)
-        messagebox.showinfo('Preview', 'Warped CCTV windows are open. Check that no important parking area is cut off.\nPress any key inside an OpenCV window to close previews.')
+        messagebox.showinfo(tr('Preview'), tr('Warped CCTV windows are open. Check that no important parking area is cut off.\nPress any key inside an OpenCV window to close previews.'))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
@@ -799,7 +804,7 @@ class App(tk.Tk):
             return
         rois=load_json(ROIS_PATH,{})
         if not rois:
-            messagebox.showerror('Error','Set CCTV ROI first.')
+            messagebox.showerror(tr('Error'),tr('Set CCTV ROI first.'))
             return
         frame=self._load_first_frame();slots=load_slots(SLOTS_PATH)
 
@@ -814,10 +819,10 @@ class App(tk.Tk):
             slot['manual_point_edited']=True
 
         for cctv,roi in rois.items():
-            image=crop_roi(frame,roi);self.status_var.set(f'Loading YOLO for {cctv}...');self.update_idletasks()
+            image=crop_roi(frame,roi);self.status_var.set(tr(f'Loading YOLO for {cctv}...'));self.update_idletasks()
             try:dets=self._first_frame_detections(cctv,image)
             except Exception as e:
-                messagebox.showerror('YOLO error',str(e));return
+                messagebox.showerror(tr('YOLO error'),tr(str(e)));return
             last_mouse=[0,0];canceled=[False];drag_slot=[None]
             snapshot=[dict(x) for x in slots if x['cctv']==cctv]
             window=f'Slot editor - {cctv}'
@@ -869,8 +874,8 @@ class App(tk.Tk):
                     slots[:]=[x for x in slots if x['cctv']!=cctv]+[dict(x) for x in snapshot]
             cv2.destroyWindow(window)
             if canceled[0]:cv2.destroyAllWindows();return
-        save_slots(SLOTS_PATH,slots);self.status_var.set(f'Saved {len(slots)} local slots.')
-        messagebox.showinfo('Saved',f'{len(slots)} local slots saved.\nManual points are never moved by learning. If you dragged a point, run Learn/ALL-IN-ONE again.')
+        save_slots(SLOTS_PATH,slots);self.status_var.set(tr(f'Saved {len(slots)} local slots.'))
+        messagebox.showinfo(tr('Saved'),tr(f'{len(slots)} local slots saved.\nManual points are never moved by learning. If you dragged a point, run Learn/ALL-IN-ONE again.'))
 
     def open_linker(self):
         """Visual multi-CCTV linker for duplicate physical parking spaces."""
@@ -878,11 +883,11 @@ class App(tk.Tk):
             return
         slots = load_slots(SLOTS_PATH)
         if not slots:
-            messagebox.showwarning('No slots', 'Set slot points first.')
+            messagebox.showwarning(tr('No slots'), tr('Set slot points first.'))
             return
         rois = load_json(ROIS_PATH, {}) or {}
         if not rois:
-            messagebox.showwarning('No ROI', 'Set 4-point CCTV ROI first.')
+            messagebox.showwarning(tr('No ROI'), tr('Set 4-point CCTV ROI first.'))
             return
 
         frame = self._load_first_frame()
@@ -892,7 +897,7 @@ class App(tk.Tk):
             try:
                 images[c] = crop_roi(frame, rois[c])
             except Exception as e:
-                messagebox.showerror('ROI error', f'{c}: {e}')
+                messagebox.showerror(tr('ROI error'), tr(f'{c}: {e}'))
                 return
 
         overlap_warning_rows = []
@@ -905,7 +910,7 @@ class App(tk.Tk):
                 overlap_warning_rows = []
 
         win = tk.Toplevel(self)
-        win.title('Visual duplicate-slot linker')
+        win.title(tr('Visual duplicate-slot linker'))
         try:
             sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
             win.geometry(f'{max(1100, min(sw-80, 1700))}x{max(720, min(sh-100, 980))}')
@@ -940,10 +945,10 @@ class App(tk.Tk):
         header.pack(fill='x', padx=10, pady=(8,4))
         ttk.Label(
             header,
-            text='같은 실제 주차면을 클릭해 연결하세요. 같은 색=같은 GLOBAL SLOT, 노란 테두리=선택, 주황/빨강 점선=학습 후 슬롯 겹침 경고.',
+            text=tr('Click matching physical parking spaces to link them. Same color=same GLOBAL SLOT, yellow border=selected, orange/red dashed line=learned overlap warning.'),
             font=('', 10, 'bold')
         ).pack(side='left', anchor='w')
-        status = tk.StringVar(value='슬롯을 클릭해서 선택하세요.')
+        status = tk.StringVar(value=tr('Click slots to select them.'))
         ttk.Label(header, textvariable=status).pack(side='right', anchor='e')
 
         views_outer = ttk.Frame(win)
@@ -1019,7 +1024,7 @@ class App(tk.Tk):
                 r = 9 if sel else 7
                 canvas.create_oval(x-r,y-r,x+r,y+r,fill=color,outline='#FFD400' if sel else '#FFFFFF',width=4 if sel else 2)
                 label = f"{slot_short_name(s['local_id'])} / {gid}"
-                tid = canvas.create_text(x+11,y-11,text=label,anchor='sw',fill='white',font=('Consolas',9,'bold'))
+                tid = canvas.create_text(x+11,y-11,text=tr(label),anchor='sw',fill='white',font=('Consolas',9,'bold'))
                 bbox = canvas.bbox(tid)
                 if bbox:
                     bg = canvas.create_rectangle(bbox[0]-2,bbox[1]-1,bbox[2]+2,bbox[3]+1,fill='#111111',outline='')
@@ -1038,14 +1043,14 @@ class App(tk.Tk):
                 sev = str(wr.get('severity','WARNING')).upper()
                 wc = '#FF3030' if sev == 'CRITICAL' else '#FF9F1A'
                 canvas.create_line(ax, ay, bx, by, fill=wc, width=3, dash=(5,3))
-                canvas.create_text((ax+bx)/2, (ay+by)/2, text='! '+sev, fill=wc, font=('Consolas',8,'bold'))
-            canvas.create_text(10,10,text=cctv.upper(),anchor='nw',fill='white',font=('',12,'bold'))
+                canvas.create_text((ax+bx)/2, (ay+by)/2, text=tr('! '+sev), fill=wc, font=('Consolas',8,'bold'))
+            canvas.create_text(10,10,text=tr(cctv.upper()),anchor='nw',fill='white',font=('',12,'bold'))
 
         def redraw_all():
             for c in cctvs:
                 redraw_view(c)
             refresh_table()
-            status.set('선택: ' + ', '.join(sorted(selected)) if selected else '슬롯을 클릭해서 선택하세요.')
+            status.set(tr('Selected: ' + ', '.join(sorted(selected)) if selected else 'Click slots to select them.'))
 
         def on_canvas_click(cctv, event):
             s = nearest_slot_on_canvas(cctv, event.x, event.y)
@@ -1080,7 +1085,7 @@ class App(tk.Tk):
         def link_selected():
             chosen = [s for s in slots if s['local_id'] in selected]
             if len(chosen) < 2:
-                messagebox.showwarning('선택 필요', '서로 같은 실제 주차면인 슬롯을 2개 이상 선택하세요.', parent=win)
+                messagebox.showwarning(tr('Selection required'), tr('Select at least two slots representing the same physical parking space.'), parent=win)
                 return
             groups = members_by_gid()
             gids = {str(s.get('global_id') or s['local_id']) for s in chosen}
@@ -1098,12 +1103,12 @@ class App(tk.Tk):
             save_slots(SLOTS_PATH, slots)
             selected.clear()
             redraw_all()
-            status.set(f'{gid}: {len(all_members)}개 로컬 슬롯을 같은 실제 주차면으로 연결했습니다.')
+            status.set(tr(f'{gid}: {len(all_members)}개 로컬 슬롯을 같은 실제 주차면으로 연결했습니다.'))
 
         def unlink_selected():
             chosen = [s for s in slots if s['local_id'] in selected]
             if not chosen:
-                messagebox.showwarning('선택 필요', '연결을 해제할 슬롯을 선택하세요.', parent=win)
+                messagebox.showwarning(tr('Selection required'), tr('Select slots to unlink.'), parent=win)
                 return
             for s in chosen:
                 s['global_id'] = next_global_id(slots)
@@ -1111,23 +1116,23 @@ class App(tk.Tk):
             n = len(chosen)
             selected.clear()
             redraw_all()
-            status.set(f'{n}개 슬롯을 각각 독립 GLOBAL SLOT으로 분리했습니다.')
+            status.set(tr(f'{n} slots을 각각 독립 GLOBAL SLOT으로 분리했습니다.'))
 
         def delete_selected():
             chosen = [s for s in slots if s['local_id'] in selected]
             if not chosen:
-                messagebox.showwarning('선택 필요', '삭제할 슬롯을 선택하세요.', parent=win)
+                messagebox.showwarning(tr('Selection required'), tr('Select slots to delete.'), parent=win)
                 return
             names = ', '.join(s['local_id'] for s in chosen)
             question = f"선택한 {len(chosen)}개 로컬 슬롯을 삭제할까요?\n\n{names}"
-            if not messagebox.askyesno('슬롯 삭제', question, parent=win):
+            if not messagebox.askyesno(tr('Delete slots'), tr(question), parent=win):
                 return
             lids = {s['local_id'] for s in chosen}
             slots[:] = [s for s in slots if s['local_id'] not in lids]
             save_slots(SLOTS_PATH, slots)
             selected.clear()
             redraw_all()
-            status.set(f'{len(lids)}개 슬롯을 삭제했습니다.')
+            status.set(tr(f'{len(lids)} slots deleted.'))
 
         def select_unlinked():
             groups = members_by_gid()
@@ -1138,7 +1143,7 @@ class App(tk.Tk):
             redraw_all()
 
         for ci, cctv in enumerate(cctvs):
-            panel = ttk.LabelFrame(views_outer, text=cctv.upper())
+            panel = ttk.LabelFrame(views_outer, text=tr(cctv.upper()))
             panel.grid(row=0,column=ci,sticky='nsew',padx=4,pady=2)
             panel.rowconfigure(0,weight=1)
             panel.columnconfigure(0,weight=1)
@@ -1152,23 +1157,23 @@ class App(tk.Tk):
         lower.pack(fill='x',padx=10,pady=(4,8))
         actions = ttk.Frame(lower)
         actions.pack(fill='x',pady=(0,5))
-        ttk.Button(actions,text='선택 슬롯 연결',command=link_selected).pack(side='left',padx=3)
-        ttk.Button(actions,text='선택 슬롯 연결 해제',command=unlink_selected).pack(side='left',padx=3)
-        ttk.Button(actions,text='선택 슬롯 삭제',command=delete_selected).pack(side='left',padx=3)
-        ttk.Button(actions,text='선택 해제',command=clear_selection).pack(side='left',padx=3)
-        ttk.Button(actions,text='미연결 슬롯 모두 선택',command=select_unlinked).pack(side='left',padx=3)
-        ttk.Button(actions,text='저장 후 닫기',command=lambda:(save_slots(SLOTS_PATH,slots),win.destroy())).pack(side='right',padx=3)
+        ttk.Button(actions,text=tr('Link selected slots'),command=link_selected).pack(side='left',padx=3)
+        ttk.Button(actions,text=tr('Unlink selected slots'),command=unlink_selected).pack(side='left',padx=3)
+        ttk.Button(actions,text=tr('Delete selected slots'),command=delete_selected).pack(side='left',padx=3)
+        ttk.Button(actions,text=tr('Clear selection'),command=clear_selection).pack(side='left',padx=3)
+        ttk.Button(actions,text=tr('Select all unlinked slots'),command=select_unlinked).pack(side='left',padx=3)
+        ttk.Button(actions,text=tr('Save and close'),command=lambda:(save_slots(SLOTS_PATH,slots),win.destroy())).pack(side='right',padx=3)
 
         columns = ['global'] + cctvs + ['count']
         tree_frame = ttk.Frame(lower)
         tree_frame.pack(fill='x')
         tree = ttk.Treeview(tree_frame,columns=columns,show='headings',height=7,selectmode='extended')
-        tree.heading('global',text='GLOBAL SLOT')
+        tree.heading('global',text=tr('GLOBAL SLOT'))
         tree.column('global',width=100,anchor='center',stretch=False)
         for c in cctvs:
-            tree.heading(c,text=c.upper())
+            tree.heading(c,text=tr(c.upper()))
             tree.column(c,width=180,anchor='center')
-        tree.heading('count',text='Views')
+        tree.heading('count',text=tr('Views'))
         tree.column('count',width=65,anchor='center',stretch=False)
         tree.tag_configure('linked',background='#E8F6F3')
         tree.tag_configure('single',foreground='#707070')
@@ -1182,23 +1187,23 @@ class App(tk.Tk):
     def review_overlap_warnings(self):
         csv_path = LEARN_DIR / 'slot_overlap_warnings.csv'
         if not csv_path.exists():
-            messagebox.showinfo('Overlap warnings', 'Run slot learning first.')
+            messagebox.showinfo(tr('Overlap warnings'), tr('Run slot learning first.'))
             return
         try:
             import pandas as pd
             df = pd.read_csv(csv_path, encoding='utf-8-sig')
         except Exception as e:
-            messagebox.showerror('Error', str(e))
+            messagebox.showerror(tr('Error'), tr(str(e)))
             return
         if df.empty:
-            messagebox.showinfo('Overlap warnings', 'No slot-overlap warnings were found.')
+            messagebox.showinfo(tr('Overlap warnings'), tr('No slot-overlap warnings were found.'))
         else:
             crit = int((df['severity'].astype(str) == 'CRITICAL').sum()) if 'severity' in df else 0
             warn = len(df) - crit
             lines = []
             for _, r in df.head(12).iterrows():
                 lines.append(f"{r.get('cctv','')} {r.get('slot_a','')} <-> {r.get('slot_b','')} | IoU={float(r.get('region_iou',0)):.2f} | {r.get('severity','')}")
-            messagebox.showwarning('Overlap warnings', f'CRITICAL={crit}, WARNING={warn}\n\n' + '\n'.join(lines) + ('\n...' if len(df)>12 else ''))
+            messagebox.showwarning(tr('Overlap warnings'), tr(f'CRITICAL={crit}, WARNING={warn}\n\n' + '\n'.join(lines) + ('\n...' if len(df)>12 else '')))
         camera_names = configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {})
         for cctv in camera_names:
             p = LEARN_DIR / f'{cctv}_slot_overlap_preview.jpg'
@@ -1211,11 +1216,33 @@ class App(tk.Tk):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
+    def _change_language(self, event=None):
+        language = self.language_var.get()
+        # Read the latest settings so a Validation Center save is not lost.
+        settings = load_json(SETTINGS_PATH, self.settings) or self.settings
+        settings.setdefault('ui', {})['language'] = language
+        save_json(SETTINGS_PATH, settings)
+        self.settings = settings
+        set_language(language)
+        refresh_tree(self)
+
     def open_settings(self):
+        win = tk.Toplevel(self)
+        win.title(tr('Settings'))
+        win.geometry('420x150')
+        ttk.Label(win, text=tr('Language / 언어')).pack(padx=16, pady=(16, 8))
+        selector = ttk.Combobox(win, textvariable=self.language_var,
+                                values=('ko', 'en'), state='readonly', width=15)
+        selector.pack()
+        selector.bind('<<ComboboxSelected>>', self._change_language)
+        ttk.Button(win, text=tr('Open advanced settings.json'),
+                   command=self.open_advanced_settings).pack(pady=12)
+
+    def open_advanced_settings(self):
         try:
             os.startfile(str(SETTINGS_PATH))
         except Exception:
-            messagebox.showinfo('Settings', str(SETTINGS_PATH))
+            messagebox.showinfo(tr('Settings'), str(SETTINGS_PATH))
 
     def label_robustness_gt(self):
         runs=sorted(OUTPUT_ROOT.glob('run_*_ALL_IN_ONE'), key=lambda x:x.stat().st_mtime if x.exists() else 0, reverse=True)
@@ -1225,18 +1252,18 @@ class App(tk.Tk):
             if (cand/'robustness_gt_template.csv').is_file():
                 review=cand;break
         if review is None:
-            messagebox.showinfo('Robustness GT', 'Run ALL-IN-ONE once first. The robustness sample crops/template are created after Stage 5.')
+            messagebox.showinfo(tr('Robustness GT'), tr('Run ALL-IN-ONE once first. The robustness sample crops/template are created after Stage 5.'))
             return
         try:
             result=label_robustness_ground_truth(review,ROBUSTNESS_GT_PATH)
-            messagebox.showinfo('Robustness GT saved', (
-                f"Saved to:\n{result['path']}\n\n"
+            messagebox.showinfo(tr('Robustness GT saved'), (
+                tr(f"Saved to:\n{result['path']}\n\n"
                 f"Labeled {result['labeled']}/{result['total']} | occupied={result['occupied']} | empty={result['empty']} | unknown={result.get('unknown',0)}\n"
                 + ('Balance looks usable.\n\n' if result.get('balance_ok', True) else 'Warning: labels are still strongly class-imbalanced; v16.2 metrics will flag this.\n\n')
-                + 'Run ALL-IN-ONE again. Only the robustness stage is invalidated; detector/evidence caches remain reusable.'
+                + 'Run ALL-IN-ONE again. Only the robustness stage is invalidated; detector/evidence caches remain reusable.')
             ))
         except Exception as e:
-            messagebox.showerror('Robustness GT error', f'{type(e).__name__}: {e}')
+            messagebox.showerror(tr('Robustness GT error'), tr(f'{type(e).__name__}: {e}'))
 
     @staticmethod
     def _fmt_duration(sec):
@@ -1263,12 +1290,12 @@ class App(tk.Tk):
         elif overall>=0.999:
             total_remaining=0.0
         def update():
-            self.progress_var.set(overall*100); self.status_var.set(text)
+            self.progress_var.set(overall*100); self.status_var.set(tr(text))
             self.timing_var.set(
-                f'Total Elapsed {self._fmt_duration(total_elapsed)} | '
+                tr(f'Total Elapsed {self._fmt_duration(total_elapsed)} | '
                 f'Step Elapsed {self._fmt_duration(step_elapsed)} | '
                 f'Step ETA {self._fmt_duration(step_eta)} | '
-                f'Total Remaining {self._fmt_duration(total_remaining)}'
+                f'Total Remaining {self._fmt_duration(total_remaining)}')
             )
         self.after(0, update)
 
@@ -1277,7 +1304,7 @@ class App(tk.Tk):
             try:
                 fn()
                 if done_message:
-                    self.after(0, lambda msg=done_message: messagebox.showinfo('Done', msg))
+                    self.after(0, lambda msg=done_message: messagebox.showinfo(tr('Done'), tr(msg)))
             except Exception as e:
                 # Exception variables are cleared when the except block exits in Python 3.
                 # Capture strings now instead of closing over `e` in a later Tk callback.
@@ -1288,8 +1315,8 @@ class App(tk.Tk):
                 except Exception:
                     pass
                 self.after(0, lambda msg=err_msg: messagebox.showerror(
-                    'Error',
-                    f'{msg}\n\nFull traceback saved to:\n{LAST_ERROR_PATH}'
+                    tr('Error'),
+                    tr(f'{msg}\n\nFull traceback saved to:\n{LAST_ERROR_PATH}')
                 ))
             finally:
                 self.after(0, lambda: self.progress_var.set(0))
@@ -1300,7 +1327,7 @@ class App(tk.Tk):
             return
         rois = load_json(ROIS_PATH, {})
         if not rois:
-            messagebox.showerror('Error', 'Set 4-point CCTV ROI first.')
+            messagebox.showerror(tr('Error'), tr('Set 4-point CCTV ROI first.'))
             return
         self.settings = load_json(SETTINGS_PATH, self.settings)
         video = self.video_var.get().strip()
@@ -1316,7 +1343,7 @@ class App(tk.Tk):
             f'Models: {models}\nimgsz: {imgsz}\nconf: {conf}\ntiling: {tiling}\n\n'
             'It can take a long time. TEST 15:00-20:30 is not used. Continue?'
         )
-        if not messagebox.askyesno('Warped detector DEV tuning', msg):
+        if not messagebox.askyesno(tr('Warped detector DEV tuning'), tr(msg)):
             return
 
         def job():
@@ -1334,28 +1361,28 @@ class App(tk.Tk):
                         f"tile={bool(r['tiling'])} | DEV exact {float(r['DEV_exact_rate'])*100:.1f}% MAE {float(r['DEV_MAE']):.3f}"
                     )
             text = 'Warped detector tuning complete.\n\n' + '\n'.join(lines)
-            self.after(0, lambda: messagebox.showinfo('Detector tuning complete', text))
+            self.after(0, lambda: messagebox.showinfo(tr('Detector tuning complete'), tr(text)))
         self._run_thread(job, 'Warped detector DEV tuning finished and best settings were applied.')
 
     def open_detector_tuning_folder(self):
         try:
             os.startfile(str(DETECTOR_TUNE_DIR))
         except Exception:
-            messagebox.showinfo('Detector tuning folder', str(DETECTOR_TUNE_DIR))
+            messagebox.showinfo(tr('Detector tuning folder'), tr(str(DETECTOR_TUNE_DIR)))
 
     def review_learning_diagnostics(self):
         p = LEARN_DIR / 'slot_learning_diagnostics.csv'
         if not p.exists():
-            messagebox.showinfo('Learning diagnostics', 'Run slot learning first.')
+            messagebox.showinfo(tr('Learning diagnostics'), tr('Run slot learning first.'))
             return
         try:
             import pandas as pd
             df = pd.read_csv(p, encoding='utf-8-sig')
         except Exception as e:
-            messagebox.showerror('Error', str(e))
+            messagebox.showerror(tr('Error'), tr(str(e)))
             return
         if df.empty:
-            messagebox.showinfo('Learning diagnostics', 'No slot diagnostics were generated.')
+            messagebox.showinfo(tr('Learning diagnostics'), tr('No slot diagnostics were generated.'))
             return
         trusted = int(df['anchor_trusted'].fillna(0).astype(int).sum()) if 'anchor_trusted' in df else 0
         fallback = int(len(df)-trusted)
@@ -1369,9 +1396,9 @@ class App(tk.Tk):
                 f"shift={float(r.get('anchor_shift_px',0)):.1f}px | {r.get('anchor_reason','')}"
             )
         messagebox.showinfo(
-            'Learning diagnostics',
-            f'Total slots={len(df)}\nTrusted learned anchors={trusted}\nManual fallback={fallback}\n'
-            f'Low-sample slots={len(few)}\nMax applied anchor shift={max_shift:.1f}px\n\n' + '\n'.join(lines)
+            tr('Learning diagnostics'),
+            tr(f'Total slots={len(df)}\nTrusted learned anchors={trusted}\nManual fallback={fallback}\n'
+            f'Low-sample slots={len(few)}\nMax applied anchor shift={max_shift:.1f}px\n\n' + '\n'.join(lines))
         )
         opened = False
         for cctv in configured_camera_names(self.settings, load_json(ROIS_PATH,{}) or {}):
@@ -1391,10 +1418,10 @@ class App(tk.Tk):
             return
         rois = load_json(ROIS_PATH, {})
         if not rois:
-            messagebox.showerror('Error','Set ROI first.')
+            messagebox.showerror(tr('Error'),tr('Set ROI first.'))
             return
         if not load_slots(SLOTS_PATH):
-            messagebox.showerror('Error','Set slot points first.')
+            messagebox.showerror(tr('Error'),tr('Set slot points first.'))
             return
         self.settings = load_json(SETTINGS_PATH, self.settings)
         def job():
@@ -1409,7 +1436,7 @@ class App(tk.Tk):
     def review_candidates(self):
         path=LEARN_DIR/'candidate_slots.json';data=load_json(path,{})
         if not data:
-            messagebox.showinfo('Candidates','No candidate data. Run slot learning first.');return
+            messagebox.showinfo(tr('Candidates'),tr('No candidate data. Run slot learning first.'));return
         if not self._validate_inputs(need_gt=False):return
         rois=load_json(ROIS_PATH,{});frame=self._load_first_frame();slots=load_slots(SLOTS_PATH)
         for cctv,cands in data.items():
@@ -1454,7 +1481,7 @@ class App(tk.Tk):
                 if c.get('status')!='ACCEPTED' or str(c.get('candidate_kind','NEW')).upper()!='NEW' or c['candidate_id'] in existing_candidate_ids:continue
                 slots.append({'local_id':next_local_id(slots,cctv),'cctv':cctv,'point':c['point'],'initial_state':'OCCUPIED','global_id':next_global_id(slots),'source':'AUTO_CANDIDATE_USER_ACCEPTED','candidate_id':c['candidate_id'],'region':c.get('region')})
         save_json(path,data);save_slots(SLOTS_PATH,slots)
-        messagebox.showinfo('Saved','Candidate decisions saved. Confirmed duplicate candidates do NOT create another global parking space. Ground truth is never auto-edited from model detections.')
+        messagebox.showinfo(tr('Saved'),tr('Candidate decisions saved. Confirmed duplicate candidates do NOT create another global parking space. Ground truth is never auto-edited from model detections.'))
 
     def _mapped_progress(self, start_ratio, end_ratio, stage_name):
         span = float(end_ratio) - float(start_ratio)
@@ -1556,11 +1583,11 @@ class App(tk.Tk):
         rois = load_json(ROIS_PATH, {})
         slots = load_slots(SLOTS_PATH)
         if not rois or not slots:
-            messagebox.showerror('Setup required', 'Complete 4-point ROI, slot points, and duplicate-slot linking first.')
+            messagebox.showerror(tr('Setup required'), tr('Complete 4-point ROI, slot points, and duplicate-slot linking first.'))
             return
         if not messagebox.askyesno(
-            'Start ALL-IN-ONE',
-            'This will run the full unattended pipeline:\n\n'
+            tr('Start ALL-IN-ONE'),
+            tr('This will run the full unattended pipeline:\n\n'
             '1) Tune YOLO on warped DEV CCTV\n'
             '2) Learn manual-point/Voronoi slots\n'
             '3) Extract FULL CCTV at 1 FPS + AUX crop only on ambiguous slots\n'
@@ -1569,17 +1596,17 @@ class App(tk.Tk):
             '6) Compare SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST, then auto-run v16.4 Candidate\n'
             '7) Add episode/cut + repeated-source stability metrics, capture review figures, and build ZIP\n\n'
             'No more clicks are required after starting. Candidate slots are discovered but NOT auto-accepted. '
-            'You can minimize this window while it runs.\n\nContinue?'
+            'You can minimize this window while it runs.\n\nContinue?')
         ):
             return
 
         self._pipeline_started_at=time.monotonic()
         self._step_started_at=self._pipeline_started_at
         self._step_key=None
-        self.timing_var.set('Total Elapsed 00:00:00 | Step Elapsed 00:00:00 | Step ETA --:--:-- | Total Remaining --:--:--')
+        self.timing_var.set(tr('Total Elapsed 00:00:00 | Step Elapsed 00:00:00 | Step ETA --:--:-- | Total Remaining --:--:--'))
         self.settings = load_json(SETTINGS_PATH, self.settings)
         self.settings.setdefault('robustness_experiment',{})['gt_file']=str(ROBUSTNESS_GT_PATH)
-        self.cache_status_var.set('CACHE | auditing current dataset/profile...')
+        self.cache_status_var.set(tr('CACHE | auditing current dataset/profile...'))
         video = self.video_var.get().strip()
         gt_path = self.gt_var.get().strip()
         slot_gt_path = self.slot_gt_var.get().strip()
@@ -1838,7 +1865,7 @@ class App(tk.Tk):
             for line in cache_lines:
                 if '=' in line and not line.startswith('shared_cache='):
                     k,v=line.split('=',1); short_cache.append(f'{k}:{v.split(":",1)[0]}')
-            self.after(0,lambda txt='CACHE | '+' | '.join(short_cache): self.cache_status_var.set(txt))
+            self.after(0,lambda txt='CACHE | '+' | '.join(short_cache): self.cache_status_var.set(tr(txt)))
 
             log('Stage 6/7: SAFE_BASELINE vs TRANSITION_GUARD vs SEG_ASSIST DEV comparison and frozen TEST evaluation started.')
             state_result=search_state_parameters(
@@ -1881,8 +1908,8 @@ class App(tk.Tk):
                 log(f'Research history local journal warning: {type(exc).__name__}: {exc}')
             self._progress(1.0, f'ALL-IN-ONE complete | {run_dir / "UPLOAD_TO_CHATGPT.zip"}')
             self.after(0, lambda: messagebox.showinfo(
-                'ALL-IN-ONE complete',
-                f'Everything finished without intermediate clicks.\n\nResult folder:\n{run_dir}\n\nUpload UPLOAD_TO_CHATGPT.zip to ChatGPT.'
+                tr('ALL-IN-ONE complete'),
+                tr(f'Everything finished without intermediate clicks.\n\nResult folder:\n{run_dir}\n\nUpload UPLOAD_TO_CHATGPT.zip to ChatGPT.')
             ))
 
         self.all_in_one_btn.config(state='disabled')
@@ -1898,15 +1925,15 @@ class App(tk.Tk):
             return
         rois=load_json(ROIS_PATH,{})
         if not rois or not load_slots(SLOTS_PATH):
-            messagebox.showerror('Error','ROI and slots are required.')
+            messagebox.showerror(tr('Error'),tr('ROI and slots are required.'))
             return
         slots_now = load_slots(SLOTS_PATH)
         if not (LEARN_DIR/'templates').exists():
-            messagebox.showerror('Error','Run v16 slot learning first, or use ALL-IN-ONE.')
+            messagebox.showerror(tr('Error'),tr('Run v16 slot learning first, or use ALL-IN-ONE.'))
             return
         stale = [x.get('local_id','?') for x in slots_now if x.get('geometry_version') != 'v12_manual_voronoi']
         if stale:
-            messagebox.showerror('Error', 'These slots need slot learning before v16 can run:\n' + ', '.join(stale[:12]) + (' ...' if len(stale)>12 else '') + '\n\nRun Learn manual-point slots again, or use ALL-IN-ONE.')
+            messagebox.showerror(tr('Error'), tr('These slots need slot learning before v16 can run:\n' + ', '.join(stale[:12]) + (' ...' if len(stale)>12 else '') + '\n\nRun Learn manual-point slots again, or use ALL-IN-ONE.'))
             return
         self.settings=load_json(SETTINGS_PATH,self.settings)
         video=self.video_var.get().strip(); gt_path=self.gt_var.get().strip()
@@ -1936,7 +1963,7 @@ class App(tk.Tk):
             except Exception:
                 pass
             self._progress(1.0,f"Complete. Upload {run_dir/'UPLOAD_TO_CHATGPT.zip'}")
-            self.after(0,lambda: messagebox.showinfo('Experiment complete',f"Result folder:\n{run_dir}\n\nUpload UPLOAD_TO_CHATGPT.zip to ChatGPT."))
+            self.after(0,lambda: messagebox.showinfo(tr('Experiment complete'),tr(f"Result folder:\n{run_dir}\n\nUpload UPLOAD_TO_CHATGPT.zip to ChatGPT.")))
         self._run_thread(job,'Experiment finished.')
 
 

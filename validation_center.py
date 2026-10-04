@@ -25,6 +25,7 @@ import cv2
 import numpy as np
 import pandas as pd
 import tkinter as tk
+from localization import tr
 from tkinter import filedialog, messagebox, ttk
 from PIL import Image, ImageTk
 
@@ -124,7 +125,7 @@ class CountGTLabeler(tk.Toplevel):
     def __init__(self, parent, video_path: str, csv_path: str, camera_count: int,
                  interval_sec: float, cut_boundaries=None, warmup_sec: float = 10.0):
         super().__init__(parent)
-        self.title("Count Ground Truth Labeler")
+        self.title(tr("Count Ground Truth Labeler"))
         self.geometry("1280x860")
         self.minsize(980, 700)
         self.video_path = str(video_path)
@@ -151,39 +152,39 @@ class CountGTLabeler(tk.Toplevel):
         top = ttk.Frame(self); top.pack(fill="x", padx=10, pady=8)
         self.pos_var = tk.StringVar()
         ttk.Label(top, textvariable=self.pos_var, font=("Segoe UI", 12, "bold")).pack(side="left")
-        ttk.Label(top, text="  A/D or Prev/Next | Enter=save+next | U=exclude | C=cut").pack(side="left")
+        ttk.Label(top, text=tr("  A/D or Prev/Next | Enter=save+next | U=exclude | C=cut")).pack(side="left")
 
         self.image_label = ttk.Label(self)
         self.image_label.pack(fill="both", expand=True, padx=10, pady=6)
 
-        edit = ttk.LabelFrame(self, text="Ground truth")
+        edit = ttk.LabelFrame(self, text=tr("Ground truth"))
         edit.pack(fill="x", padx=10, pady=6)
         self.cam_vars = []
         for i in range(1, self.camera_count + 1):
             v = tk.StringVar(); self.cam_vars.append(v)
-            ttk.Label(edit, text=f"CCTV{i}").grid(row=0, column=(i-1)*2, padx=(8,2), pady=6)
+            ttk.Label(edit, text=tr(f"CCTV{i}")).grid(row=0, column=(i-1)*2, padx=(8,2), pady=6)
             ttk.Entry(edit, textvariable=v, width=7).grid(row=0, column=(i-1)*2+1, padx=(2,8), pady=6)
         row2 = ttk.Frame(edit); row2.grid(row=1, column=0, columnspan=max(2, self.camera_count*2), sticky="ew", padx=8, pady=6)
         self.total_var = tk.StringVar()
         self.unique_var = tk.StringVar()
         self.tag_var = tk.StringVar()
         self.note_var = tk.StringVar()
-        ttk.Label(row2, text="Occupied").pack(side="left")
+        ttk.Label(row2, text=tr("Occupied")).pack(side="left")
         ttk.Entry(row2, textvariable=self.total_var, width=8).pack(side="left", padx=4)
-        ttk.Label(row2, text="Unique").pack(side="left", padx=(12,0))
+        ttk.Label(row2, text=tr("Unique")).pack(side="left", padx=(12,0))
         ttk.Entry(row2, textvariable=self.unique_var, width=8).pack(side="left", padx=4)
-        ttk.Label(row2, text="Tag").pack(side="left", padx=(12,0))
+        ttk.Label(row2, text=tr("Tag")).pack(side="left", padx=(12,0))
         ttk.Entry(row2, textvariable=self.tag_var, width=12).pack(side="left", padx=4)
-        ttk.Label(row2, text="Notes").pack(side="left", padx=(12,0))
+        ttk.Label(row2, text=tr("Notes")).pack(side="left", padx=(12,0))
         ttk.Entry(row2, textvariable=self.note_var).pack(side="left", padx=4, fill="x", expand=True)
 
         actions = ttk.Frame(self); actions.pack(fill="x", padx=10, pady=(2,10))
-        ttk.Button(actions, text="Prev", command=self.prev).pack(side="left", padx=4)
-        ttk.Button(actions, text="Save", command=self.save_current).pack(side="left", padx=4)
-        ttk.Button(actions, text="Save + Next", command=self.next).pack(side="left", padx=4)
-        ttk.Button(actions, text="Mark U / Exclude", command=self.mark_unknown).pack(side="left", padx=4)
-        ttk.Button(actions, text="Mark CUT", command=self.mark_cut).pack(side="left", padx=4)
-        ttk.Button(actions, text="Close", command=self._close).pack(side="right", padx=4)
+        ttk.Button(actions, text=tr("Prev"), command=self.prev).pack(side="left", padx=4)
+        ttk.Button(actions, text=tr("Save"), command=self.save_current).pack(side="left", padx=4)
+        ttk.Button(actions, text=tr("Save + Next"), command=self.next).pack(side="left", padx=4)
+        ttk.Button(actions, text=tr("Mark U / Exclude"), command=self.mark_unknown).pack(side="left", padx=4)
+        ttk.Button(actions, text=tr("Mark CUT"), command=self.mark_cut).pack(side="left", padx=4)
+        ttk.Button(actions, text=tr("Close"), command=self._close).pack(side="right", padx=4)
 
         self.bind("<Left>", lambda e: self.prev())
         self.bind("<Right>", lambda e: self.next())
@@ -215,8 +216,8 @@ class CountGTLabeler(tk.Toplevel):
         self.photo = ImageTk.PhotoImage(Image.fromarray(rgb))
         self.image_label.configure(image=self.photo)
         self.pos_var.set(
-            f"{self.index+1}/{len(self.df)}  |  {r['timestamp']}  | "
-            f"Episode {r.get('episode_id','')}  | eval_valid={r.get('eval_valid','1')}"
+            tr(f"{self.index+1}/{len(self.df)}  |  {r['timestamp']}  | "
+            f"Episode {r.get('episode_id','')}  | eval_valid={r.get('eval_valid','1')}")
         )
         for i, v in enumerate(self.cam_vars, 1):
             v.set(str(r.get(f"cctv{i}_count", "")))
@@ -417,7 +418,7 @@ def _save_profiles(data: Dict):
 def open_validation_center(app):
     _ensure()
     win = tk.Toplevel(app)
-    win.title("v16.5 Validation Center")
+    win.title(tr("v16.5 Validation Center"))
     win.geometry("980x820")
     win.minsize(850, 700)
 
@@ -425,14 +426,14 @@ def open_validation_center(app):
     vcfg = dict(settings.get("validation", {}) or {})
     ecfg = dict(settings.get("external_validation", {}) or {})
 
-    local = ttk.LabelFrame(win, text="A. Local / New Video Dataset Profile")
+    local = ttk.LabelFrame(win, text=tr("A. Local / New Video Dataset Profile"))
     local.pack(fill="x", padx=10, pady=8)
     local.columnconfigure(1, weight=1)
 
     profile_var = tk.StringVar()
     profile_combo = ttk.Combobox(local, textvariable=profile_var, state="normal")
     profile_combo.grid(row=0,column=1,sticky="ew",padx=6,pady=5)
-    ttk.Label(local,text="Profile").grid(row=0,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("Profile")).grid(row=0,column=0,sticky="w",padx=6,pady=5)
 
     cam_var = tk.IntVar(value=int(vcfg.get("camera_count", 3)))
     interval_var = tk.DoubleVar(value=float(vcfg.get("gt_interval_sec", 10.0)))
@@ -441,24 +442,24 @@ def open_validation_center(app):
     repeat_var = tk.DoubleVar(value=float(vcfg.get("repeat_period_sec", 0.0)))
     repeat_count_var = tk.IntVar(value=int(vcfg.get("repeat_count", 0)))
 
-    ttk.Label(local,text="CCTV count").grid(row=1,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("CCTV count")).grid(row=1,column=0,sticky="w",padx=6,pady=5)
     ttk.Spinbox(local,from_=1,to=12,textvariable=cam_var,width=8).grid(row=1,column=1,sticky="w",padx=6,pady=5)
-    ttk.Label(local,text="GT interval (sec)").grid(row=2,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("GT interval (sec)")).grid(row=2,column=0,sticky="w",padx=6,pady=5)
     ttk.Entry(local,textvariable=interval_var,width=10).grid(row=2,column=1,sticky="w",padx=6,pady=5)
-    ttk.Label(local,text="Cut boundaries").grid(row=3,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("Cut boundaries")).grid(row=3,column=0,sticky="w",padx=6,pady=5)
     ttk.Entry(local,textvariable=cuts_var).grid(row=3,column=1,sticky="ew",padx=6,pady=5)
-    ttk.Label(local,text="Cut warm-up exclude (sec)").grid(row=4,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("Cut warm-up exclude (sec)")).grid(row=4,column=0,sticky="w",padx=6,pady=5)
     ttk.Entry(local,textvariable=warm_var,width=10).grid(row=4,column=1,sticky="w",padx=6,pady=5)
-    ttk.Label(local,text="Repeated source period (sec, 0=off)").grid(row=5,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("Repeated source period (sec, 0=off)")).grid(row=5,column=0,sticky="w",padx=6,pady=5)
     ttk.Entry(local,textvariable=repeat_var,width=10).grid(row=5,column=1,sticky="w",padx=6,pady=5)
-    ttk.Label(local,text="Repeat count (0=auto)").grid(row=6,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr("Repeat count (0=auto)")).grid(row=6,column=0,sticky="w",padx=6,pady=5)
     ttk.Entry(local,textvariable=repeat_count_var,width=10).grid(row=6,column=1,sticky="w",padx=6,pady=5)
 
     hint = (
         "Cut example: 4:00, 8:00, 12:00, 16:00. The cut itself and warm-up window are excluded from "
         "episode metrics. Repeated-source mode is a stability test, not independent validation."
     )
-    ttk.Label(local,text=hint,wraplength=900).grid(row=7,column=0,columnspan=3,sticky="w",padx=6,pady=5)
+    ttk.Label(local,text=tr(hint),wraplength=900).grid(row=7,column=0,columnspan=3,sticky="w",padx=6,pady=5)
 
     def collect_validation():
         return {
@@ -477,7 +478,7 @@ def open_validation_center(app):
         save_json(APP_DIR/"settings.json", settings)
         app.settings = settings
         if show:
-            messagebox.showinfo("Saved", "v16.5 validation settings saved.", parent=win)
+            messagebox.showinfo(tr("Saved"), tr("v16.5 validation settings saved."), parent=win)
         return settings
 
     def refresh_profiles():
@@ -487,7 +488,7 @@ def open_validation_center(app):
     def save_profile():
         name = profile_var.get().strip()
         if not name:
-            messagebox.showwarning("Profile name", "Enter a profile name.", parent=win); return
+            messagebox.showwarning(tr("Profile name"), tr("Enter a profile name."), parent=win); return
         cfg = collect_validation()
         data = _profiles()
         data[name] = {
@@ -500,13 +501,13 @@ def open_validation_center(app):
         _save_profiles(data)
         save_settings_only(show=False)
         refresh_profiles()
-        messagebox.showinfo("Profile saved", name, parent=win)
+        messagebox.showinfo(tr("Profile saved"), tr(name), parent=win)
 
     def load_profile():
         name = profile_var.get().strip()
         p = _profiles().get(name)
         if not p:
-            messagebox.showwarning("Profile", "Profile not found.", parent=win); return
+            messagebox.showwarning(tr("Profile"), tr("Profile not found."), parent=win); return
         app.video_var.set(str(p.get("video_path","")))
         app.gt_var.set(str(p.get("gt_path","")))
         app.slot_gt_var.set(str(p.get("slot_gt_path","")))
@@ -520,18 +521,18 @@ def open_validation_center(app):
         save_settings_only(show=False)
         try: app._save_ui_state()
         except Exception: pass
-        messagebox.showinfo("Profile loaded", name, parent=win)
+        messagebox.showinfo(tr("Profile loaded"), tr(name), parent=win)
 
     row_actions = ttk.Frame(local)
     row_actions.grid(row=8,column=0,columnspan=3,sticky="ew",padx=6,pady=6)
-    ttk.Button(row_actions,text="Save Validation Settings",command=save_settings_only).pack(side="left",padx=3)
-    ttk.Button(row_actions,text="Save Profile",command=save_profile).pack(side="left",padx=3)
-    ttk.Button(row_actions,text="Load Profile",command=load_profile).pack(side="left",padx=3)
+    ttk.Button(row_actions,text=tr("Save Validation Settings"),command=save_settings_only).pack(side="left",padx=3)
+    ttk.Button(row_actions,text=tr("Save Profile"),command=save_profile).pack(side="left",padx=3)
+    ttk.Button(row_actions,text=tr("Load Profile"),command=load_profile).pack(side="left",padx=3)
 
     def create_template():
         video = app.video_var.get().strip()
         if not video or not Path(video).is_file():
-            messagebox.showerror("Video", "Select a local video in the main window first.", parent=win); return
+            messagebox.showerror(tr("Video"), tr("Select a local video in the main window first."), parent=win); return
         cfg = collect_validation()
         out = filedialog.asksaveasfilename(
             parent=win, defaultextension=".csv", initialfile="ground_truth_v165.csv",
@@ -542,37 +543,37 @@ def open_validation_center(app):
         app.gt_var.set(out)
         try: app._save_ui_state()
         except Exception: pass
-        messagebox.showinfo("GT template", f"Created:\n{out}", parent=win)
+        messagebox.showinfo(tr("GT template"), tr(f"Created:\n{out}"), parent=win)
 
     def label_gt():
         video = app.video_var.get().strip()
         gt = app.gt_var.get().strip()
         if not video or not Path(video).is_file():
-            messagebox.showerror("Video", "Select a local video first.", parent=win); return
+            messagebox.showerror(tr("Video"), tr("Select a local video first."), parent=win); return
         if not gt:
-            messagebox.showerror("GT", "Create/select a GT CSV first.", parent=win); return
+            messagebox.showerror(tr("GT"), tr("Create/select a GT CSV first."), parent=win); return
         cfg = collect_validation()
         CountGTLabeler(win, video, gt, cfg["camera_count"], cfg["gt_interval_sec"], cfg["cut_boundaries_sec"], cfg["cut_warmup_sec"])
 
     row_gt = ttk.Frame(local)
     row_gt.grid(row=9,column=0,columnspan=3,sticky="ew",padx=6,pady=(0,8))
-    ttk.Button(row_gt,text="Create Count-GT Template",command=create_template).pack(side="left",padx=3)
-    ttk.Button(row_gt,text="Open GT Labeler",command=label_gt).pack(side="left",padx=3)
+    ttk.Button(row_gt,text=tr("Create Count-GT Template"),command=create_template).pack(side="left",padx=3)
+    ttk.Button(row_gt,text=tr("Open GT Labeler"),command=label_gt).pack(side="left",padx=3)
 
-    public = ttk.LabelFrame(win, text="B. Public External Environment Validation")
+    public = ttk.LabelFrame(win, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)
     public.columnconfigure(1,weight=1)
     mode_var = tk.StringVar(value=str(ecfg.get("download_mode","quick")).lower())
-    ttk.Label(public,text="MetaPKLot / CNRPark-EXT").grid(row=0,column=0,sticky="w",padx=6,pady=5)
+    ttk.Label(public,text=tr("MetaPKLot / CNRPark-EXT")).grid(row=0,column=0,sticky="w",padx=6,pady=5)
     ttk.Combobox(public,textvariable=mode_var,values=["quick","standard","full"],state="readonly",width=12).grid(row=0,column=1,sticky="w",padx=6,pady=5)
-    ext_status = tk.StringVar(value=f"Dataset root: {PUBLIC_ROOT}")
+    ext_status = tk.StringVar(value=tr(f"Dataset root: {PUBLIC_ROOT}"))
     ext_progress = tk.DoubleVar(value=0.0)
     ttk.Progressbar(public,variable=ext_progress,maximum=100).grid(row=1,column=0,columnspan=3,sticky="ew",padx=6,pady=5)
     ttk.Label(public,textvariable=ext_status,wraplength=900).grid(row=2,column=0,columnspan=3,sticky="w",padx=6,pady=5)
 
     def pupdate(r,t):
         win.after(0,lambda: ext_progress.set(float(r)*100))
-        win.after(0,lambda: ext_status.set(str(t)))
+        win.after(0,lambda: ext_status.set(tr(str(t))))
 
     def download_public():
         mode = mode_var.get().strip().lower()
@@ -582,15 +583,15 @@ def open_validation_center(app):
         def worker():
             try:
                 result = prepare_metapklot_cnr(PUBLIC_ROOT,mode,pupdate)
-                win.after(0,lambda: messagebox.showinfo("Public dataset ready",f"Images: {result['images']}\nGT: {result['gt']}",parent=win))
+                win.after(0,lambda: messagebox.showinfo(tr("Public dataset ready"),tr(f"Images: {result['images']}\nGT: {result['gt']}"),parent=win))
             except Exception as exc:
-                win.after(0,lambda e=exc: messagebox.showerror("Public dataset",f"{type(e).__name__}: {e}",parent=win))
+                win.after(0,lambda e=exc: messagebox.showerror(tr("Public dataset"),tr(f"{type(e).__name__}: {e}"),parent=win))
         threading.Thread(target=worker,daemon=True).start()
 
     def run_external():
         settings_now = save_settings_only(show=False)
         if not (PUBLIC_ROOT/"external_gt_spots.csv").is_file():
-            messagebox.showwarning("Dataset", "Download & Prepare the public dataset first.", parent=win); return
+            messagebox.showwarning(tr("Dataset"), tr("Download & Prepare the public dataset first."), parent=win); return
         out = PUBLIC_ROOT/"validation_results"/time.strftime("%Y%m%d_%H%M%S")
         def worker():
             try:
@@ -599,20 +600,20 @@ def open_validation_center(app):
                 msg=(f"External validation complete\n\nAccuracy {m['accuracy']*100:.2f}%\n"
                      f"F1 {m['f1']:.4f}\nOccupied Recall {m['occupied_recall']:.4f}\n"
                      f"Empty Specificity {m['empty_specificity']:.4f}\n\n{out}")
-                win.after(0,lambda: messagebox.showinfo("External validation",msg,parent=win))
+                win.after(0,lambda: messagebox.showinfo(tr("External validation"),tr(msg),parent=win))
             except Exception as exc:
-                win.after(0,lambda e=exc: messagebox.showerror("External validation",f"{type(e).__name__}: {e}",parent=win))
+                win.after(0,lambda e=exc: messagebox.showerror(tr("External validation"),tr(f"{type(e).__name__}: {e}"),parent=win))
         threading.Thread(target=worker,daemon=True).start()
 
     buttons = ttk.Frame(public)
     buttons.grid(row=3,column=0,columnspan=3,sticky="ew",padx=6,pady=8)
-    ttk.Button(buttons,text="Download & Prepare",command=download_public).pack(side="left",padx=3)
-    ttk.Button(buttons,text="Run External Occupancy Validation",command=run_external).pack(side="left",padx=3)
-    ttk.Button(buttons,text="Open Dataset Folder",command=lambda: os.startfile(str(PUBLIC_ROOT)) if os.name=="nt" else None).pack(side="left",padx=3)
+    ttk.Button(buttons,text=tr("Download & Prepare"),command=download_public).pack(side="left",padx=3)
+    ttk.Button(buttons,text=tr("Run External Occupancy Validation"),command=run_external).pack(side="left",padx=3)
+    ttk.Button(buttons,text=tr("Open Dataset Folder"),command=lambda: os.startfile(str(PUBLIC_ROOT)) if os.name=="nt" else None).pack(side="left",padx=3)
     ttk.Label(public,text=(
-        "Quick/Standard download only selected official images + matching MetaPKLot spot annotations. "
+        tr("Quick/Standard download only selected official images + matching MetaPKLot spot annotations. "
         "Full is explicit opt-in and may be several GB. Public evaluation tests spatial generalization; "
-        "it does not claim continuous transition validation."
+        "it does not claim continuous transition validation.")
     ),wraplength=900).grid(row=4,column=0,columnspan=3,sticky="w",padx=6,pady=(0,8))
 
     refresh_profiles()

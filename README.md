@@ -2,9 +2,30 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.0**  
-Protected algorithm baseline: **v16.2 SAFE_BASELINE**  
+Current release: **v16.5.1**
+Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
+
+
+## 한국어 / English UI
+
+기본 언어는 한국어입니다. 메인 화면의 **설정 → 언어**에서 `ko` 또는 `en`을 선택하면 열린 메인 UI와 검증 센터가 즉시 바뀝니다. `settings.json`의 `ui.language`에 저장되어 다음 실행과 자동 업데이트 후에도 유지됩니다. 영상 경로와 입력 폼은 유지되며 `SAFE_BASELINE`, `CANDIDATE`, `OCCUPIED/EMPTY/MANEUVERING` 및 CSV 열·결과 파일명은 그대로 사용합니다.
+
+The default language is Korean. Choose **Settings → Language → ko/en** to update open windows immediately. The preference persists across restarts and updates. Advanced settings remain available as JSON. Machine identifiers, CSV schemas, filenames, research logs and image-overlay identifiers stay canonical.
+
+## Living Paper
+
+[한국어 논문](paper/paper_ko.md) | [English paper](paper/paper_en.md) | [유지 규칙 / Maintenance](paper/README.md) | [전체 이력](paper/appendix/full_experiment_history.md)
+
+릴리스가 발전하면 새 방법·결과·오류 분석·표·그림을 기존 본문에 통합합니다. 두 언어는 공통 결과 CSV와 짝지어진 원고를 사용하며 manifest/workflow가 동기화를 검사합니다. 연구 변경이 없는 patch는 분량을 늘리지 않아도 됩니다. 매 릴리스의 한·영 snapshot은 보존하고 수정하지 않습니다.
+
+Research changes grow the appropriate sections; patches without research changes need no padding. Update both reviewed language paragraphs, evidence tables, figure provenance and `paper_manifest.json`, then generate and check both papers before publishing. The release workflow builds Korean/English PDFs, Markdown snapshots, a source ZIP and SHA-256 assets.
+
+Current image evidence is unavailable, so figures use explicit descriptions instead of fabricated images. Retained SAFE **85.29% / MAE 0.1471** and Candidate **97.06% / MAE 0.0294** are historical, same-video results. Independent temporal validation and v16.5 external runtime results remain pending.
+
+## Verification
+
+`python self_test.py`, `python -m unittest discover -s tests -v`, and `python tools/build_paper.py --check` validate source behavior, language persistence, open-form preservation, identifier/cache compatibility, and paper synchronization. On Linux use `xvfb-run -a` for UI tests. PDF build instructions are in [paper/README.md](paper/README.md).
 
 ## Start on Windows
 1. Extract the release ZIP.
@@ -30,7 +51,7 @@ Dataset Profiles can save:
 - cut boundaries + post-cut warm-up
 - repeat period/count
 
-**Create Count-GT Template** creates dynamic `cctv1_count ... cctvN_count` columns.  
+**Create Count-GT Template** creates dynamic `cctv1_count ... cctvN_count` columns.
 **Open GT Labeler** shows each sampled frame and lets you enter CCTV counts, total occupied count, notes, U and CUT directly.
 
 ### Concatenated clips

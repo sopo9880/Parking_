@@ -480,5 +480,8 @@
     "download_mode": "quick",
     "spot_overlap_threshold": 0.12,
     "detector": {}
+  },
+  "ui": {
+    "language": "ko"
   }
 }

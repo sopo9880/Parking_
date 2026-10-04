@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "version": "v16.5.1",
+  "research_revision": "retained-v16.5-r1",
+  "release_kind": "presentation_patch",
+  "research_changed": false,
+  "evidence_updates": [],
+  "languages": [
+    "ko",
+    "en"
+  ],
+  "canonical_source": "paper/data/sections.json",
+  "metrics": [
+    "paper/data/version_metrics.csv",
+    "paper/data/failed_experiments.csv"
+  ],
+  "baseline": {
+    "version": "v16.2",
+    "status": "SAFE_BASELINE",
+    "exact_percent": 85.29,
+    "mae": 0.1471
+  },
+  "candidate": {
+    "version": "v16.4",
+    "status": "CANDIDATE",
+    "exact_percent": 97.06,
+    "mae": 0.0294,
+    "evidence_scope": "same retained video after error analysis; independent temporal validation pending"
+  },
+  "evidence_commit": "3b8fe54bdcc2a08570fe84bbaace44347470b673",
+  "figures": [
+    {
+      "id": "environment",
+      "number": 1,
+      "path": null,
+      "status": "missing",
+      "caption": {
+        "ko": "실제 CCTV 모니터 재촬영 환경",
+        "en": "Actual re-recorded CCTV monitor environment"
+      },
+      "missing_note": {
+        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
+        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
+      },
+      "provenance": null
+    },
+    {
+      "id": "slot_geometry",
+      "number": 2,
+      "path": null,
+      "status": "missing",
+      "caption": {
+        "ko": "수동 주차면 기준점과 원근 보정 및 Voronoi 영역",
+        "en": "Manual slot points, perspective correction, and Voronoi regions"
+      },
+      "missing_note": {
+        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
+        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
+      },
+      "provenance": null
+    },
+    {
+      "id": "transition_before",
+      "number": 3,
+      "path": null,
+      "status": "missing",
+      "caption": {
+        "ko": "ID 전환 후 조기 OCCUPIED 및 유령 점유 오류",
+        "en": "Early OCCUPIED after ID switch and ghost occupancy errors"
+      },
+      "missing_note": {
+        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
+        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
+      },
+      "provenance": null
+    },
+    {
+      "id": "transition_after",
+      "number": 4,
+      "path": null,
+      "status": "missing",
+      "caption": {
+        "ko": "동일 시각 SAFE와 v16.4 Candidate 전후 비교",
+        "en": "SAFE and v16.4 Candidate comparison at matched timestamps"
+      },
+      "missing_note": {
+        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
+        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
+      },
+      "provenance": null
+    },
+    {
+      "id": "robustness",
+      "number": 5,
+      "path": null,
+      "status": "missing",
+      "caption": {
+        "ko": "LOW_RES / SUN_GLARE / MONITOR_STRIPES의 RAW와 ADAPTIVE 비교",
+        "en": "RAW versus ADAPTIVE under LOW_RES / SUN_GLARE / MONITOR_STRIPES"
+      },
+      "missing_note": {
+        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
+        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
+      },
+      "provenance": null
+    }
+  ],
+  "paper_sha256": {
+    "ko": "d8441cef52d739c9591043e3306154c5d0e1f062ae6d8a7b3b47ef4f5f0f19a0",
+    "en": "23012b8bab922cc660cc74901caf896f119369ed696ef0fc979f58ea0679a631"
+  },
+  "snapshots": {
+    "v16.5.1": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.1_ko.md",
+        "sha256": "f9183018fe70798046d4878016014c2c194ab714775c4a9393caa273e711157f"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.1_en.md",
+        "sha256": "410c0a1c25ce8cf32aa0019eea4ad0bc807be41ef806964ea09f2dadb7f7ccf4"
+      }
+    }
+  },
+  "growth_policy": {
+    "integrate_by": [
+      "methods",
+      "results",
+      "error_analysis",
+      "robustness",
+      "limitations"
+    ],
+    "require_bilingual_pairs": true,
+    "no_padding_for_patch": true,
+    "snapshots_immutable": true,
+    "new_metrics_need_source_and_protocol": true,
+    "new_figures_need_provenance_and_review": true,
+    "failed_experiments_go_to_appendix": true,
+    "promotion_requires_independent_temporal_evidence": true
+  },
+  "pdf": {
+    "builder": "tools/build_paper_pdf.py",
+    "workflow": ".github/workflows/release.yml",
+    "languages": [
+      "ko",
+      "en"
+    ],
+    "assets": [
+      "ParkingResearchAgent-v16.5.1-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.1-paper-en.pdf"
+    ]
+  }
+}

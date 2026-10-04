@@ -596,6 +596,27 @@
         "v16.4 SAFE promotion still requires genuinely independent temporal evidence."
       ],
       "decision": "Release validation tooling while keeping v16.2 SAFE_BASELINE and v16.4 CANDIDATE statuses unchanged."
+    },
+    {
+      "version": "v16.5.1",
+      "period": "2026-10",
+      "status": "DOCUMENTATION_RELEASE",
+      "confidence": "self_test_and_six_localization_ui_tests_passed_no_new_accuracy_claim",
+      "title": "Korean/English UI + bilingual Living Paper",
+      "goal": "Persist language preferences and publish synchronized growing research papers.",
+      "changes": [
+        "Presentation-only Korean/English localization",
+        "Persistent ui.language setting",
+        "Paired paper source, evidence tables, figure placeholders and immutable snapshots",
+        "Bilingual PDF release automation"
+      ],
+      "results": [
+        "No new dataset or accuracy measurement. Retained SAFE and CANDIDATE metrics remain unchanged."
+      ],
+      "issues": [
+        "Independent temporal validation and actual figure artifacts remain pending."
+      ],
+      "decision": "Keep v16.2 SAFE_BASELINE and v16.4 CANDIDATE; grow papers only when research evidence changes."
     }
   ]
 }

@@ -1,3 +1,1 @@
-v16.5.0
-2026-10-04
-validation-center-public-dataset
+Build Parking Research Agent v16.5.1: bilingual UI + synchronized Living Paper + PDF assets

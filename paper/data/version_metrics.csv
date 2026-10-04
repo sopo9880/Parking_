@@ -1,0 +1,11 @@
+version,exact_percent,mae,max_error,evidence,source
+v7,82.35,0.3235,,retained_record,research_history.json:v7
+v8,32.35,1.294,,retained_record,research_history.json:v8
+v9,67.65,0.441,,retained_record,research_history.json:v9
+v10/v10.1,79.41,0.265,,retained_record,research_history.json:v10/v10.1
+v12 FULL,85.29,~0.206,2,retained_record,research_history.json:v12
+v13 SAFE_BASELINE,85.29,0.147,1,retained_record,research_history.json:v13
+v16.2 SAFE_BASELINE,85.29,0.1471,1,retained_record,CHANGES_v16_2.txt
+v16.4 CANDIDATE,97.06,0.0294,1,same_video_post_hoc,CHANGES_v16_4.txt
+v16.5 external/new video,,,,pending_runtime_results,research_history.json:v16.5.0
+v16.5.1,,,,presentation_patch_no_new_measurement,research_history.json:v16.5.1

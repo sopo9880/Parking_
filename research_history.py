@@ -6,6 +6,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 import tkinter as tk
+from localization import tr
 from tkinter import ttk
 
 APP_DIR = Path(__file__).resolve().parent
@@ -91,14 +92,14 @@ def _details_text(item: dict) -> str:
 def open_history_window(parent=None):
     meta, entries = load_history()
     win = tk.Toplevel(parent) if parent is not None else tk.Tk()
-    win.title("Research History | Connect Hyundai Parking")
+    win.title(tr("Research History | Connect Hyundai Parking"))
     win.geometry("1120x720")
     win.minsize(860, 560)
 
     header = ttk.Frame(win)
     header.pack(fill="x", padx=10, pady=(10, 4))
-    ttk.Label(header, text="Research History", font=("Segoe UI", 16, "bold")).pack(side="left")
-    ttk.Label(header, text="paper/research lineage only | field-operation v20+ kept separate").pack(side="left", padx=12)
+    ttk.Label(header, text=tr("Research History"), font=("Segoe UI", 16, "bold")).pack(side="left")
+    ttk.Label(header, text=tr("paper/research lineage only | field-operation v20+ kept separate")).pack(side="left", padx=12)
 
     body = ttk.Panedwindow(win, orient="horizontal")
     body.pack(fill="both", expand=True, padx=10, pady=10)
@@ -110,7 +111,7 @@ def open_history_window(parent=None):
     cols = ("version", "period", "status")
     tree = ttk.Treeview(left, columns=cols, show="headings", selectmode="browse")
     for c, w in (("version", 110), ("period", 130), ("status", 170)):
-        tree.heading(c, text=c.title())
+        tree.heading(c, text=tr(c.title()))
         tree.column(c, width=w, anchor="w")
     y = ttk.Scrollbar(left, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=y.set)
@@ -133,7 +134,7 @@ def open_history_window(parent=None):
         item = entries[int(sel[0])]
         detail.configure(state="normal")
         detail.delete("1.0", "end")
-        detail.insert("1.0", _details_text(item))
+        detail.insert("1.0", tr(_details_text(item)))
         detail.configure(state="disabled")
 
     tree.bind("<<TreeviewSelect>>", show_selected)
