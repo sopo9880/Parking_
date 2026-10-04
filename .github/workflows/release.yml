@@ -16,58 +16,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Reconstruct source bundle
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p _hydrate/source
-          cat bundle/part_*.b64 | tr -d '\r\n' | base64 -d > _hydrate/source.tar.xz
-          echo "fb384a36163df00d286f64d111840adf47bc333e3f5da5100ad3ff2e9c2c2315  _hydrate/source.tar.xz" | sha256sum -c -
-          tar -xJf _hydrate/source.tar.xz -C _hydrate/source
-          cp update_helper.py _hydrate/source/update_helper.py
-
       - name: Validate source
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile             _hydrate/source/app.py             _hydrate/source/research_history.py             _hydrate/source/update_manager.py             _hydrate/source/update_helper.py
-          python -m json.tool _hydrate/source/research_history.json >/dev/null
-          test "$(tr -d '\r\n' < _hydrate/source/VERSION.txt)" = "v16.3.0"
+          python -m py_compile             app.py             research_history.py             update_manager.py             update_helper.py             transition_refiner_v164.py
+          python -m json.tool research_history.json >/dev/null
+          VERSION="$(tr -d '\r\n' < VERSION.txt)"
+          test -n "$VERSION"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "NAME=ParkingResearchAgent-$VERSION.zip" >> "$GITHUB_ENV"
 
       - name: Build release package
         shell: bash
         run: |
           set -euo pipefail
-          VERSION="$(tr -d '\r\n' < _hydrate/source/VERSION.txt)"
-          NAME="ParkingResearchAgent-${VERSION}.zip"
           mkdir -p dist
-          (
-            cd _hydrate/source
-            zip -r "../../dist/${NAME}" .               -x "__pycache__/*" "work/*" "output/*" "user_data/*" ".venv/*" "LAST_ERROR.txt"
-          )
+          zip -r "dist/$NAME" .             -x ".git/*" ".github/*" "bundle/*" "dist/*"                "__pycache__/*" "work/*" "output/*" "user_data/*"                ".venv/*" "LAST_ERROR.txt" "release_trigger.txt"
           (
             cd dist
-            sha256sum "${NAME}" > "${NAME}.sha256"
+            sha256sum "$NAME" > "$NAME.sha256"
           )
-          cp _hydrate/source/RELEASE_NOTES.md dist/RELEASE_NOTES.md
-          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
-          echo "NAME=${NAME}" >> "$GITHUB_ENV"
-
-      - name: Publish browsable source tree
-        shell: bash
-        run: |
-          set -euo pipefail
-          rsync -a _hydrate/source/ ./             --exclude '.github/'             --exclude '.git/'             --exclude 'bundle/'             --exclude 'work/'             --exclude 'output/'             --exclude 'user_data/'             --exclude '.venv/'             --exclude '__pycache__/'
-          rm -rf _hydrate
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git restore --staged bundle .github release_trigger.txt 2>/dev/null || true
-          git restore --staged dist 2>/dev/null || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Hydrate Parking Research Agent ${VERSION} source"
-            git push
-          fi
 
       - name: Create GitHub Release
         env:
@@ -75,8 +44,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view "${VERSION}" >/dev/null 2>&1; then
-            gh release upload "${VERSION}" "dist/${NAME}" "dist/${NAME}.sha256" --clobber
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" "dist/$NAME" "dist/$NAME.sha256" --clobber
           else
-            gh release create "${VERSION}"               "dist/${NAME}"               "dist/${NAME}.sha256"               --target main               --title "Parking Research Agent ${VERSION}"               --notes-file dist/RELEASE_NOTES.md
+            gh release create "$VERSION"               "dist/$NAME"               "dist/$NAME.sha256"               --target main               --title "Parking Research Agent $VERSION"               --notes-file RELEASE_NOTES.md
           fi
