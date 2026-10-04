@@ -1,17 +1,17 @@
 {
   "dev_end_sec": 900,
   "eval_end_sec": 1230,
-  "learn_sample_sec": 2.0,
-  "evidence_sample_sec": 1.0,
+  "learn_sample_sec": 2,
+  "evidence_sample_sec": 1,
   "candidate_min_presence": 0.65,
   "candidate_cluster_dist_px": 45,
   "candidate_max_std_px": 28,
   "candidate_existing_slot_dist_px": 60,
   "matching": {
     "unmatched_cost": 1.15,
-    "invalid_cost": 5.0,
+    "invalid_cost": 5,
     "min_match_score": 0.03,
-    "voronoi_boundary_slack_px": 8.0,
+    "voronoi_boundary_slack_px": 8,
     "manual_distance_weight": 0.82,
     "anchor_distance_weight": 0.18,
     "size_weight": 0.06,
@@ -19,16 +19,16 @@
     "confidence_bonus": 0.1,
     "point_containment_expand": 0.1,
     "manual_gate_neighbor_factor": 0.82,
-    "manual_gate_min_px": 28.0,
-    "manual_gate_max_px": 120.0,
+    "manual_gate_min_px": 28,
+    "manual_gate_max_px": 120,
     "anchor_max_shift_neighbor_factor": 0.3,
-    "anchor_max_shift_min_px": 16.0,
-    "anchor_max_shift_max_px": 40.0,
+    "anchor_max_shift_min_px": 16,
+    "anchor_max_shift_max_px": 40,
     "anchor_sample_gate_neighbor_factor": 0.9,
-    "anchor_sample_gate_min_px": 35.0,
-    "anchor_sample_gate_max_px": 120.0,
+    "anchor_sample_gate_min_px": 35,
+    "anchor_sample_gate_max_px": 120,
     "min_anchor_samples": 30,
-    "max_anchor_std_px": 30.0,
+    "max_anchor_std_px": 30,
     "visual_region_width_scale": 0.38,
     "visual_region_height_scale": 0.46,
     "slot_overlap_warning_iou": 0.25,
@@ -97,7 +97,7 @@
       "ANY"
     ],
     "global_confidence_threshold": [
-      0.0
+      0
     ],
     "evidence_mode": [
       "FULL"
@@ -109,7 +109,7 @@
       0.08
     ],
     "full_min_conf": [
-      0.0
+      0
     ],
     "crop_min_conf": [
       0.1
@@ -178,39 +178,39 @@
       ]
     }
   },
-  "evaluation_warmup_sec": 10.0,
+  "evaluation_warmup_sec": 10,
   "temporal": {
-    "window_sec": 10.0,
-    "recent_window_sec": 3.0,
-    "tracker_max_gap_sec": 3.0,
-    "tracker_match_max_px": 110.0,
+    "window_sec": 10,
+    "recent_window_sec": 3,
+    "tracker_max_gap_sec": 3,
+    "tracker_match_max_px": 110,
     "tracker_min_iou": 0.02,
     "tracker_iou_weight": 0.25,
-    "stationary_speed_px_s": 14.0,
-    "stationary_motion_span_px": 32.0,
+    "stationary_speed_px_s": 14,
+    "stationary_motion_span_px": 32,
     "max_track_switches_for_entry": 1,
-    "warmup_sec": 10.0,
-    "crop_stationary_motion_span_px": 28.0,
-    "zone_memory_sec": 10.0,
-    "zone_recent_sec": 4.0,
-    "zone_motion_step_px": 14.0,
-    "zone_recent_motion_max_px": 24.0,
-    "entry_zone_settle_sec": 6.0,
-    "exit_no_full_sec": 4.0,
-    "exit_force_no_full_sec": 9.0,
-    "exit_aux_window_sec": 5.0,
+    "warmup_sec": 10,
+    "crop_stationary_motion_span_px": 28,
+    "zone_memory_sec": 10,
+    "zone_recent_sec": 4,
+    "zone_motion_step_px": 14,
+    "zone_recent_motion_max_px": 24,
+    "entry_zone_settle_sec": 6,
+    "exit_no_full_sec": 4,
+    "exit_force_no_full_sec": 9,
+    "exit_aux_window_sec": 5,
     "exit_aux_min_checks": 2,
     "aux_recovery_conf": 0.25,
     "aux_recovery_min_scales": 2,
-    "transition_guard_window_sec": 10.0,
-    "transition_guard_recent_sec": 3.0,
-    "entry_guard_motion_span_px": 45.0,
-    "entry_guard_recent_motion_span_px": 22.0,
-    "entry_guard_settle_sec": 7.0,
+    "transition_guard_window_sec": 10,
+    "transition_guard_recent_sec": 3,
+    "entry_guard_motion_span_px": 45,
+    "entry_guard_recent_motion_span_px": 22,
+    "entry_guard_settle_sec": 7,
     "entry_guard_min_recent_hit_ratio": 0.5,
     "entry_guard_min_mean_conf": 0.08,
-    "exit_guard_no_full_sec": 4.0,
-    "exit_guard_aux_window_sec": 5.0,
+    "exit_guard_no_full_sec": 4,
+    "exit_guard_aux_window_sec": 5,
     "exit_guard_aux_min_checks": 2,
     "exit_guard_aux_conf": 0.25,
     "exit_guard_aux_min_scales": 2
@@ -223,18 +223,18 @@
     "height_neighbor_factor": 3.35,
     "vertical_center_offset_neighbor_factor": 0.38,
     "core_radius_neighbor_factor": 0.66,
-    "core_radius_min_px": 24.0,
-    "core_radius_max_px": 105.0,
-    "neighbor_min_px": 36.0,
-    "neighbor_max_px": 180.0,
-    "min_width_px": 128.0,
-    "max_width_px": 520.0,
-    "min_height_px": 144.0,
-    "max_height_px": 620.0,
+    "core_radius_min_px": 24,
+    "core_radius_max_px": 105,
+    "neighbor_min_px": 36,
+    "neighbor_max_px": 180,
+    "min_width_px": 128,
+    "max_width_px": 520,
+    "min_height_px": 144,
+    "max_height_px": 620,
     "point_containment_expand": 0.06,
     "distance_penalty_weight": 0.3,
     "scales": [
-      1.0,
+      1,
       1.55
     ]
   },
@@ -252,16 +252,16 @@
   },
   "selective_aux": {
     "enabled": true,
-    "history_sec": 10.0,
+    "history_sec": 10,
     "weak_full_conf": 0.18,
     "recent_miss_trigger_ratio": 0.25,
-    "occupied_recheck_interval_sec": 2.0,
-    "appearance_recheck_interval_sec": 3.0,
-    "periodic_audit_interval_sec": 10.0,
+    "occupied_recheck_interval_sec": 2,
+    "appearance_recheck_interval_sec": 3,
+    "periodic_audit_interval_sec": 10,
     "appearance_trigger_threshold": 0.08,
     "always_audit_initial_occupied": true,
-    "occupied_memory_sec": 12.0,
-    "occupied_memory_recheck_interval_sec": 2.0
+    "occupied_memory_sec": 12,
+    "occupied_memory_recheck_interval_sec": 2
   },
   "pipeline_cache": {
     "enabled": true,
@@ -303,7 +303,7 @@
   ],
   "debug_render": {
     "min_width_px": 2200,
-    "min_scale": 2.0,
+    "min_scale": 2,
     "font_scale": 0.78,
     "line_thickness": 2
   },
@@ -326,7 +326,7 @@
     "weak_full_conf": 0.18,
     "recent_full_hit_ratio_trigger": 0.25,
     "appearance_trigger_threshold": 0.08,
-    "periodic_audit_interval_sec": 10.0,
+    "periodic_audit_interval_sec": 10,
     "batch_size": 12,
     "min_core_overlap_ratio": 0.08,
     "positive_conf": 0.1,
@@ -345,7 +345,7 @@
     "dual_input_raw_adaptive": true,
     "auto_highlight_ratio": 0.1,
     "auto_stripe_energy_ratio": 0.43,
-    "auto_low_sharpness": 55.0,
+    "auto_low_sharpness": 55,
     "condition_classifier": "per_cctv_percentile",
     "condition_min_samples": 30,
     "highlight_percentile": 0.9,
@@ -360,11 +360,11 @@
     "adaptive_detector_conf": 0.05,
     "adaptive_detector_protect_conf": 0.12,
     "temporal_clean_frames": 5,
-    "temporal_clean_step_sec": 1.0,
+    "temporal_clean_step_sec": 1,
     "absolute_thresholds_legacy_only": true,
     "lazy_trigger_policy": "baseline_state_transition_plus_empty_ref_disagreement",
-    "transition_context_sec": 1.0,
-    "empty_ref_disagreement_interval_sec": 5.0,
+    "transition_context_sec": 1,
+    "empty_ref_disagreement_interval_sec": 5,
     "stripe_temporal_seg_enabled": false,
     "lowres_temporal_frames": 5
   },
@@ -382,7 +382,7 @@
       1230
     ],
     "candidate_review_time_sec": 450,
-    "upload_review_stride_sec": 30.0
+    "upload_review_stride_sec": 30
   },
   "robustness_experiment": {
     "enabled": true,
@@ -416,10 +416,10 @@
       "physical_vehicle_overlap_min": 0.68
     },
     "temporal_clean_frames": 5,
-    "temporal_clean_step_sec": 1.0,
+    "temporal_clean_step_sec": 1,
     "auto_highlight_ratio": 0.1,
     "auto_stripe_energy_ratio": 0.43,
-    "auto_low_sharpness": 55.0,
+    "auto_low_sharpness": 55,
     "adaptive_preprocess": "condition_specific",
     "gt_labeling": "use app button after first run; labels stored in shared LOCALAPPDATA cache",
     "condition_classifier": "per_cctv_percentile",
@@ -441,10 +441,10 @@
   },
   "empty_reference": {
     "enabled": true,
-    "calibration_sec": 10.0,
+    "calibration_sec": 10,
     "min_margin": 0.018,
-    "mad_multiplier": 3.0,
-    "entry_streak_sec": 3.0,
+    "mad_multiplier": 3,
+    "entry_streak_sec": 3,
     "protect_occupied": true,
     "require_vehicle_sensor": true,
     "vehicle_support_min_conf": 0.05
@@ -465,5 +465,20 @@
     "ask_before_install": true,
     "repo": "sopo9880/Parking_",
     "asset_prefix": "ParkingResearchAgent-"
+  },
+  "validation": {
+    "camera_count": 3,
+    "gt_interval_sec": 10,
+    "cut_boundaries_sec": [],
+    "cut_warmup_sec": 10,
+    "repeat_period_sec": 0,
+    "repeat_count": 0
+  },
+  "external_validation": {
+    "enabled": true,
+    "dataset": "MetaPKLot/CNRPark-EXT",
+    "download_mode": "quick",
+    "spot_overlap_threshold": 0.12,
+    "detector": {}
   }
 }
