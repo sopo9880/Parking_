@@ -1,40 +1,54 @@
-# Parking Research Agent v16.4.0
+# Parking Research Agent v16.5.0
 
-This is a **CANDIDATE algorithm release**. The protected **v16.2 SAFE_BASELINE remains unchanged**.
+v16.5.0 is the **validation expansion release**. It does not silently promote the candidate: **v16.2 remains SAFE_BASELINE and v16.4 remains CANDIDATE**.
 
 ## Added
-- `ENTRY_TRACK_SWITCH_HOLD`
-  - Carries slot-level motion context across tracker-ID switches.
-  - Prevents a newly assigned track from instantly looking like a stationary parked vehicle after a large maneuver.
-- `LEAVING_WEAK_OWNER_RELEASE`
-  - Only activates when the baseline itself enters LEAVING.
-  - Requires weak mean confidence, meaningful motion, and an EMPTY sibling view for the same global slot.
-  - Releases stale ghost occupancy after confirmation and requires a settle interval before reacquisition.
-- Event-balanced transition evaluation outputs.
-- Dedicated candidate runner: `RUN_V16_4_CANDIDATE.cmd`.
-- Auditable transition-event CSV and candidate summary/report files.
-- Release workflow now packages the current `main` source directly instead of reconstructing the old v16.3 bootstrap bundle.
 
-## Retained validation result
-### v16.2 SAFE_BASELINE
-- TEST Exact Match: **85.29% (29/34)**
-- MAE: **0.1471**
-- Max error: **1**
-- Under-count: **0%**
+### 1-N CCTV / new-video support
+- CCTV count: **1 to 12**.
+- Dynamic ROI setup, preview, duplicate-slot linker, diagnostics and paper screenshots.
+- Existing 3-CCTV setup remains compatible.
 
-### v16.4 candidate
-- TEST Exact Match: **97.06% (33/34)**
-- MAE: **0.0294**
-- Max error: **1**
-- Under-count: **0%**
-- Over-count: **2.94%**
-- **4 of the previous 5 TEST errors removed**
-- DEV metrics unchanged
+### Dataset Profiles + GT tool
+- Save/load local Dataset Profiles.
+- Dynamic count-GT CSV generator.
+- Interactive GT Labeler with per-CCTV counts, total occupied, U and CUT marking.
 
-The corrected retained TEST timestamps are 16:00, 16:10, 17:10 and 17:20. One over-count event at 17:00 remains.
+### Episode / cut validation
+- Configurable cut boundaries and post-cut warm-up exclusion.
+- `episode_evaluation_mask.csv`
+- `episode_metrics.csv`
 
-## Important limitation
-The rules were developed after analyzing the same retained validation video. Ground truth is **not used by the transition decisions**, but independent-video validation is still required before any SAFE_BASELINE promotion.
+### Repeated-source stability
+For a repeated 4-minute source, use `repeat_period_sec=240`.
+- `repeat_stability.csv`
+- `REPEAT_STABILITY_REPORT.txt`
+- This is reproducibility/stability testing, **not independent validation**.
 
-## Auto Update
-GitHub Releases ZIP + SHA-256 verification remains enabled. User settings, slot/ROI configuration, outputs, venv and user data remain preserved during update.
+### Automatic v16.4 evaluation
+ALL-IN-ONE automatically evaluates v16.4 after v16.2 and packages candidate CSV/JSON/report files.
+
+### Public external validation
+Automatic **MetaPKLot / CNRPark-EXT** preparation:
+- Quick / Standard selected official subsets.
+- Full explicit opt-in shallow clone.
+- resumable targeted downloads + size verification.
+- automatic COCO parking-space annotation conversion.
+- Accuracy / Precision / F1 / Occupied Recall / Empty Specificity / TP/TN/FP/FN.
+- camera/weather breakdown.
+- `EXTERNAL_VALIDATION_TO_CHATGPT.zip`.
+
+Public-data results are labeled external **spatial** generalization, not continuous temporal validation.
+
+### Cache visibility
+The main UI now displays a compact CACHE audit summary.
+
+## Protected research status
+Retained development video:
+- v16.2 SAFE: **85.29% Exact / 0.1471 MAE**
+- v16.4 Candidate: **97.06% Exact / 0.0294 MAE**
+
+No automatic SAFE_BASELINE promotion occurs.
+
+## Update safety
+`user_data/` remains preserved and now contains Dataset Profiles and downloaded public datasets.
