@@ -1,3 +1,16 @@
+# Parking Research Agent v16.5.3
+
+- 검증 센터에서 다중 평가 구간 지정·설정/프로필 유지, 저장된 SAFE/Candidate 결과 재비교 버튼 추가. 학습·파라미터 선택·추론 없이 비교합니다. 새 실행 후 자동 생성하고 업로드 ZIP에 포함합니다.
+- 구간별 Exact, MAE, 최대 오차, Over/Under, 공통 표본 N, 누락 표본 수, Candidate 개선폭, 구간 평균·모표준편차·최상/최악 구간과 개선 구간 수를 저장합니다.
+- 기본 0–5:30 / 5:30–11:00 / 11:00–15:00 / 15:00–20:30 및 전체. 시작 포함·끝 제외, 가장 큰 끝은 포함. 원래 연속 상태와 초기/cut warm-up을 유지합니다. ALL은 표본을 한 번씩 집계하며 겹치는 사용자 구간은 표시합니다.
+- 실제 보존 영상 결과: 앞 두 구간 Exact 0%, 셋째 58.33%로 두 방법 동일. 마지막 SAFE 85.29% → Candidate 97.06%. 개선 1/4; 전체 123개 표본 Exact 34.96% → 38.21%, MAE 1.0976 → 1.0650. 한·영 Living Paper에 실제 표·그래프·근거를 반영하고 이전 snapshot은 보존했습니다.
+
+Evaluation-only cross-window stability on frozen retained predictions, not new inference. Historical DEV/error-reviewed intervals are not independent hold-out. No threshold changes or SAFE promotion; v16.5.2 external baseline evidence remains frozen. Full settings with local video paths are omitted from evidence packages; hashes and evaluation masks are recorded.
+
+Validation: 17 unit/UI tests, protected engine self-test, frozen external evidence recalculation, complete window evidence recalculation, bilingual paper/immutable snapshots, PDF rendering and release checksums.
+
+---
+
 # Parking Research Agent v16.5.2
 
 ## 한국어 / English

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "version": "v16.5.2",
-  "research_revision": "retained-temporal-plus-frozen-external-r2",
+  "version": "v16.5.3",
+  "research_revision": "retained-temporal-external-cross-window-r3",
   "release_kind": "research",
   "research_changed": true,
   "evidence_updates": [
@@ -10,6 +10,13 @@
       "source_zip_sha256": "260036c0045e2fc3a45553e3cbe11d08f1962042f0d24c9874a3cdc245ec46a7",
       "summary": "paper/data/external_v1652/external_summary.json",
       "method": "all retained predictions deduplicated; 20 selected images re-inferred and verified; no full inference rerun"
+    },
+    {
+      "type": "retained_trace_cross_window_evaluation",
+      "summary": "paper/data/windows_v1653/window_evaluation_summary.json",
+      "inference_rerun": false,
+      "improved_windows": "1/4",
+      "independent_holdout": false
     }
   ],
   "languages": [
@@ -221,11 +228,27 @@
         "selected_inference_matches_archive": true,
         "privacy_review": "public benchmark; no added personal information"
       }
+    },
+    {
+      "id": "retained_windows",
+      "number": 12,
+      "path": "figures/v16_5_3/retained_window_comparison.png",
+      "status": "available",
+      "sha256": "eff7f10e26b626c1351f7bf1b45cb1a26788d989cc672846e937e1c55fcb4d48",
+      "provenance": {
+        "source": "paper/data/windows_v1653/window_comparison.csv",
+        "synthetic": false,
+        "inference_rerun": false
+      },
+      "caption": {
+        "ko": "그림 12. 보존 영상의 구간별 동결 예측 비교. 개선은 마지막 구간 1/4에만 관측된다.",
+        "en": "Figure 12. Frozen predictions across retained-video windows. Improvement is observed only in the final window (1/4)."
+      }
     }
   ],
   "paper_sha256": {
-    "ko": "39b12f1afc68f751d8748c649713a6e008d2ebae1d8733590b6ee986c2e2a77f",
-    "en": "cc6dd86c50f92becb080f8d1a0b1dec6ef4012ded8987e1e8f73b1541d026173"
+    "ko": "3715fbaf3d618d76583218efc3d3fe1a168194f37cf801f955e62a6a7968bba9",
+    "en": "977226182a682e5b78ad33266a3d11aa51b88acf80251063ac28c52bddc44414"
   },
   "snapshots": {
     "v16.5.1": {
@@ -246,6 +269,16 @@
       "en": {
         "path": "paper/snapshots/paper_v16.5.2_en.md",
         "sha256": "e66418436edcf1fc06e07d36538edc0e695e318303a6d2611050e87cb5ca8874"
+      }
+    },
+    "v16.5.3": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.3_ko.md",
+        "sha256": "4d30569a9417078d4609e06aa69987d719733bd02fbf59da8216ad8bcc39803d"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.3_en.md",
+        "sha256": "3a93f085198ed4eeb7c381d30c73494b891a2a265b5e36429a66009134061330"
       }
     }
   },
@@ -352,5 +385,52 @@
     "selected_images_reinferred": 20,
     "parameters_tuned_on_external_results": false,
     "original_run_settings_snapshot_available": false
+  },
+  "window_evidence": {
+    "source_run": "run_20261004_231613_ALL_IN_ONE",
+    "scope": "retained same-video cross-window stability; historical DEV was used in development",
+    "original_settings": "hash retained; full settings omitted because it contains local video paths",
+    "artifacts": [
+      {
+        "path": "paper/data/windows_v1653/baseline_count_timeseries.csv",
+        "sha256": "d6d6dce2dcfc6e6ef59652ff58beb759b42c175623b53dfa7360c9052fa4bea6"
+      },
+      {
+        "path": "paper/data/windows_v1653/candidate_v164_config.json",
+        "sha256": "69d425a6f7d517eaff8b419fa13568d2a4f8bc05c6f4e83fcd97da4a50d59b9c"
+      },
+      {
+        "path": "paper/data/windows_v1653/candidate_v164_count_timeseries.csv",
+        "sha256": "80ea3adf802bf46614fe5d46276ad55d851a5da2db2bd046b51391ba30bd4239"
+      },
+      {
+        "path": "paper/data/windows_v1653/paper_windows.csv",
+        "sha256": "b05aaa57f503dc2a4dac168f0c6d70d87567b2f86860a1a91bc201955cba26ea"
+      },
+      {
+        "path": "paper/data/windows_v1653/selected_state_params.json",
+        "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+      },
+      {
+        "path": "paper/data/windows_v1653/window_comparison.csv",
+        "sha256": "b719e4c102e91f268d75ffe0d5b7195f8ede0695376cff7d5f4bed5ea4d8499e"
+      },
+      {
+        "path": "paper/data/windows_v1653/WINDOW_EVALUATION_REPORT.txt",
+        "sha256": "087106bd4ecced228d03730a0ad76a592b404d8bf6a052a71b9cbf6cbad7cf51"
+      },
+      {
+        "path": "paper/data/windows_v1653/window_evaluation_summary.json",
+        "sha256": "46ba105bd6d5df51542785ef05242779b112d25d8f22c5efe63a9b9518837911"
+      },
+      {
+        "path": "paper/data/windows_v1653/WINDOW_EVALUATION_TO_CHATGPT.zip",
+        "sha256": "b9a97875db43cf22d767e971c44dc9aa49149167fa0a54c3132679f28cbabe0c"
+      },
+      {
+        "path": "paper/data/windows_v1653/window_metrics.csv",
+        "sha256": "9d373b6d9d908cec363d19ce9c084c985ab0fe40df00755434ab05a3c566b763"
+      }
+    ]
   }
 }

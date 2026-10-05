@@ -147,9 +147,12 @@ def verify_and_render(pdf,previews,language):
     text='\n'.join(texts)
     for required in ('85.29','97.06','0.1471','0.0294','CANDIDATE','SAFE_BASELINE'):
         assert required in text, f'PDF missing {required}'
-    if 'v16.5.2' in pdf.name:
+    if 'v16.5.2' in pdf.name or 'v16.5.3' in pdf.name:
         for required in ('165530','95.0770','95.4401','33.9553','1.440953'):
             assert required in text, f'PDF missing external result {required}'
+    if 'v16.5.3' in pdf.name:
+        for required in ('34.96','38.21','1/4'):
+            assert required in text, f'PDF missing window result {required}'
     assert '\ufffd' not in text, 'Replacement glyph found'
     assert len(text)>3000 and len(pages)>1, 'Paper unexpectedly empty'
     if language=='ko': assert '초록' in text and '결론' in text, 'Korean text missing'

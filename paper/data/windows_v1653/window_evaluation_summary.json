@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "evidence_scope": "cross_window_stability_not_independent_holdout",
+  "parameters_tuned": false,
+  "state_mode": "continuous saved trace; no reset or extra warm-up at window boundaries",
+  "window_boundary_rule": "start inclusive, end exclusive; largest configured end inclusive; ALL unique full trace",
+  "windows": [
+    {
+      "name": "W1",
+      "start_sec": 0.0,
+      "end_sec": 330.0
+    },
+    {
+      "name": "W2",
+      "start_sec": 330.0,
+      "end_sec": 660.0
+    },
+    {
+      "name": "W3",
+      "start_sec": 660.0,
+      "end_sec": 900.0
+    },
+    {
+      "name": "W4",
+      "start_sec": 900.0,
+      "end_sec": 1230.0
+    }
+  ],
+  "input_sha256": {
+    "baseline_count_timeseries.csv": "d6d6dce2dcfc6e6ef59652ff58beb759b42c175623b53dfa7360c9052fa4bea6",
+    "candidate_v164_count_timeseries.csv": "80ea3adf802bf46614fe5d46276ad55d851a5da2db2bd046b51391ba30bd4239",
+    "candidate_v164_config.json": "69d425a6f7d517eaff8b419fa13568d2a4f8bc05c6f4e83fcd97da4a50d59b9c",
+    "selected_state_params.json": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c",
+    "settings.json": "2919e021bae0479c2589059636d91708cd9dd64091bdfeb0ff7ec8cc1e2009c4"
+  },
+  "global_warmup_sec": 10.0,
+  "cut_warmup_sec": 10.0,
+  "cuts_sec": [],
+  "summary_definition": "unweighted macro mean/population std of nonempty configured windows; ALL excluded",
+  "overlapping_windows": false,
+  "warning": "Historical DEV or error-reviewed segments are not independent tests. No automatic SAFE promotion.",
+  "algorithms": {
+    "CANDIDATE": {
+      "evaluated_windows": 4,
+      "mean_exact": 0.38848039215686275,
+      "std_exact": 0.4119014566336613,
+      "mean_MAE": 1.0490196078431373,
+      "best_window": "W4",
+      "worst_window": "W1"
+    },
+    "SAFE_BASELINE": {
+      "evaluated_windows": 4,
+      "mean_exact": 0.3590686274509804,
+      "std_exact": 0.37150548832375446,
+      "mean_MAE": 1.0784313725490198,
+      "best_window": "W4",
+      "worst_window": "W1"
+    }
+  },
+  "candidate_exact_improved_windows": 1,
+  "candidate_MAE_improved_windows": 1,
+  "compared_windows": 4
+}

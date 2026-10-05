@@ -258,5 +258,13 @@
   "Duplicate rows removed: ": "제거한 중복 행: ",
   "Count Exact ": "점유 주차면 수 Exact ",
   "Count MAE ": "점유 주차면 수 MAE ",
-  "Count = occupied annotated parking spaces, not total unique vehicles.": "Count = 주석이 있는 주차면의 점유 수이며 전체 고유 차량 수가 아닙니다."
+  "Count = occupied annotated parking spaces, not total unique vehicles.": "Count = 주석이 있는 주차면의 점유 수이며 전체 고유 차량 수가 아닙니다.",
+  "Evaluation windows": "평가 구간",
+  "Use 0:00-5:30; 5:30-11:00. Saved predictions are compared without tuning. Historical DEV windows are stability evaluations.": "예: 0:00-5:30; 5:30-11:00. 저장된 예측을 튜닝 없이 비교합니다. 기존 DEV 구간은 안정성 평가로 표시합니다.",
+  "Select run with SAFE and Candidate traces": "SAFE와 Candidate 결과가 있는 실행 폴더 선택",
+  "Compare saved SAFE / Candidate windows": "저장된 SAFE / Candidate 구간 비교",
+  "Evaluation complete": "평가 완료",
+  "Evaluation error": "평가 오류",
+  "Window comparison saved: ": "구간 비교 저장 위치: ",
+  "Invalid evaluation windows: ": "잘못된 평가 구간: "
 }

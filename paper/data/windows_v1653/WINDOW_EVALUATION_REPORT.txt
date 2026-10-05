@@ -1,0 +1,10 @@
+Frozen SAFE/Candidate cross-window evaluation
+Historical DEV or error-reviewed segments are not independent tests. No automatic SAFE promotion.
+continuous saved trace; no reset or extra warm-up at window boundaries
+start inclusive, end exclusive; largest configured end inclusive; ALL unique full trace
+window   N  SAFE_exact  Candidate_exact  exact_delta_pp  SAFE_MAE  Candidate_MAE  MAE_delta
+    W1  32    0.000000         0.000000        0.000000  1.500000       1.500000   0.000000
+    W2  33    0.000000         0.000000        0.000000  2.000000       2.000000   0.000000
+    W3  24    0.583333         0.583333        0.000000  0.666667       0.666667   0.000000
+    W4  34    0.852941         0.970588       11.764706  0.147059       0.029412  -0.117647
+   ALL 123    0.349593         0.382114        3.252033  1.097561       1.065041  -0.032520

@@ -32,6 +32,7 @@ from validation_center import (
     configured_camera_names,
     write_episode_metrics,
     write_repeat_stability,
+    write_window_evaluation,
 )
 
 from slot_engine import (
@@ -1542,7 +1543,8 @@ class App(tk.Tk):
             'candidate_v164_slot_timeseries.csv','candidate_v164_global_slot_timeseries.csv','candidate_v164_count_timeseries.csv',
             'candidate_v164_metrics.csv','candidate_v164_transition_events.csv','candidate_v164_event_balanced_metrics.csv',
             'candidate_v164_summary.json','candidate_v164_config.json','CANDIDATE_v16_4_REPORT.txt',
-            'episode_evaluation_mask.csv','episode_metrics.csv','repeat_stability.csv','REPEAT_STABILITY_REPORT.txt'
+            'episode_evaluation_mask.csv','episode_metrics.csv','repeat_stability.csv','REPEAT_STABILITY_REPORT.txt',
+            'window_metrics.csv','window_comparison.csv','window_evaluation_summary.json','WINDOW_EVALUATION_REPORT.txt'
         ]:
             pp=run_dir/name
             if pp.exists():
@@ -1892,6 +1894,7 @@ class App(tk.Tk):
             try:
                 ep_path=write_episode_metrics(run_dir,self.settings)
                 rep_path=write_repeat_stability(run_dir,self.settings)
+                write_window_evaluation(run_dir,self.settings)
                 log(f'Stage 6/7 validation extras: episode={ep_path} repeat={rep_path}')
             except Exception as exc:
                 (run_dir/'VALIDATION_EXTRAS_UNAVAILABLE.txt').write_text(f'{type(exc).__name__}: {exc}\n',encoding='utf-8')
@@ -1952,6 +1955,7 @@ class App(tk.Tk):
                 run_v164_candidate(Path(run_dir),RefinerConfig())
                 write_episode_metrics(run_dir,self.settings)
                 write_repeat_stability(run_dir,self.settings)
+                write_window_evaluation(run_dir,self.settings)
             except Exception:
                 pass
             write_camera_detector_metrics(evidence_dir/'frame_detection_summary.csv',gt,self.settings,run_dir)

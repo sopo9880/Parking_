@@ -1,0 +1,15 @@
+{
+  "entry_recent_motion_window_sec": 8.0,
+  "entry_recent_motion_min_px": 45.0,
+  "entry_track_age_target_sec": 24.0,
+  "entry_transition_track_age_estimate_sec": 3.0,
+  "entry_stable_motion_span_max_px": 12.0,
+  "entry_stable_speed_max_px_s": 6.0,
+  "entry_recent_hit_ratio_min": 0.75,
+  "exit_weak_mean_conf_max": 0.2,
+  "exit_motion_span_min_px": 35.0,
+  "exit_confirm_sec": 6.0,
+  "exit_reacquire_settle_sec": 8.0,
+  "exit_require_duplicate_empty_vote": true,
+  "event_eval_window_sec": 30.0
+}

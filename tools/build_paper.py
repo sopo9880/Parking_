@@ -87,7 +87,7 @@ def main():
                 assert digest((ROOT/snapshot['path']).read_text(encoding='utf-8'))==snapshot['sha256'], 'Snapshot modified'
         mirror = json.loads((ROOT/'paper/data/paper_manifest.json').read_text(encoding='utf-8'))
         assert mirror==manifest, 'Manifest mirror differs'
-        for artifact in manifest.get('external_evidence', {}).get('artifacts', []):
+        for artifact in (manifest.get('external_evidence', {}).get('artifacts', []) + manifest.get('window_evidence', {}).get('artifacts', [])):
             assert hashlib.sha256((ROOT/artifact['path']).read_bytes()).hexdigest()==artifact['sha256'], 'Frozen external evidence was modified'
         print('Living Paper: bilingual sections, tables, figures, hashes and immutable snapshots PASS')
     else:

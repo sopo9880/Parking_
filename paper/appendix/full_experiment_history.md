@@ -949,3 +949,28 @@
 - Spatial benchmark does not validate temporal transitions; independent temporal validation pending
 
 **Decision:** Freeze EXTERNAL_BASELINE; retain v16.2 SAFE_BASELINE and v16.4 CANDIDATE.
+
+## v16.5.3
+
+**한국어 요약:** 보존 예측의 다중 구간 비교. 개선 1/4, 전체 Exact 34.96% → 38.21%. 독립 검증 아님.
+
+### Changes
+
+- Custom persisted/profile evaluation windows
+- Common paired denominator, warm-up and boundary handling, missing-pair audits
+- Per-window metrics, deltas, macro mean/std, best/worst windows and improvement counts
+- Evaluation-only saved-run button, automatic run outputs and auditable ZIP
+- Bilingual paper, real retained results and chart, immutable snapshots
+
+### Results
+
+- W1/W2 Exact 0% for both; W3 58.33% for both; final window SAFE 85.29% vs Candidate 97.06%
+- Candidate improves 1/4 windows; full 123-sample Exact 34.96% vs 38.21%, MAE 1.0976 vs 1.0650
+
+### Issues
+
+- Earlier windows were DEV; final window informed refinement, so no independent hold-out claim
+- No inference rerun; original continuous state retained
+- Early counting errors remain; initialization is a hypothesis requiring investigation
+
+**Decision:** Keep SAFE_BASELINE/CANDIDATE status and frozen parameters; report limited cross-window benefit honestly.

@@ -31,6 +31,7 @@ from PIL import Image, ImageTk
 
 from utils import format_timestamp, load_json, save_json, video_info, open_video, read_frame_at
 from public_dataset import prepare_metapklot_cnr, evaluate_external_cnr
+from window_evaluation import default_windows, format_windows, parse_windows, write_window_evaluation
 
 APP_DIR = Path(__file__).resolve().parent
 USER_DATA = APP_DIR / "user_data"
@@ -419,7 +420,7 @@ def open_validation_center(app):
     _ensure()
     win = tk.Toplevel(app)
     win.title(tr("v16.5 Validation Center"))
-    win.geometry("980x820")
+    win.geometry("980x940")
     win.minsize(850, 700)
 
     settings = load_json(APP_DIR/"settings.json", getattr(app, "settings", {})) or {}
@@ -441,6 +442,7 @@ def open_validation_center(app):
     warm_var = tk.DoubleVar(value=float(vcfg.get("cut_warmup_sec", 10.0)))
     repeat_var = tk.DoubleVar(value=float(vcfg.get("repeat_period_sec", 0.0)))
     repeat_count_var = tk.IntVar(value=int(vcfg.get("repeat_count", 0)))
+    windows_var = tk.StringVar(value=format_windows(vcfg.get('evaluation_windows',default_windows())))
 
     ttk.Label(local,text=tr("CCTV count")).grid(row=1,column=0,sticky="w",padx=6,pady=5)
     ttk.Spinbox(local,from_=1,to=12,textvariable=cam_var,width=8).grid(row=1,column=1,sticky="w",padx=6,pady=5)
@@ -469,12 +471,19 @@ def open_validation_center(app):
             "cut_warmup_sec": max(0.0, float(warm_var.get())),
             "repeat_period_sec": max(0.0, float(repeat_var.get())),
             "repeat_count": max(0, int(repeat_count_var.get())),
+            "evaluation_windows": parse_windows(windows_var.get()),
         }
 
     def save_settings_only(show=True):
         nonlocal settings
         settings = load_json(APP_DIR/"settings.json", settings) or {}
-        settings["validation"] = collect_validation()
+        try:
+            collected = collect_validation()
+        except (ValueError,tk.TclError) as exc:
+            if not show: raise
+            messagebox.showerror(tr('Evaluation error'),tr('Invalid evaluation windows: ')+str(exc),parent=win)
+            return None
+        settings["validation"] = collected
         save_json(APP_DIR/"settings.json", settings)
         app.settings = settings
         if show:
@@ -518,6 +527,7 @@ def open_validation_center(app):
         warm_var.set(float(cfg.get("cut_warmup_sec",10)))
         repeat_var.set(float(cfg.get("repeat_period_sec",0)))
         repeat_count_var.set(int(cfg.get("repeat_count",0)))
+        windows_var.set(format_windows(cfg.get('evaluation_windows',default_windows())))
         save_settings_only(show=False)
         try: app._save_ui_state()
         except Exception: pass
@@ -559,6 +569,20 @@ def open_validation_center(app):
     row_gt.grid(row=9,column=0,columnspan=3,sticky="ew",padx=6,pady=(0,8))
     ttk.Button(row_gt,text=tr("Create Count-GT Template"),command=create_template).pack(side="left",padx=3)
     ttk.Button(row_gt,text=tr("Open GT Labeler"),command=label_gt).pack(side="left",padx=3)
+
+    ttk.Label(local,text=tr("Evaluation windows")).grid(row=10,column=0,sticky='w',padx=6,pady=5)
+    ttk.Entry(local,textvariable=windows_var).grid(row=10,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
+    ttk.Label(local,text=tr("Use 0:00-5:30; 5:30-11:00. Saved predictions are compared without tuning. Historical DEV windows are stability evaluations."),wraplength=900).grid(row=11,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    def evaluate_saved_windows():
+        try:
+            current=save_settings_only(show=False)
+            folder=filedialog.askdirectory(title=tr('Select run with SAFE and Candidate traces'),initialdir=str(APP_DIR/'output'),parent=win)
+            if not folder: return
+            output=write_window_evaluation(folder,current)
+            messagebox.showinfo(tr('Evaluation complete'),tr('Window comparison saved: ')+str(output),parent=win)
+        except Exception as exc:
+            messagebox.showerror(tr('Evaluation error'),str(exc),parent=win)
+    ttk.Button(local,text=tr('Compare saved SAFE / Candidate windows'),command=evaluate_saved_windows).grid(row=12,column=0,columnspan=3,sticky='w',padx=6,pady=5)
 
     public = ttk.LabelFrame(win, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)

@@ -21,3 +21,5 @@ Install `tools/requirements-paper.txt`, then run `python tools/build_paper_pdf.p
 ## Frozen external baseline / 외부 기준선
 
 Keep `data/external_v1652/` and `figures/v16_5_2/` immutable. `tools/check_external_evidence.py` verifies archive hashes and recomputes overall/camera/weather occupancy and image-count metrics. Record archived-prediction recalculation separately from full inference and selected-image replay. Future external runs store parameters/model hashes before inference, deduplicate both prepared annotations and evaluation input, report skipped images, and generate actual overlays. Never tune this baseline against target labels. Count metrics sum occupied annotated spaces per image, not all or cross-camera unique vehicles.
+
+The v16.5.3 snapshots add actual retained-video cross-window evidence. `tools/check_window_evidence.py` recalculates frozen paired traces. Preserve `data/windows_v1653/` and `figures/v16_5_3/` and earlier snapshots. Window changes are evaluation-only; do not re-label historical DEV as independent hold-out.

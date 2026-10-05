@@ -645,6 +645,31 @@
         "Spatial benchmark does not validate temporal transitions; independent temporal validation pending"
       ],
       "decision": "Freeze EXTERNAL_BASELINE; retain v16.2 SAFE_BASELINE and v16.4 CANDIDATE."
+    },
+    {
+      "version": "v16.5.3",
+      "period": "2026-10",
+      "status": "CROSS_WINDOW_EVALUATION_RELEASE",
+      "confidence": "retained_trace_recalculation_no_inference_rerun",
+      "title": "Frozen SAFE/Candidate multi-window evaluation",
+      "goal": "Measure whether retained final-window improvements transfer across time windows.",
+      "changes": [
+        "Custom persisted/profile evaluation windows",
+        "Common paired denominator, warm-up and boundary handling, missing-pair audits",
+        "Per-window metrics, deltas, macro mean/std, best/worst windows and improvement counts",
+        "Evaluation-only saved-run button, automatic run outputs and auditable ZIP",
+        "Bilingual paper, real retained results and chart, immutable snapshots"
+      ],
+      "results": [
+        "W1/W2 Exact 0% for both; W3 58.33% for both; final window SAFE 85.29% vs Candidate 97.06%",
+        "Candidate improves 1/4 windows; full 123-sample Exact 34.96% vs 38.21%, MAE 1.0976 vs 1.0650"
+      ],
+      "issues": [
+        "Earlier windows were DEV; final window informed refinement, so no independent hold-out claim",
+        "No inference rerun; original continuous state retained",
+        "Early counting errors remain; initialization is a hypothesis requiring investigation"
+      ],
+      "decision": "Keep SAFE_BASELINE/CANDIDATE status and frozen parameters; report limited cross-window benefit honestly."
     }
   ]
 }

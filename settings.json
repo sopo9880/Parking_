@@ -472,7 +472,29 @@
     "cut_boundaries_sec": [],
     "cut_warmup_sec": 10,
     "repeat_period_sec": 0,
-    "repeat_count": 0
+    "repeat_count": 0,
+    "evaluation_windows": [
+      {
+        "name": "W1",
+        "start_sec": 0,
+        "end_sec": 330
+      },
+      {
+        "name": "W2",
+        "start_sec": 330,
+        "end_sec": 660
+      },
+      {
+        "name": "W3",
+        "start_sec": 660,
+        "end_sec": 900
+      },
+      {
+        "name": "W4",
+        "start_sec": 900,
+        "end_sec": 1230
+      }
+    ]
   },
   "external_validation": {
     "enabled": true,

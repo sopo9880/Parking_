@@ -2,7 +2,7 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.2**
+Current release: **v16.5.3**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
@@ -114,3 +114,11 @@ Preserved during update:
 
 ## Version-lineage rule
 `research_history.json` contains only the paper/research lineage. The separate field-operation v20+ lineage is intentionally not mixed into this timeline.
+
+## Evaluation windows / 다중 구간 평가
+
+검증 센터의 평가 구간에 `0:00-5:30; 5:30-11:00; 11:00-15:00; 15:00-20:30`처럼 입력하고 설정/프로필을 저장하세요. **저장된 SAFE / Candidate 구간 비교**에서 두 결과가 있는 실행 폴더를 선택하면 학습·추론 없이 구간별 Exact/MAE/최대 오차/과대·과소 추정과 개선폭, 평균·표준편차·최상/최악 구간을 저장합니다. 새 실행에서는 Candidate 평가 후 자동 생성하며 UPLOAD_TO_CHATGPT.zip에도 포함됩니다.
+
+Outputs: `window_metrics.csv`, `window_comparison.csv`, `window_evaluation_summary.json`, `WINDOW_EVALUATION_REPORT.txt`, `WINDOW_EVALUATION_TO_CHATGPT.zip`. CLI: `python tools/evaluate_windows.py RUN_FOLDER --windows "0:00-5:30;5:30-11:00"`. Evaluation windows do not change DEV tuning boundaries or model parameters. Continuous saved state is preserved; paired samples use the same validity/warm-up mask. Intervals include starts and exclude ends except the largest end. ALL uses the full trace once. Macro summaries exclude ALL and flag overlaps. Historical DEV/error-reviewed windows are stability evaluation, not independent hold-out.
+
+The retained run shows gains in **1/4 windows**: the final window retains 85.29% → 97.06%, while the first three show no improvement. Full-trace Exact is **34.96% → 38.21%** (123 pairs). These are recalculated saved predictions, not new inference or SAFE promotion. See the bilingual paper for early-window limitations and evidence hashes.
