@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 from detector import VehicleDetector, physical_vehicle_nms
+from split_protocol import dev_mask
 from utils import crop_roi, ensure_dir, format_timestamp, load_ground_truth, open_video, read_frame_at, save_json
 
 
@@ -62,9 +63,9 @@ def run_warped_detector_sweep(
     out_dir = ensure_dir(output_dir)
     gt = load_ground_truth(gt_csv_path)
     dev_end = float(settings.get('dev_end_sec', 900))
-    dev_gt = gt[gt['time_sec'] < dev_end].copy().reset_index(drop=True)
+    dev_gt = gt[dev_mask(gt['time_sec'],settings)].copy().reset_index(drop=True)
     if dev_gt.empty:
-        raise ValueError('No DEV ground-truth rows were found before dev_end_sec.')
+        raise ValueError('No ground-truth rows were found in the DEV interval.')
 
     sweep = settings.get('detector_sweep', {})
     models = list(sweep.get('models', ['yolov8n.pt', 'yolov8s.pt', 'yolov8m.pt', 'yolov8l.pt']))
@@ -205,7 +206,7 @@ def run_warped_detector_sweep(
 
     with (out_dir/'WARPED_DETECTOR_REPORT.txt').open('w', encoding='utf-8') as f:
         f.write('Parking Slot Engine v12 - Perspective-warped FULL-CCTV detector DEV sweep\n\n')
-        f.write(f'DEV rows: {len(dev_gt)} (time < {dev_end:.1f}s)\n')
+        f.write(f'DEV rows: {len(dev_gt)}; active split={settings.get("active_split_protocol", {"dev":[0,dev_end]})}\n')
         f.write(f'Grid: models={models}, imgsz={imgszs}, conf={confs}, tiling={tilings}\n')
         f.write('TEST is not used by this tuner.\n')
         f.write('Selection policy: MAE -> under-count rate -> max absolute error -> exact rate -> over-count rate.\n\n')

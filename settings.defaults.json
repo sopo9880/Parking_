@@ -472,7 +472,18 @@
     "cut_boundaries_sec": [],
     "cut_warmup_sec": 10,
     "repeat_period_sec": 0,
-    "repeat_count": 0
+    "repeat_count": 0,
+    "split_experiments": {
+      "enabled": true,
+      "dev": [
+        330,
+        1230
+      ],
+      "test": [
+        0,
+        330
+      ]
+    }
   },
   "external_validation": {
     "enabled": true,

@@ -2,10 +2,27 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.3.1**
+Current release: **v16.5.4**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
+
+## ALL-IN-ONE: 실제 DEV/TEST 분할 실험 / Fresh split experiments
+
+**검증 센터 → 기존·대체 분할을 각각 새로 학습·평가**가 기본 활성화됩니다. 설정을 저장한 뒤 ALL-IN-ONE을 실행하면 기존 파이프라인·강건성·구간별 통계에 이어 두 개의 별도 실행을 수행합니다.
+
+| 분할 | DEV | TEST |
+| --- | --- | --- |
+| Original | 0:00–15:00 | 15:00–20:30 |
+| Alternate (기본값) | 5:30–20:30 | 0:00–5:30 |
+
+대체 DEV/TEST 구간은 검증 센터에서 변경하고 프로필과 함께 저장할 수 있습니다. 구간은 겹치면 안 되며 영상 평가 길이 안에 있어야 합니다. 각 실행은 공유 캐시와 기존 검출기 선택을 사용하지 않고, DEV 영상으로 검출기 설정을 선택하고 주차면 앵커·템플릿을 다시 학습합니다. YOLO 가중치 자체를 재학습하지는 않습니다. 상태 변형 선택에는 DEV 정답만 전달하고 슬롯 이벤트 정답은 제외합니다. 설정을 확정·기록한 뒤 TEST 정답으로 SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST / EMPTY_REF / SELECTED / CANDIDATE를 평가합니다.
+
+Each split uses a fresh subprocess and separate detector/geometry/evidence directories. Detector configuration and temporal-variant selection receive DEV labels only. Adaptive quality thresholds are fitted on DEV crops; TEST crops are only classified against them. Operator-supplied manual points, initial states, pretrained weights and the search grid are shared fixed inputs. Chronological inference still begins at time zero; online state history can span intervals. The reverse split is an **offline same-video evaluation**, using historically reviewed data, not an independent future-video hold-out.
+
+`output/run_..._ALL_IN_ONE/split_experiments/` contains `original/`, `alternate/`, `split_experiment_comparison.csv` and `suite_summary.json`. Each child has `split_final_metrics.csv`, DEV-only selection tables, `selection_freeze.json`, `split_audit.json`, full traces and a worker log. Exact, MAE, maximum error and Over/Under are reported separately for DEV/TEST. The upload ZIP includes results and audits, excluding the private worker request and learned template images. A failed child preserves partial outputs and marks the suite failed.
+
+새 분할은 두 번의 전체 검출기 탐색·학습·추론으로 시간이 더 걸립니다. 기존 **저장된 SAFE/Candidate 구간 비교** 버튼은 빠른 통계 재계산 기능으로 계속 유지됩니다. v16.5.4는 기능·누수 방지 검증을 완료한 배포이며, 실제 전체 CCTV 재실험 수치는 실행 후 생성됩니다. 새 점수는 아직 논문에 보고하지 않았습니다.
 
 ## 한국어 / English UI
 

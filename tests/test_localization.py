@@ -51,12 +51,13 @@ class LiveUITests(unittest.TestCase):
         self.settings['ui']['language']='ko'
         self.path.write_text(json.dumps(self.settings),encoding='utf-8')
         self.mock=patch.object(app,'SETTINGS_PATH',self.path);self.mock.start()
+        self.ui_state=patch.object(app,'UI_STATE_PATH',Path(self.tmp.name)/'ui_state.json');self.ui_state.start()
         # Disable startup network checks regardless of legacy config key spelling.
         self.updates=patch.object(app,'load_update_config',return_value={'enabled':False});self.updates.start()
         self.root=app.App();self.root.withdraw();self.root.update()
 
     def tearDown(self):
-        self.root.destroy();self.updates.stop();self.mock.stop();self.tmp.cleanup();set_language('ko')
+        self.root.destroy();self.updates.stop();self.ui_state.stop();self.mock.stop();self.tmp.cleanup();set_language('ko')
 
     def widgets(self,root):
         return [root]+[w for child in root.winfo_children() for w in self.widgets(child)]
@@ -92,6 +93,32 @@ class LiveUITests(unittest.TestCase):
         self.root._progress(.1,'1/7 Detector tuning | CACHE HIT');self.root.update()
         self.assertIn('검출기 튜닝',self.root.status_var.get())
         self.assertIn('전체 경과',self.root.timing_var.get())
+
+    def test_split_intervals_persist_with_profile(self):
+        import validation_center as vc
+        from tkinter import ttk
+        self.root.language_var.set('en');self.root._change_language()
+        with patch.object(vc,'APP_DIR',Path(self.tmp.name)), \
+             patch.object(vc,'PROFILE_PATH',Path(self.tmp.name)/'profiles.json'), \
+             patch.object(vc.messagebox,'showinfo'), patch.object(vc.messagebox,'showerror') as errors:
+            self.root.open_validation_center();self.root.update()
+            widgets=self.widgets(self.root)
+            entries=[w for w in widgets if isinstance(w,ttk.Entry)]
+            dev=next(w for w in entries if w.get()=='5:30-20:30')
+            test=next(w for w in entries if w.get()=='0:00-5:30')
+            dev.delete(0,'end');dev.insert(0,'6:00-20:30')
+            test.delete(0,'end');test.insert(0,'0:00-6:00')
+            buttons={w.cget('text'):w for w in widgets if isinstance(w,ttk.Button)}
+            buttons['Save Validation Settings'].invoke()
+            cfg=json.loads(self.path.read_text())['validation']['split_experiments']
+            self.assertEqual(cfg,{'enabled':True,'dev':[360,1230],'test':[0,360]})
+            profile=next(w for w in widgets if isinstance(w,ttk.Combobox) and str(w.cget('state'))=='normal')
+            profile.set('split-profile');buttons['Save Profile'].invoke()
+            dev.delete(0,'end');dev.insert(0,'5:30-20:30')
+            buttons['Load Profile'].invoke()
+            self.assertEqual(dev.get(),'6:00-20:30')
+            self.assertEqual(test.get(),'0:00-6:00')
+            self.assertFalse(errors.called)
 
     def test_validation_messagebox_is_localized(self):
         self.root.video_var.set('')

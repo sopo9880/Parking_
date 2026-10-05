@@ -1,3 +1,5 @@
 # Preserve immutable evidence bytes and SHA-256 on Windows and Linux.
 paper/data/external_v1652/** -text
 paper/data/windows_v1653/** -text
+
+paper/data/split_protocol_v1654.json -text

@@ -494,7 +494,18 @@
         "start_sec": 900,
         "end_sec": 1230
       }
-    ]
+    ],
+    "split_experiments": {
+      "enabled": true,
+      "dev": [
+        330,
+        1230
+      ],
+      "test": [
+        0,
+        330
+      ]
+    }
   },
   "external_validation": {
     "enabled": true,

@@ -1,3 +1,18 @@
+# Parking Research Agent v16.5.4
+
+ALL-IN-ONE에서 기존 DEV 0–15:00 / TEST 15:00–20:30과 대체 DEV 5:30–20:30 / TEST 0–5:30을 각각 새로 학습·평가합니다. 대체 구간과 실행 여부는 검증 센터에서 저장하며, 기존 구간별 통계 기능도 유지됩니다.
+
+- 별도 프로세스·폴더에서 DEV 검출기 설정 탐색, 주차면 앵커/템플릿 학습, 전체 추론을 수행합니다. 공유 캐시와 이전 검출기 선택을 재사용하지 않습니다. YOLO 가중치 학습은 아닙니다.
+- DEV 정답만 선택 함수에 전달하고, 품질 보정도 DEV 영상에서 계산합니다. 선택 설정의 해시를 확정한 뒤 TEST를 평가합니다. 슬롯 이벤트 정답은 이번 분할 선택에서 제외합니다.
+- SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST / EMPTY_REF / SELECTED / CANDIDATE별 DEV/TEST Exact, MAE, 최대 오차, Over/Under 비교·감사 기록·추론 결과를 업로드 ZIP에 포함합니다. 실패 시 부분 결과를 보존하고 완료로 표시하지 않습니다.
+- 한·영 Living Paper에 실제 분할 실험 설계와 근거 상태를 동기화하고 새 snapshot/PDF를 제공합니다. 보존된 성능과 외부 기준선은 그대로 유지하며, 새로운 전체 CCTV 실험 점수는 아직 미보고입니다.
+
+Fresh split fitting replaces trace slicing for the new experiment path. Pretrained YOLO weights remain fixed; this is detector configuration/geometry/variant fitting, not network retraining. Inference remains chronological from zero, including online state history. Historically reviewed same-video reverse splits do not establish independent temporal generalization. No SAFE/CANDIDATE promotion.
+
+Validation: 23 unit/UI tests, including real tuner/geometry DEV frame access, real state/refiner execution with TEST-label perturbation, failure reporting and interval boundaries; protected engine self-test; frozen external/window evidence checks; bilingual paper/snapshots and rendered PDFs. Full real-video split experiments have not been run for this release; no new score is claimed.
+
+---
+
 # Parking Research Agent v16.5.3.1
 
 Correct the Living Paper manifest PDF asset filenames to match this release, and require an exact-version asset list in publication checks. Includes the v16.5.3 multi-window functionality and actual retained results unchanged. No new experiment, tuning, promotion or manuscript expansion; earlier snapshots remain immutable.

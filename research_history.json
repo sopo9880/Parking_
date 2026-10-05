@@ -685,6 +685,29 @@
       ],
       "issues": [],
       "decision": "Preserve prior snapshots and SAFE/Candidate status."
+    },
+    {
+      "version": "v16.5.4",
+      "period": "2026-10",
+      "status": "IMPLEMENTED_RESULTS_PENDING",
+      "confidence": "implementation-tested",
+      "title": "Fresh original and alternate DEV/TEST fitting in ALL-IN-ONE",
+      "goal": "Separate actual split fitting from frozen cross-window statistics.",
+      "changes": [
+        "Independent processes and fresh DEV detector/geometry fitting",
+        "DEV-only state selection, DEV-only quality calibration and selection freeze audit",
+        "Configurable alternate intervals with profile persistence",
+        "Final per-split metrics and explicit failure packaging"
+      ],
+      "results": [
+        "23 unit/UI tests and protected self-test passed; full real-video split results pending"
+      ],
+      "issues": [
+        "Historical same-video data cannot establish independent temporal hold-out",
+        "Fixed pretrained weights; no neural-network retraining",
+        "Two fresh detector sweeps and full inference runs increase runtime"
+      ],
+      "decision": "Retain prior SAFE/CANDIDATE status and all frozen measured results; report methodology without invented scores."
     }
   ]
 }

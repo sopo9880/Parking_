@@ -701,7 +701,8 @@ def learn_slots_and_candidates(video_path: str, rois: Dict[str,Sequence[int]], s
     # Every Learn starts again from the administrator's manual point.
     _reset_learned_geometry(slots)
     dev_end=float(settings.get('dev_end_sec',900));sample_sec=float(settings.get('learn_sample_sec',2.0))
-    times=np.arange(0.0,dev_end+1e-6,sample_sec).tolist();cap=open_video(video_path)
+    from split_protocol import learning_times
+    times=learning_times(settings,sample_sec);cap=open_video(video_path)
     by_cctv=defaultdict(list)
     for s in slots: by_cctv[s['cctv']].append(s)
     box_samples=defaultdict(list);center_samples=defaultdict(list);unmatched_obs=defaultdict(list);first_images={}
@@ -1605,7 +1606,8 @@ def evaluate_state_output(global_df: pd.DataFrame, gt: pd.DataFrame, dev_end_sec
     merged['occupied_pred'] = merged['occupied_pred'].fillna(0).astype(int)
     merged['error'] = merged['occupied_pred'] - merged['ground_truth_occupied_space_count'].astype(int)
     merged['abs_error'] = merged['error'].abs()
-    merged['split'] = np.where(merged['time_sec'] < dev_end_sec, 'DEV', 'TEST')
+    from split_protocol import labels
+    merged['split'] = labels(merged['time_sec'],dev_end_sec)
     def metrics(part):
         if len(part) == 0:
             return {'N':0,'exact_rate':0.0,'mae':0.0,'max_abs_error':0,'false_empty_bias_rate':0.0,'over_rate':0.0}
@@ -1634,7 +1636,9 @@ def evaluate_slot_level(global_df: pd.DataFrame, slot_gt_events: pd.DataFrame, g
             if pred_state is None:
                 sub = global_df[(global_df['global_id'].astype(str)==gid)&(global_df['time_sec']<=t)]
                 pred_state = str(sub.iloc[-1]['state']) if not sub.empty else 'EMPTY'
-            split = 'DEV' if t < dev_end_sec else 'TEST'
+            from split_protocol import labels
+            split = str(labels([t],dev_end_sec)[0])
+            if split == 'IGNORED': continue
             rows.append({
                 'time_sec':t,'timestamp':format_timestamp(t),'global_id':gid,
                 'gt_state':gt_state,'pred_state':pred_state,'correct':int(gt_state==pred_state),
@@ -4617,7 +4621,9 @@ def extract_segmentation_assist(video_path: str, rois: Dict[str,Sequence[int]], 
     finally:
         cap_q.release()
 
-    thresholds=build_relative_quality_thresholds(quality_rows,cfg)
+    from split_protocol import calibration_quality_rows
+    calibration_rows=calibration_quality_rows(quality_rows,base,settings)
+    thresholds=build_relative_quality_thresholds(calibration_rows,cfg)
     th_rows=[]
     for cam,th in thresholds.items():
         if cam=='__GLOBAL__': continue

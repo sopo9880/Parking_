@@ -974,3 +974,12 @@
 - Early counting errors remain; initialization is a hypothesis requiring investigation
 
 **Decision:** Keep SAFE_BASELINE/CANDIDATE status and frozen parameters; report limited cross-window benefit honestly.
+
+
+## v16.5.3.1 — Maintenance
+
+PDF asset metadata corrected; retained results unchanged.
+
+## v16.5.4 — Fresh DEV/TEST split experiments
+
+ALL-IN-ONE runs original and alternate protocols in isolated processes with fresh DEV detector configuration and geometry fitting, DEV-only state selection, DEV-only quality calibration and frozen TEST evaluation. Pretrained weights remain fixed. Default alternate: DEV 330–1230 s / TEST 0–330 s. Functional tests passed; full real-video split metrics remain pending. Historical same-video evaluation is not independent hold-out. Existing metrics and snapshots remain unchanged.

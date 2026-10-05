@@ -1553,13 +1553,15 @@ class App(tk.Tk):
             for suffix in ['manual_voronoi_preview.jpg','slot_overlap_preview.jpg']:
                 pp=run_dir/f'{cctv_name}_{suffix}'
                 if pp.exists(): upload_files.append((pp,pp.name))
-        for root_name in ['screenshots','ground_truth_review','candidate_review','duplicate_review','robustness']:
+        for root_name in ['screenshots','ground_truth_review','candidate_review','duplicate_review','robustness','split_experiments']:
             tree_root = run_dir/root_name
             if tree_root.exists():
                 for sp in tree_root.rglob('*'):
                     if not sp.is_file():
                         continue
                     rel = str(sp.relative_to(run_dir)).replace('\\','/')
+                    if rel.endswith('/worker_input.json') or '/learned/templates/' in rel:
+                        continue
                     # v15.2 keeps the complete GT review locally but sends only a compact,
                     # high-value subset to ChatGPT: contact sheets, change/event frames,
                     # upload_review checkpoints, and the upload-specific index/readme.
@@ -1596,7 +1598,8 @@ class App(tk.Tk):
             '4) Run lazy RAW + per-CCTV relative ADAPTIVE slot segmentation only on transition-relevant ambiguity\n'
             '5) Run bounded degradation robustness test (low-res / glare / causal temporal de-moire)\n'
             '6) Compare SAFE_BASELINE / TRANSITION_GUARD / SEG_ASSIST, then auto-run v16.4 Candidate\n'
-            '7) Add episode/cut + repeated-source stability metrics, capture review figures, and build ZIP\n\n'
+            '7) Add episode/cut + repeated-source stability metrics, capture review figures, and build ZIP\n'
+            '8) When enabled, freshly fit and evaluate original + alternate DEV/TEST splits without shared caches\n\n'
             'No more clicks are required after starting. Candidate slots are discovered but NOT auto-accepted. '
             'You can minimize this window while it runs.\n\nContinue?')
         ):
@@ -1608,6 +1611,13 @@ class App(tk.Tk):
         self.timing_var.set(tr('Total Elapsed 00:00:00 | Step Elapsed 00:00:00 | Step ETA --:--:-- | Total Remaining --:--:--'))
         self.settings = load_json(SETTINGS_PATH, self.settings)
         self.settings.setdefault('robustness_experiment',{})['gt_file']=str(ROBUSTNESS_GT_PATH)
+        if self.settings.get('validation',{}).get('split_experiments',{}).get('enabled',True):
+            from split_experiment import protocols
+            try:
+                protocols(self.settings)
+            except ValueError as exc:
+                messagebox.showerror(tr('Evaluation error'),str(exc))
+                return
         self.cache_status_var.set(tr('CACHE | auditing current dataset/profile...'))
         video = self.video_var.get().strip()
         gt_path = self.gt_var.get().strip()
@@ -1899,6 +1909,17 @@ class App(tk.Tk):
             except Exception as exc:
                 (run_dir/'VALIDATION_EXTRAS_UNAVAILABLE.txt').write_text(f'{type(exc).__name__}: {exc}\n',encoding='utf-8')
                 log(f'Stage 6/7 validation extras unavailable: {type(exc).__name__}: {exc}')
+            if self.settings.get('validation',{}).get('split_experiments',{}).get('enabled',True):
+                from split_experiment import run_suite
+                log('Fresh original + alternate DEV/TEST split experiments started; caches disabled.')
+                try:
+                    run_suite(video,rois,gt_path,SLOTS_PATH,self.settings,run_dir,
+                              progress=self._mapped_progress(0.985,0.995,'Fresh DEV/TEST splits'))
+                except Exception:
+                    # Package partial results before surfacing the failure.
+                    self._package_current_run(run_dir,evidence_dir,gt_path,slot_gt_path)
+                    raise
+                log('Fresh DEV/TEST split experiments completed.')
             log('Stage 7/7: GT review package + automatic paper/debug figures started.')
             generate_ground_truth_review(video,rois,gt_path,str(SLOTS_PATH),self.settings,run_dir,LEARN_DIR)
             generate_research_screenshots(video, rois, str(SLOTS_PATH), self.settings, run_dir, LEARN_DIR, evidence_dir)

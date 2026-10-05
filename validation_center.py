@@ -427,7 +427,17 @@ def open_validation_center(app):
     vcfg = dict(settings.get("validation", {}) or {})
     ecfg = dict(settings.get("external_validation", {}) or {})
 
-    local = ttk.LabelFrame(win, text=tr("A. Local / New Video Dataset Profile"))
+    canvas = tk.Canvas(win, highlightthickness=0)
+    scrollbar = ttk.Scrollbar(win, orient='vertical', command=canvas.yview)
+    scrollbar.pack(side='right', fill='y')
+    canvas.pack(side='left', fill='both', expand=True)
+    canvas.configure(yscrollcommand=scrollbar.set)
+    body = ttk.Frame(canvas)
+    body_id = canvas.create_window((0,0), window=body, anchor='nw')
+    body.bind('<Configure>',lambda event: canvas.configure(scrollregion=canvas.bbox('all')))
+    canvas.bind('<Configure>',lambda event: canvas.itemconfigure(body_id,width=event.width))
+    win.bind('<MouseWheel>',lambda event: canvas.yview_scroll(-int(event.delta/120),'units'))
+    local = ttk.LabelFrame(body, text=tr("A. Local / New Video Dataset Profile"))
     local.pack(fill="x", padx=10, pady=8)
     local.columnconfigure(1, weight=1)
 
@@ -443,6 +453,20 @@ def open_validation_center(app):
     repeat_var = tk.DoubleVar(value=float(vcfg.get("repeat_period_sec", 0.0)))
     repeat_count_var = tk.IntVar(value=int(vcfg.get("repeat_count", 0)))
     windows_var = tk.StringVar(value=format_windows(vcfg.get('evaluation_windows',default_windows())))
+    scfg = vcfg.get('split_experiments',{})
+    split_enabled = tk.BooleanVar(value=scfg.get('enabled',True))
+    split_dev = tk.StringVar(value=format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
+    split_test = tk.StringVar(value=format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
+
+    def collect_split():
+        from split_protocol import validate_protocol
+        dev, test = parse_windows(split_dev.get()), parse_windows(split_test.get())
+        if len(dev)!=1 or len(test)!=1:
+            raise ValueError('Specify one DEV interval and one TEST interval')
+        result = validate_protocol({'dev':[dev[0]['start_sec'],dev[0]['end_sec']],
+                                    'test':[test[0]['start_sec'],test[0]['end_sec']]},settings.get('eval_end_sec',1230))
+        return {'enabled':bool(split_enabled.get()),'dev':result['dev'],'test':result['test']}
+
 
     ttk.Label(local,text=tr("CCTV count")).grid(row=1,column=0,sticky="w",padx=6,pady=5)
     ttk.Spinbox(local,from_=1,to=12,textvariable=cam_var,width=8).grid(row=1,column=1,sticky="w",padx=6,pady=5)
@@ -472,6 +496,7 @@ def open_validation_center(app):
             "repeat_period_sec": max(0.0, float(repeat_var.get())),
             "repeat_count": max(0, int(repeat_count_var.get())),
             "evaluation_windows": parse_windows(windows_var.get()),
+            "split_experiments": collect_split(),
         }
 
     def save_settings_only(show=True):
@@ -528,6 +553,11 @@ def open_validation_center(app):
         repeat_var.set(float(cfg.get("repeat_period_sec",0)))
         repeat_count_var.set(int(cfg.get("repeat_count",0)))
         windows_var.set(format_windows(cfg.get('evaluation_windows',default_windows())))
+        scfg=cfg.get('split_experiments',{})
+        split_enabled.set(scfg.get('enabled',True))
+        split_dev.set(format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
+        split_test.set(format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
+
         save_settings_only(show=False)
         try: app._save_ui_state()
         except Exception: pass
@@ -584,7 +614,14 @@ def open_validation_center(app):
             messagebox.showerror(tr('Evaluation error'),str(exc),parent=win)
     ttk.Button(local,text=tr('Compare saved SAFE / Candidate windows'),command=evaluate_saved_windows).grid(row=12,column=0,columnspan=3,sticky='w',padx=6,pady=5)
 
-    public = ttk.LabelFrame(win, text=tr("B. Public External Environment Validation"))
+    ttk.Checkbutton(local,text=tr('ALL-IN-ONE: fresh original + alternate split experiments'),variable=split_enabled).grid(row=13,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    ttk.Label(local,text=tr('Alternate DEV interval')).grid(row=14,column=0,sticky='w',padx=6,pady=5)
+    ttk.Entry(local,textvariable=split_dev).grid(row=14,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
+    ttk.Label(local,text=tr('Alternate TEST interval')).grid(row=15,column=0,sticky='w',padx=6,pady=5)
+    ttk.Entry(local,textvariable=split_test).grid(row=15,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
+    ttk.Label(local,text=tr('Default DEV 5:30-20:30 / TEST 0:00-5:30. Each split refits detector settings and slot geometry. Two fresh runs take longer; TEST labels are used only after selection. Same-video results are not independent validation.'),wraplength=900).grid(row=16,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+
+    public = ttk.LabelFrame(body, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)
     public.columnconfigure(1,weight=1)
     mode_var = tk.StringVar(value=str(ecfg.get("download_mode","quick")).lower())

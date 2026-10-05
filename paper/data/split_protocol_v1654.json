@@ -1,0 +1,52 @@
+{
+  "version": "v16.5.4",
+  "status": "implemented_functionally_validated_full_video_pending",
+  "default_protocols": [
+    {
+      "name": "original",
+      "dev": [
+        0.0,
+        900.0
+      ],
+      "test": [
+        900.0,
+        1230.0
+      ],
+      "horizon_sec": 1230.0
+    },
+    {
+      "name": "alternate",
+      "dev": [
+        330.0,
+        1230.0
+      ],
+      "test": [
+        0.0,
+        330.0
+      ],
+      "horizon_sec": 1230.0
+    }
+  ],
+  "full_real_video_results": null,
+  "neural_network_retraining": false,
+  "independent_validation": false,
+  "validation_scope": [
+    "23 unit/UI tests",
+    "Actual tuner and geometry with controlled image/model IO: only DEV frame timestamps read",
+    "Real state engine and candidate refiner with fixed synthetic evidence: TEST-label perturbation does not change selected settings",
+    "DEV crop quality calibration membership",
+    "Boundary/overlap/gap and failed worker reporting",
+    "UI settings persistence and profile restoration"
+  ],
+  "implementation_sha256_lf_utf8": {
+    "split_protocol.py": "7b50f8b64c677c8f83873fd75fc4a6bbf1b53a9c3f8d604ea8694ccef065de8c",
+    "split_experiment.py": "f02c714fdd791b1490fe0b018f74d416313995ab731f0d5e9d086dd1a08cf646",
+    "detector_tuner.py": "8017d63a13d9b68bc3db045cc144c24e6a148d91e0f99fc7fc3d8552c2eaae3a",
+    "slot_engine.py": "7f307f74741b00f030f751bef8f8d8d2a529ae30a7f1030b73ddd970a26ae1fe",
+    "app.py": "30dd7e3a9cf11559d03fc4e64ff17a21081038a89779fce73f92dea66e40f8d1",
+    "validation_center.py": "27a6027277000dd0115d341958816bb427d6891e7c10c4df52eba32770c58428",
+    "tests/test_split_experiment.py": "af2e2890eaf8006c57de510f594b81948e1414804f702491cf1df316f671cad6",
+    "tests/test_localization.py": "4e37448298e105134f35dfddf8a4bd941b14680034d2dd89809bb47ece9c61a2"
+  },
+  "scope": "Offline historically reviewed same-video split evaluation. Pretrained weights and manual configuration are fixed. Full new experiments have not been run."
+}

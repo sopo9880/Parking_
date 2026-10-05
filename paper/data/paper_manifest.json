@@ -1,10 +1,12 @@
 {
   "schema_version": 1,
-  "version": "v16.5.3.1",
-  "research_revision": "retained-temporal-external-cross-window-r3",
-  "release_kind": "maintenance_patch",
-  "research_changed": false,
-  "evidence_updates": [],
+  "version": "v16.5.4",
+  "research_revision": "temporal-external-windows-fresh-split-design-r4",
+  "release_kind": "research",
+  "research_changed": true,
+  "evidence_updates": [
+    "paper/data/split_protocol_v1654.json: methodology and functional validation; full-video results pending"
+  ],
   "languages": [
     "ko",
     "en"
@@ -233,8 +235,8 @@
     }
   ],
   "paper_sha256": {
-    "ko": "b3cab2f1baa2d930b1c71804adf7595d2b8af2b97145daafd2214dd5da17e05c",
-    "en": "e7208105dddc5c0cf3aa4c70be3944e22430b365ca27d826188c162920979888"
+    "ko": "d43a5ebe45b7ca6e42c86cfd91be52f0fb1cd96c25e9804584cfdc4c38480423",
+    "en": "1beda6bfdb220b4978fecc30ded797534868ce0de039be7805230c40a003c183"
   },
   "snapshots": {
     "v16.5.1": {
@@ -276,6 +278,16 @@
         "path": "paper/snapshots/paper_v16.5.3.1_en.md",
         "sha256": "193d0af0ea94a282f6108cbc0eb51fc593d1702d88d8afa70c4f6df29ecb392f"
       }
+    },
+    "v16.5.4": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.4_ko.md",
+        "sha256": "429c12d418c6db614742046e79469bd904381a704f95d89f4e1fbc99f6ec34e7"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.4_en.md",
+        "sha256": "f0deec0e3fd61f653da28aa9b7e446af63a6138e3a96da686b35d03b29ebcd71"
+      }
     }
   },
   "growth_policy": {
@@ -302,8 +314,8 @@
       "en"
     ],
     "assets": [
-      "ParkingResearchAgent-v16.5.3.1-paper-ko.pdf",
-      "ParkingResearchAgent-v16.5.3.1-paper-en.pdf"
+      "ParkingResearchAgent-v16.5.4-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.4-paper-en.pdf"
     ]
   },
   "external_evidence": {
@@ -426,6 +438,20 @@
       {
         "path": "paper/data/windows_v1653/window_metrics.csv",
         "sha256": "9d373b6d9d908cec363d19ce9c084c985ab0fe40df00755434ab05a3c566b763"
+      }
+    ]
+  },
+  "split_experiments": {
+    "protocol_record": "paper/data/split_protocol_v1654.json",
+    "results_status": "pending_full_real_video_run",
+    "test_labels_used_for_selection": false,
+    "neural_network_retraining": false,
+    "independent_validation": false,
+    "sha256": "fda005f8093a0607d5143fa37a59e69278ff477375edd3fc9460e3332ee5d399",
+    "artifacts": [
+      {
+        "path": "paper/data/split_protocol_v1654.json",
+        "sha256": "fda005f8093a0607d5143fa37a59e69278ff477375edd3fc9460e3332ee5d399"
       }
     ]
   }
