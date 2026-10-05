@@ -2,7 +2,7 @@
 
 Living Paper | v16.5.5 | Research revision temporal-external-fresh-splits-restart-design-r5
 
-[한국어](paper_ko.md) | [English](paper_en.md)
+[한국어](paper_v16.5.5_ko.md) | [English](paper_v16.5.5_en.md)
 
 연구 초안. 시간 성능은 보존 기록 및 제공된 v16.5.4 예측에서 재검산한 값이다. 외부 공간 결과도 보존 예측의 중복 제거 후 재계산했다. 이번 릴리스에서 전체 추론을 다시 실행하지 않았으며, v16.5.5 재시작·복구의 실제 성능은 미보고다. 저자·소속은 미기재 상태다.
 
@@ -86,7 +86,7 @@ v16.4 ENTRY_TRACK_SWITCH_HOLD는 ID가 바뀌어도 최근 주차면 움직임 �
 
 선택 설정의 해시를 저장한 뒤 TEST 정답으로 SAFE_BASELINE, TRANSITION_GUARD, SEG_ASSIST, EMPTY_REF, SELECTED 및 CANDIDATE를 평가한다. 구간 시작은 포함, 끝은 제외하며 영상 평가 끝점만 포함한다. 기본 10초 초기 warm-up은 그대로 적용하고 분할 경계에서 상태를 초기화하지 않는다. 원래 학습기의 경계 프레임 포함 규칙과 달리 새 분할의 학습 프레임은 명시적 DEV 소속을 따른다. 전체 영상은 0초부터 시간 순서대로 추론하므로 이전 시점의 온라인 상태 이력은 구간을 가로질러 이어진다. 역방향 분할은 미래 DEV 영상으로 만든 템플릿을 앞쪽 TEST에 적용하는 오프라인 평가이며, 인과적 미래 예측 실험이 아니다.
 
-v16.5.4에서 구현 및 기능 검증을 완료했으나 배포 당시 전체 실제 CCTV 재실험은 미수행이었다. 이후 제공된 v16.5.4 실행의 보존 예측은 본 릴리스에서 재검산했다. TEST 정답 교란 시 실제 상태 선택 설정의 불변성과 평가 수치 변화, 실제 검출기 탐색·주차면 학습의 DEV 프레임 접근, 경계·실패 처리를 검증했다. 구현 검증은 성능 증거가 아니다. 새 재시작·복구 실험의 Exact/MAE는 미보고로 유지하고, 제공된 기존 분할 수치는 별도 표에서 다룬다. 프로토콜 근거는 [설계 기록](data/split_protocol_v1654.json), 실행 결과 형식은 split_final_metrics.csv와 split_audit.json이다. 과거에 검토한 동일 영상 구간을 재사용하므로 독립 검증으로 표현하지 않는다.
+v16.5.4에서 구현 및 기능 검증을 완료했으나 배포 당시 전체 실제 CCTV 재실험은 미수행이었다. 이후 제공된 v16.5.4 실행의 보존 예측은 본 릴리스에서 재검산했다. TEST 정답 교란 시 실제 상태 선택 설정의 불변성과 평가 수치 변화, 실제 검출기 탐색·주차면 학습의 DEV 프레임 접근, 경계·실패 처리를 검증했다. 구현 검증은 성능 증거가 아니다. 새 재시작·복구 실험의 Exact/MAE는 미보고로 유지하고, 제공된 기존 분할 수치는 별도 표에서 다룬다. 프로토콜 근거는 [설계 기록](../data/split_protocol_v1654.json), 실행 결과 형식은 split_final_metrics.csv와 split_audit.json이다. 과거에 검토한 동일 영상 구간을 재사용하므로 독립 검증으로 표현하지 않는다.
 
 ### 재시작 평가 프로토콜 (v16.5.5)
 
@@ -136,7 +136,7 @@ v16.5.3은 검증 센터에서 여러 평가 구간을 지정하고 저장된 SA
 | 15:00–20:30 | 34 | 85.29 | 97.06 | +11.76 | 0.1471 | 0.0294 |
 | ALL | 123 | 34.96 | 38.21 | +3.25 | 1.0976 | 1.0650 |
 
-![그림 12. 보존 영상의 구간별 동결 예측 비교. 개선은 마지막 구간 1/4에만 관측된다.](figures/v16_5_3/retained_window_comparison.png)
+![그림 12. 보존 영상의 구간별 동결 예측 비교. 개선은 마지막 구간 1/4에만 관측된다.](../figures/v16_5_3/retained_window_comparison.png)
 
 그림 12. 보존 영상의 구간별 동결 예측 비교. 개선은 마지막 구간 1/4에만 관측된다.
 
@@ -167,7 +167,7 @@ Original TEST SAFE Exact 85.2941%, MAE 0.147059, Candidate 97.0588%, 0.029412를
 | alternate | EMPTY_REF | 32 | 43.7500 | 0.718750 | 2 | 53.1250 | 3.1250 |
 | alternate | CANDIDATE | 32 | 9.3750 | 1.218750 | 3 | 90.6250 | 0.0000 |
 
-![그림 13. 다른 DEV 학습·TEST 구간의 보존 v16.5.4 성능. 일치된 cold/warm 비교가 아니며 복구 후보 수치는 미보고다.](figures/v16_5_5/fresh_split_results.png)
+![그림 13. 다른 DEV 학습·TEST 구간의 보존 v16.5.4 성능. 일치된 cold/warm 비교가 아니며 복구 후보 수치는 미보고다.](../figures/v16_5_5/fresh_split_results.png)
 
 그림 13. 다른 DEV 학습·TEST 구간의 보존 v16.5.4 성능. 일치된 cold/warm 비교가 아니며 복구 후보 수치는 미보고다.
 
@@ -306,27 +306,27 @@ v16.2의 TEST 오차 5개는 전이 이벤트 2개에 집중되었다. 입차 �
 | RAINY | 1053 | 35.42 | 1.4046 | 1.0513 | 14 |
 | SUNNY | 1780 | 32.70 | 1.4803 | 0.6961 | 11 |
 
-![카메라별·날씨별 공간 점유 정확도](figures/v16_5_2/external_accuracy_by_camera_weather.png)
+![카메라별·날씨별 공간 점유 정확도](../figures/v16_5_2/external_accuracy_by_camera_weather.png)
 
 카메라별·날씨별 공간 점유 정확도
 
-![카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차](figures/v16_5_2/external_count_error.png)
+![카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차](../figures/v16_5_2/external_count_error.png)
 
 카메라별 점유 수 MAE 및 이미지별 부호 있는 집계 오차
 
-![실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례](figures/v16_5_2/external_validation_montage.jpg)
+![실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례](../figures/v16_5_2/external_validation_montage.jpg)
 
 실제 camera1·camera9 FP, camera2 성공 및 TP/TN/FN 사례
 
-![camera1 FP 사례: spot 21000000876, GT=0, Pred=1](figures/v16_5_2/camera1_fp.jpg)
+![camera1 FP 사례: spot 21000000876, GT=0, Pred=1](../figures/v16_5_2/camera1_fp.jpg)
 
 camera1 FP 사례: spot 21000000876, GT=0, Pred=1
 
-![camera9 FP 사례: spot 29000012580, GT=0, Pred=1](figures/v16_5_2/camera9_fp.jpg)
+![camera9 FP 사례: spot 29000012580, GT=0, Pred=1](../figures/v16_5_2/camera9_fp.jpg)
 
 camera9 FP 사례: spot 29000012580, GT=0, Pred=1
 
-![camera2 TP 사례: spot 22000004350, GT=1, Pred=1](figures/v16_5_2/camera2_tp.jpg)
+![camera2 TP 사례: spot 22000004350, GT=1, Pred=1](../figures/v16_5_2/camera2_tp.jpg)
 
 camera2 TP 사례: spot 22000004350, GT=1, Pred=1
 
@@ -336,7 +336,7 @@ camera2 TP 사례: spot 22000004350, GT=1, Pred=1
 
 v1-v4는 검출과 안정화, 작은 판정 영역, 고해상도/타일 추론과 실행 빈도 최적화를 탐색했다. v4는 제안 중심의 부분 기록이며 확정 실험 수치가 없다. v5-v6은 기준점, 중복 연결, 원근 보정을 구축했다. v7-v10은 기준 평가, 실패한 학습 앵커, 수동 Voronoi 제약, 인과적 시간 추적으로 발전했다. v11-v14는 FULL/CROP/HYBRID 비교, 보조 관측 보호, 선택적 캐시 최적화와 실패한 기억 실험을 다뤘다. v15-v16.2는 전이와 분할·열화 조건, GT 균형, 증거 캐시 건전성과 회귀 점검을 강화했다. v16.3은 연구 이력/자동 업데이트 도구, v16.4는 전이 후보, v16.5는 검증 확대, v16.5.1은 UI 현지화와 이 문서 구조, v16.5.2는 중복을 제거한 외부 공간 검증 근거를 추가한다.
 
-각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.
+각 버전의 목표·변경·결과·문제·결정은 [전체 연구 이력 부록](../appendix/full_experiment_history.md)에 보존한다. 본문은 출시 순서가 아니라 방법·결과·오류·한계에 맞게 새 근거를 흡수한다. release ZIP과 SHA-256은 소스 배포 재현성을 지원하지만 입력 영상과 모델 가중치까지 자동으로 고정하는 것은 아니다.
 
 v16.5.3은 동결된 예측의 다중 구간 비교와 실제 보존 영상의 구간별 한계를 추가한다.
 
@@ -372,6 +372,6 @@ v16.5.3은 동결된 예측의 다중 구간 비교와 실제 보존 영상의 �
 - [R4] [DSBD-Research MetaPKLot dataset and evaluation resources](https://github.com/DSBD-Research/MetaPKLot-Dataset), accessed 2026-10-04.
 - [R5] [v16.5 implementation record](https://github.com/sopo9880/Parking_/blob/3b8fe54bdcc2a08570fe84bbaace44347470b673/CHANGES_v16_5.txt).
 
-- [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.
+- [R6] [Frozen external baseline, recalculated evidence and source hashes](../data/external_v1652/external_summary.json), [source package](../data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](../data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.
 
-- [R7] [보존 영상 다중 구간 근거](data/windows_v1653/window_evaluation_summary.json), [예측 및 재계산 ZIP](data/windows_v1653/WINDOW_EVALUATION_TO_CHATGPT.zip). 2026-10-05 재계산.
+- [R7] [보존 영상 다중 구간 근거](../data/windows_v1653/window_evaluation_summary.json), [예측 및 재계산 ZIP](../data/windows_v1653/WINDOW_EVALUATION_TO_CHATGPT.zip). 2026-10-05 재계산.

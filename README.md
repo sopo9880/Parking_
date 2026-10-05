@@ -2,10 +2,24 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.4**
+Current release: **v16.5.5**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
+
+## 재시작 / Cold start (v16.5.5)
+
+검증 센터의 **새 분할 실험: 연속 실행·재시작·초기 복구 비교**가 기본 활성화됩니다. ALL-IN-ONE의 각 fresh split 학습이 끝나면 설정을 동결한 채 0:00 / 5:30 / 11:00 / 15:00 및 TEST 시작 지점에서 새 추적·상태로 추론합니다. 재시작 시점을 변경할 수 있으며 각 구간은 최대 5분 30초입니다.
+
+**이미 v16.5.4 학습을 완료했다면**, 영상과 GT를 선택하고 검증 센터의 **완료된 분할 학습으로 재시작 비교 실행**을 누른 뒤 `.../split_experiments/original` 또는 `alternate` 폴더를 선택하세요. 학습된 템플릿이 포함된 실제 실행 폴더가 필요합니다. 업로드 ZIP은 템플릿을 생략하므로 이 용도로 쓸 수 없습니다. 검출기 탐색·공간 학습을 반복하지 않고 재시작 추론만 수행합니다.
+
+Restart extraction starts at the requested source timestamp with new detector trackers, motion history, AUX memory, and segmentation recovery frame history. Learned geometry/templates and fitted detector settings remain frozen; the selected-parameter hash is checked. Initial occupancy is UNKNOWN, and unlabeled appearance is not assumed to mean OCCUPIED. Continuous and reset modes therefore represent different operational initialization conditions, not a pure history-only causal ablation.
+
+`CONTINUOUS_SAFE`, `CONTINUOUS_CANDIDATE`, `RESET_SAFE`, `RESET_CANDIDATE`, `RESET_RECOVERY` are reported separately. `RESET_RECOVERY` is an experimental causal startup candidate: repeated stationary FULL detections over at least 10 seconds, with multi-camera support or stronger single-camera confidence, can initialize occupancy during the first 30 seconds. Normal SAFE temporal rules follow; existing SAFE defaults remain unchanged. No production promotion or guaranteed 10–30 second recovery is claimed.
+
+Each unique `restart_experiments/run_.../` includes `restart_metrics.csv`, per-start count/slot traces, state differences and audits. The standalone button creates `RESTART_EVALUATION_TO_CHATGPT.zip`; ALL-IN-ONE includes restart outputs in its normal upload ZIP. Metrics include startup-inclusive Exact/MAE, first 30/60/120 s errors, first exact, three consecutive available GT checkpoints for stable exact (with confirmation time), never-stabilized flag and post-stability Exact. A separate matched post-restart 10 s warm-up row is included; initial errors are not removed from startup metrics. Count stability does not establish slot correctness or permanent stability. Failures preserve partial outputs and are flagged.
+
+The supplied v16.5.4 run has been recomputed: original continuous TEST SAFE 85.29% / Candidate 97.06%; alternate startup TEST SAFE 9.375% / MAE 1.1875, Candidate 9.375% / MAE 1.21875, guard 46.875% / MAE 0.6875. Those windows also differ in fitting and content, so they suggest a restart/initialization problem without proving its sole cause. New v16.5.5 restart/recovery full-video scores remain pending. Same-video results are not independent validation.
 
 ## ALL-IN-ONE: 실제 DEV/TEST 분할 실험 / Fresh split experiments
 
@@ -22,7 +36,7 @@ Each split uses a fresh subprocess and separate detector/geometry/evidence direc
 
 `output/run_..._ALL_IN_ONE/split_experiments/` contains `original/`, `alternate/`, `split_experiment_comparison.csv` and `suite_summary.json`. Each child has `split_final_metrics.csv`, DEV-only selection tables, `selection_freeze.json`, `split_audit.json`, full traces and a worker log. Exact, MAE, maximum error and Over/Under are reported separately for DEV/TEST. The upload ZIP includes results and audits, excluding the private worker request and learned template images. A failed child preserves partial outputs and marks the suite failed.
 
-새 분할은 두 번의 전체 검출기 탐색·학습·추론으로 시간이 더 걸립니다. 기존 **저장된 SAFE/Candidate 구간 비교** 버튼은 빠른 통계 재계산 기능으로 계속 유지됩니다. v16.5.4는 기능·누수 방지 검증을 완료한 배포이며, 실제 전체 CCTV 재실험 수치는 실행 후 생성됩니다. 새 점수는 아직 논문에 보고하지 않았습니다.
+새 분할은 두 번의 전체 검출기 탐색·학습·추론으로 시간이 더 걸립니다. 기존 **저장된 SAFE/Candidate 구간 비교** 버튼은 빠른 통계 재계산 기능으로 계속 유지됩니다. 제공된 v16.5.4 실행 결과는 현재 논문에서 별도 재검산 표로 보고합니다. 새로운 v16.5.5 재시작·복구 점수는 실행 후 생성됩니다.
 
 ## 한국어 / English UI
 

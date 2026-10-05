@@ -90,6 +90,7 @@ class SplitExperiments(unittest.TestCase):
         settings=json.loads((ROOT/'settings.json').read_text(encoding='utf-8'))
         settings.update(dev_end_sec=15,eval_end_sec=24,evaluation_warmup_sec=0)
         settings['validation']['split_experiments']={'dev':[8,24],'test':[0,8]}
+        settings['validation']['restart_experiments']={'enabled':False}
         original=copy.deepcopy(settings)
         seen=[]
         def tune(video,rois,gt_path,cfg,output,progress):

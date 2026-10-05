@@ -2926,7 +2926,7 @@ def extract_evidence(video_path: str, rois: Dict[str,Sequence[int]], slots_path:
     trackers = {c: _OnlineCentroidTracker(temporal_cfg) for c in rois}
     end_sec = float(settings.get('eval_end_sec', 1230))
     sample_sec = float(settings.get('evidence_sample_sec', 1.0))
-    times = np.arange(0.0, end_sec + 1e-6, sample_sec).tolist()
+    times = np.arange(float(settings.get('inference_start_sec',0.0)), end_sec + 1e-6, sample_sec).tolist()
     by_cctv = defaultdict(list)
     for s in slots:
         by_cctv[s['cctv']].append(s)
@@ -3016,7 +3016,7 @@ def extract_evidence(video_path: str, rois: Dict[str,Sequence[int]], slots_path:
                         h.popleft()
                     recent_hit_ratio = sum(int(x['hit']) for x in h) / max(1, len(h))
                     init = str(s.get('initial_state', 'UNKNOWN')).upper()
-                    appearance_occ = _appearance_occupied(init, diff, appearance_thr)
+                    appearance_occ = False if settings.get('unlabeled_restart',False) else _appearance_occupied(init, diff, appearance_thr)
                     pre[lid] = {
                         'slot': s, 'fd': fd, 'fmeta': fmeta, 'diff': diff,
                         'recent_full_hit_ratio': float(recent_hit_ratio),
@@ -3976,6 +3976,9 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
         init=str(r.get('initial_state','UNKNOWN')).upper(); st='OCCUPIED' if init=='OCCUPIED' else 'EMPTY'
         lid=str(lid); state[lid]=st; phase[lid]=st; owner_track[lid]=None; prev_local[lid]=st
 
+    recovery_cfg=params.get('startup_recovery',{})
+    recovery_start=float(evidence.time_sec.min()) if not evidence.empty else 0.0
+    recovery_hist=defaultdict(list)
     local_rows=[]; global_rows=[]; transitions=[]
     for t,group in evidence.groupby('time_sec',sort=True):
         t=float(t)
@@ -3990,6 +3993,14 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
         for key in list(track_hist.keys()):
             if not track_hist[key] or t-float(track_hist[key][-1]['t'])>window_sec+1e-6: del track_hist[key]
 
+        recovery_ready=set()
+        if recovery_cfg:
+            from restart_evaluation import recovery_gate
+            for _,r in group.iterrows():
+                lid=str(r['local_id'])
+                recovery_hist[lid].append(r.to_dict())
+                recovery_hist[lid]=[x for x in recovery_hist[lid] if t-float(x['time_sec'])<=float(recovery_cfg.get('window_sec',10))]
+            recovery_ready={lid for lid,h in recovery_hist.items() if recovery_gate(h,t-recovery_start,recovery_cfg)}
         owned_by_track={}
         for lid,tid in owner_track.items():
             if tid is None or state.get(lid)!='OCCUPIED': continue
@@ -4020,7 +4031,7 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
             if len(centers)>=2:
                 mx=float(np.median([x for x,_ in centers])); my=float(np.median([y for _,y in centers]))
                 local_motion=max(math.hypot(x-mx,y-my) for x,y in centers)
-            init=str(r.get('initial_state','UNKNOWN')).upper(); vis=float(r.get('visual_diff_initial',0.0)); appearance_occ=_appearance_occupied(init,vis,visual_thr)
+            init=str(r.get('initial_state','UNKNOWN')).upper(); vis=float(r.get('visual_diff_initial',0.0)); appearance_occ=False if params.get('unlabeled_restart',False) else _appearance_occupied(init,vis,visual_thr)
             stable_track=(dom_track>=0 and track_slot_ratio>=stable_track_ratio_req and dom_ratio>=0.50 and track_switches<=max_switches and track_speed<=stationary_speed and track_motion<=stationary_span and recent_hit_ratio>=0.34)
             stable_slot=(hit_ratio>=max(entry_ratio,0.55) and recent_hit_ratio>=0.50 and local_motion<=crop_stationary_span)
             maneuvering=(dom_track>=0 and (track_switches>max_switches or track_speed>stationary_speed or track_motion>stationary_span)) or (local_motion>crop_stationary_span and hit_ratio>0)
@@ -4031,6 +4042,16 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
                 strong_stationary=(hit_ratio>=max(entry_ratio,0.65) and recent_hit_ratio>=0.66 and local_motion<=crop_stationary_span)
                 evidence_stable=stable_track if dom_track>=0 else (stable_slot or strong_stationary)
                 entry_gate=bool(evidence_stable and hit_ratio>=entry_ratio and mean_conf>=entry_mean_conf_min and ghost_guard_ok)
+                if recovery_cfg and t-recovery_start<=float(recovery_cfg.get('duration_sec',30)):
+                    elapsed=t-recovery_start
+                    entry_gate=bool(entry_gate and not maneuvering)
+                    if elapsed<float(recovery_cfg.get('min_observation_sec',10)):
+                        entry_gate=False
+                    elif lid in recovery_ready:
+                        peers=[str(x) for x in recovery_ready if str(slot_meta.loc[x,'global_id'])==str(r['global_id']) and str(slot_meta.loc[x,'cctv'])!=cctv]
+                        confidences=[float(x.get('full_det_conf',0)) for x in recovery_hist[lid] if int(x.get('full_detected',0))]
+                        strong_single=bool(confidences and np.mean(confidences)>=float(recovery_cfg.get('single_camera_conf',0.25)))
+                        entry_gate=bool(entry_gate or peers or strong_single)
                 conflict=owned_by_track.get((cctv,dom_track)) if dom_track>=0 else None
                 if entry_gate and (not conflict or conflict==lid):
                     state[lid]='OCCUPIED'; phase[lid]='OCCUPIED'; owner_track[lid]=dom_track if dom_track>=0 else None
@@ -4059,7 +4080,7 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
                  'track_switches_window':int(track_switches),'track_speed_px_s':float(track_speed),'track_motion_span_px':float(track_motion),
                  'slot_detection_motion_span_px':float(local_motion),'appearance_occupied':int(bool(appearance_occ)),'visual_diff_initial':vis,
                  'ghost_guard_ok':int(ghost_guard_ok),'entry_gate_ok':int(entry_gate),'exit_gate_ok':int(exit_gate),
-                 'owner_track_id':int(owner_track[lid]) if owner_track[lid] is not None else -1,'warmup':int(t<window_sec-1e-6)}
+                 'startup_phase':('RECOVERY' if recovery_cfg and t-recovery_start<=float(recovery_cfg.get('duration_sec',30)) else 'NORMAL'),'owner_track_id':int(owner_track[lid]) if owner_track[lid] is not None else -1,'warmup':int((t-recovery_start if params.get('unlabeled_restart',False) else t)<window_sec-1e-6)}
             local_rows.append(row); now.append(row)
             if prev_local.get(lid)!=state[lid]:
                 transitions.append({'scope':'LOCAL','time_sec':t,'timestamp':r['timestamp'],'id':lid,'global_id':r['global_id'],
@@ -4079,7 +4100,7 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
             gphase='MANEUVERING' if 'MANEUVERING' in phases else ('LEAVING' if 'LEAVING' in phases else gstate)
             grow={'time_sec':t,'timestamp':items[0]['timestamp'],'global_id':gid,'state':gstate,'phase':gphase,'global_score':gscore,
                   'evidence_mode':evidence_mode,'source_local_slots':';'.join(x['local_id'] for x in items),'occupied_votes':occ,'total_votes':len(items),
-                  'warmup':int(t<window_sec-1e-6)}
+                  'warmup':int((t-recovery_start if params.get('unlabeled_restart',False) else t)<window_sec-1e-6)}
             global_rows.append(grow)
             if gid in prev_global and prev_global[gid]!=gstate:
                 transitions.append({'scope':'GLOBAL','time_sec':t,'timestamp':items[0]['timestamp'],'id':gid,'global_id':gid,
@@ -4513,7 +4534,7 @@ def _v16_transition_seg_requests(base: pd.DataFrame, settings: Dict) -> Dict[Tup
     reasons={}
     if base.empty: return reasons
     try:
-        local,_,_=_run_state_engine_v13_safe(base,_v16_baseline_params(settings))
+        local,_,_=_run_state_engine_v13_safe(base,{**_v16_baseline_params(settings),'unlabeled_restart':bool(settings.get('unlabeled_restart',False))})
         for lid,g in local.sort_values(['local_id','time_sec']).groupby('local_id',sort=False):
             prev=None
             for r in g.itertuples():
@@ -4623,7 +4644,8 @@ def extract_segmentation_assist(video_path: str, rois: Dict[str,Sequence[int]], 
 
     from split_protocol import calibration_quality_rows
     calibration_rows=calibration_quality_rows(quality_rows,base,settings)
-    thresholds=build_relative_quality_thresholds(calibration_rows,cfg)
+    thresholds=settings.get('frozen_segmentation_quality_thresholds')
+    if thresholds is None: thresholds=build_relative_quality_thresholds(calibration_rows,cfg)
     th_rows=[]
     for cam,th in thresholds.items():
         if cam=='__GLOBAL__': continue
@@ -4668,7 +4690,7 @@ def extract_segmentation_assist(video_path: str, rois: Dict[str,Sequence[int]], 
     def temporal_crops(t,cctv,rect):
         x1,y1,x2,y2=rect; arr=[]
         for k in reversed(range(temporal_frames)):
-            tt=max(0.0,float(t)-k*temporal_step)
+            tt=max(float(settings.get('inference_start_sec',0.0)),float(t)-k*temporal_step)
             fr=read_frame_at(hist_cap,tt)
             if cctv not in rois: continue
             wr=crop_roi(fr,rois[cctv]); xx1=max(0,min(wr.shape[1]-1,x1));xx2=max(xx1+1,min(wr.shape[1],x2));yy1=max(0,min(wr.shape[0]-1,y1));yy2=max(yy1+1,min(wr.shape[0],y2))

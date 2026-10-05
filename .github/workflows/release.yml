@@ -43,6 +43,7 @@ jobs:
           python tools/check_external_evidence.py
           python tools/check_window_evidence.py
           python tools/check_split_protocol.py
+          python tools/check_fresh_evidence.py
           if [ "${{ github.event_name }}" = "push" ]; then
             test -z "$(git diff --name-only --diff-filter=MD HEAD^ HEAD -- paper/snapshots/)"
           fi

@@ -1,3 +1,19 @@
+# Parking Research Agent v16.5.5
+
+연속 실행과 완전 재시작을 같은 학습 설정으로 비교하는 실험, 초기 복구 후보, 복구 시간 지표를 추가합니다.
+
+- ALL-IN-ONE의 fresh split 완료 후 0:00 / 5:30 / 11:00 / 15:00와 TEST 시작점에서 새로 추론합니다. 추적 ID·운동 이력·AUX/줄무늬 복구 이력·점유 상태를 이전 구간에서 가져오지 않습니다. 공간 학습과 검출기 설정은 동결합니다.
+- 이미 완료한 original/alternate 실행 폴더로 재시작 실험만 수행하는 검증 센터 버튼을 추가합니다. 템플릿이 없는 업로드 ZIP 대신 실제 실행 폴더를 사용합니다.
+- UNKNOWN 초기 상태를 점유 영상 근거로 해석하지 않습니다. 반복된 정지 차량의 FULL 검출과 다중 카메라/강한 단일 카메라 근거로 첫 30초에 점유를 초기화하는 RESET_RECOVERY 후보를 별도로 평가합니다. SAFE 기준선은 유지합니다.
+- 첫 프레임부터 Exact/MAE, 첫 30/60/120초, Time to First Exact, 연속 3개 GT 표본의 Time to Stable Exact와 확인 시각, 안정화 후 Exact, 상태 차이·감사·실패 기록을 저장합니다. 10초 warm-up 이후 점수는 별도 표이며 시작 오차를 숨기지 않습니다.
+- 제공된 v16.5.4 원본 분할 결과를 재검산해 한·영 논문에 반영합니다. 앞쪽 TEST SAFE 9.375% / MAE 1.1875, Candidate 9.375% / 1.21875, Guard 46.875% / 0.6875. 뒤쪽 연속 TEST SAFE 85.29%, Candidate 97.06%를 구분합니다.
+
+Recovery remains experimental. Startup UNKNOWN priors differ from operator-initialized continuous runs; the comparison is operational, not a history-only causal ablation. Existing split results suggest initialization sensitivity but do not prove a sole cause. Historically reviewed same-video data are not independent hold-out. No guaranteed recovery time or SAFE/CANDIDATE promotion; new full real-video restart scores remain pending.
+
+Validation: 27 unit/UI tests and protected self-test; archived fresh-split, frozen window and external evidence recomputation; bilingual immutable snapshots, PDF rendering and release asset checksums.
+
+---
+
 # Parking Research Agent v16.5.4
 
 ALL-IN-ONE에서 기존 DEV 0–15:00 / TEST 15:00–20:30과 대체 DEV 5:30–20:30 / TEST 0–5:30을 각각 새로 학습·평가합니다. 대체 구간과 실행 여부는 검증 센터에서 저장하며, 기존 구간별 통계 기능도 유지됩니다.

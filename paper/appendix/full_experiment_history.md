@@ -983,3 +983,8 @@ PDF asset metadata corrected; retained results unchanged.
 ## v16.5.4 — Fresh DEV/TEST split experiments
 
 ALL-IN-ONE runs original and alternate protocols in isolated processes with fresh DEV detector configuration and geometry fitting, DEV-only state selection, DEV-only quality calibration and frozen TEST evaluation. Pretrained weights remain fixed. Default alternate: DEV 330–1230 s / TEST 0–330 s. Functional tests passed; full real-video split metrics remain pending. Historical same-video evaluation is not independent hold-out. Existing metrics and snapshots remain unchanged.
+
+
+## v16.5.5 — Restart evaluation and startup recovery
+
+Frozen fitting with fresh trackers/state at configured restart points; UNKNOWN occupancy priors; causal bounded recovery candidate; startup-inclusive 30/60/120-second and stable-count metrics. Provided v16.5.4 results were recomputed, including alternate SAFE 9.375% versus Guard 46.875%. New restart/recovery full-video scores pending. Count agreement is not slot correctness or independent validation; SAFE/CANDIDATE status remains unchanged.

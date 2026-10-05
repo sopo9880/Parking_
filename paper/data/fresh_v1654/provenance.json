@@ -1,0 +1,79 @@
+{
+  "version": "v16.5.4",
+  "source": "User-provided UPLOAD_TO_CHATGPT.zip from referenced conversation; private source ZIP not published",
+  "source_zip_sha256": "61c5fd8bcaf4dcd8bbfcbd41341f5dd096de92124903e458326c380d48c50a07",
+  "artifacts": [
+    {
+      "path": "paper/data/fresh_v1654/original/split_final_metrics.csv",
+      "sha256": "ed75bb532c540c6b11f5081d86f628589be184e942bbf2fc51fd537c0091f1d7"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/baseline_count_timeseries.csv",
+      "sha256": "d6d6dce2dcfc6e6ef59652ff58beb759b42c175623b53dfa7360c9052fa4bea6"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/transition_guard_count_timeseries.csv",
+      "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/seg_assist_count_timeseries.csv",
+      "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/empty_ref_assist_count_timeseries.csv",
+      "sha256": "9148fed1bc9e9bdf6f5e739af28cd69d52e7621639a11e573d37c20f8da91f98"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/candidate_v164_count_timeseries.csv",
+      "sha256": "80ea3adf802bf46614fe5d46276ad55d851a5da2db2bd046b51391ba30bd4239"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/selected_state_params.json",
+      "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+    },
+    {
+      "path": "paper/data/fresh_v1654/original/selection_freeze.json",
+      "sha256": "7e229a7c35141aecea924deb95673dbaa21c198ca7a7ebd3392fd20bbdf1b83d"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/split_final_metrics.csv",
+      "sha256": "6e2632336f989be44ef6fc037c3b9e7d5cd12db7e08488e2010b7c05697cdce0"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/baseline_count_timeseries.csv",
+      "sha256": "a28fe190e5a6f109ec0d64439dfb5a81f1292d89e1b5f81251b8da6cdd3b35c2"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/transition_guard_count_timeseries.csv",
+      "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/seg_assist_count_timeseries.csv",
+      "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/empty_ref_assist_count_timeseries.csv",
+      "sha256": "a39f1ce03b7b8af06859ec176fb8052c599592635fc01cdebaa2ff2aa4bbc835"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/candidate_v164_count_timeseries.csv",
+      "sha256": "2e653c283bc25f4b41c1fba73ec0cf613c1e934c42e5c55a2b2fc9f1e37d54a9"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/selected_state_params.json",
+      "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+    },
+    {
+      "path": "paper/data/fresh_v1654/alternate/selection_freeze.json",
+      "sha256": "32c077921e4b878a7866870c6e2f4f3762cf70bbd1af6a05513363b8250a4042"
+    },
+    {
+      "path": "paper/data/fresh_v1654/paper_test_results.csv",
+      "sha256": "80db102e6d9156c771d9bde32c959f38a7fd6d978edf1274711333c2766825e8"
+    }
+  ],
+  "scope": "Fresh DEV detector/geometry fitting; continuous inference starts at zero with operator-supplied initial states. Original TEST has pre-window runtime history; alternate TEST begins at startup. This is not matched cold/warm causal evidence and not independent hold-out.",
+  "results_recomputed_from_archived_predictions": true,
+  "full_inference_rerun": false,
+  "new_restart_results": null
+}

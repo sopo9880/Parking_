@@ -505,6 +505,17 @@
         0,
         330
       ]
+    },
+    "restart_experiments": {
+      "enabled": true,
+      "starts_sec": [
+        0,
+        330,
+        660,
+        900
+      ],
+      "duration_sec": 330,
+      "stable_samples": 3
     }
   },
   "external_validation": {

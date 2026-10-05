@@ -708,6 +708,30 @@
         "Two fresh detector sweeps and full inference runs increase runtime"
       ],
       "decision": "Retain prior SAFE/CANDIDATE status and all frozen measured results; report methodology without invented scores."
+    },
+    {
+      "version": "v16.5.5",
+      "period": "2026-10",
+      "status": "RESTART_CANDIDATE_RESULTS_PENDING",
+      "title": "Fresh restart evaluation and bounded startup recovery candidate",
+      "goal": "Evaluate operation without inherited runtime history and measure startup recovery.",
+      "changes": [
+        "Fresh inference from configurable restart timestamps with UNKNOWN occupancy priors",
+        "Frozen DEV fitting with parameter hash check",
+        "Bounded causal multi-camera/single-camera startup candidate; SAFE unchanged",
+        "Startup-inclusive and warm-up-separated recovery metrics",
+        "Saved-fit restart button avoids detector/geometry refitting"
+      ],
+      "results": [
+        "Provided v16.5.4 fresh split metrics recomputed; alternate SAFE 9.375%, Candidate 9.375%, Guard 46.875%",
+        "27 functional/UI tests; full new restart inference pending"
+      ],
+      "issues": [
+        "Different fit/window/initialization conditions prevent sole-cause claims",
+        "Count agreement cannot verify individual slots",
+        "Historical same-video data remain non-independent"
+      ],
+      "decision": "Keep recovery experimental and preserve SAFE/CANDIDATE status."
     }
   ]
 }

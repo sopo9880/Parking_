@@ -274,5 +274,13 @@
   "Fresh DEV/TEST splits": "DEV/TEST 분할 새 학습·평가",
   "Split experiments complete": "분할 실험 완료",
   "Split experiments": "분할 실험",
-  "8) When enabled, freshly fit and evaluate original + alternate DEV/TEST splits without shared caches": "8) 활성화 시 기존·대체 DEV/TEST 분할을 캐시 공유 없이 새로 학습·평가"
+  "8) When enabled, freshly fit and evaluate original + alternate DEV/TEST splits without shared caches": "8) 활성화 시 기존·대체 DEV/TEST 분할을 캐시 공유 없이 새로 학습·평가",
+  "Fresh split runs: compare continuous / restart / recovery": "새 분할 실험: 연속 실행·재시작·초기 복구 비교",
+  "Restart times": "재시작 시점",
+  "Fresh tracking at each restart; learned geometry stays frozen. Recovery is experimental. Startup errors remain included; 30/60/120s and stabilization metrics are reported separately.": "매 재시작마다 추적 상태를 새로 만들고 학습된 주차면 정보는 고정합니다. 초기 복구는 실험 후보이며, 시작 직후 오차를 포함해 30/60/120초와 안정화 지표를 별도 기록합니다.",
+  "Select fitted original or alternate split folder": "학습이 완료된 original 또는 alternate 분할 폴더 선택",
+  "Run restart comparison from fitted split": "완료된 분할 학습으로 재시작 비교 실행",
+  "Restart comparison complete": "재시작 비교 완료",
+  "Restart @": "재시작 @",
+  "fresh detector history": "검출 추적 이력 새로 생성"
 }

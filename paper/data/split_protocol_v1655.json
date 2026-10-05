@@ -1,0 +1,49 @@
+{
+  "version": "v16.5.5",
+  "status": "implemented_functionally_validated_full_video_pending",
+  "default_protocols": [
+    {
+      "name": "original",
+      "dev": [
+        0.0,
+        900.0
+      ],
+      "test": [
+        900.0,
+        1230.0
+      ],
+      "horizon_sec": 1230.0
+    },
+    {
+      "name": "alternate",
+      "dev": [
+        330.0,
+        1230.0
+      ],
+      "test": [
+        0.0,
+        330.0
+      ],
+      "horizon_sec": 1230.0
+    }
+  ],
+  "full_real_video_results": null,
+  "neural_network_retraining": false,
+  "independent_validation": false,
+  "validation_scope": [
+    "27 unit/UI tests including fresh restart extraction timestamps, prefix causality, weak/moving detection guards, state reset, frozen selection and startup metrics"
+  ],
+  "implementation_sha256_lf_utf8": {
+    "split_protocol.py": "7b50f8b64c677c8f83873fd75fc4a6bbf1b53a9c3f8d604ea8694ccef065de8c",
+    "split_experiment.py": "6bd5d6f8fe0250e24e7ac953eaea00319eedaf95d1cb4082092e63a53ecab5f5",
+    "restart_evaluation.py": "75fd6b9c8695f3087ad895ded9bf6c94efa7a2926094254f4df32245c282ecc9",
+    "detector_tuner.py": "8017d63a13d9b68bc3db045cc144c24e6a148d91e0f99fc7fc3d8552c2eaae3a",
+    "slot_engine.py": "bf1df9c86075d77b830c32476143c29318437d313fb1c2d66d05d55c76d120f4",
+    "app.py": "30dd7e3a9cf11559d03fc4e64ff17a21081038a89779fce73f92dea66e40f8d1",
+    "validation_center.py": "73945b96c12e5c9b7d98058530a0e3f348c4a4d102ddcb2f4002961b9e65668f",
+    "tests/test_split_experiment.py": "8679c0320c87a68915c37705e319fe8073e950af39526f91a2f000cd0902e7e1",
+    "tests/test_restart_evaluation.py": "e29a7075f1bf16a464e854b345cd74cd2136cc4bdbafc6884a9a7a510aa13238",
+    "tests/test_localization.py": "4e37448298e105134f35dfddf8a4bd941b14680034d2dd89809bb47ece9c61a2"
+  },
+  "scope": "Implemented restart/recovery protocol; new full-video results pending. Supplied earlier fresh-split results are separate archived evidence."
+}

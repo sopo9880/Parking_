@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "version": "v16.5.4",
-  "research_revision": "temporal-external-windows-fresh-split-design-r4",
+  "version": "v16.5.5",
+  "research_revision": "temporal-external-fresh-splits-restart-design-r5",
   "release_kind": "research",
   "research_changed": true,
   "evidence_updates": [
-    "paper/data/split_protocol_v1654.json: methodology and functional validation; full-video results pending"
+    "paper/data/fresh_v1654/provenance.json: supplied prior-run predictions recomputed",
+    "paper/data/split_protocol_v1655.json: new restart/recovery design; full-video scores pending"
   ],
   "languages": [
     "ko",
@@ -20,14 +21,16 @@
     "version": "v16.2",
     "status": "SAFE_BASELINE",
     "exact_percent": 85.29,
-    "mae": 0.1471
+    "mae": 0.1471,
+    "evaluation_mode": "continuous/warm-state retained original TEST"
   },
   "candidate": {
     "version": "v16.4",
     "status": "CANDIDATE",
     "exact_percent": 97.06,
     "mae": 0.0294,
-    "evidence_scope": "same retained video after error analysis; independent temporal validation pending"
+    "evidence_scope": "same retained video after error analysis; independent temporal validation pending",
+    "evaluation_mode": "continuous/warm-state retained original TEST"
   },
   "evidence_commit": "3b8fe54bdcc2a08570fe84bbaace44347470b673",
   "figures": [
@@ -232,11 +235,25 @@
         "ko": "그림 12. 보존 영상의 구간별 동결 예측 비교. 개선은 마지막 구간 1/4에만 관측된다.",
         "en": "Figure 12. Frozen predictions across retained-video windows. Improvement is observed only in the final window (1/4)."
       }
+    },
+    {
+      "id": "fresh_split_results",
+      "number": 13,
+      "path": "figures/v16_5_5/fresh_split_results.png",
+      "sha256": "fabdddcbf9678541c84970f66d2cb3cdc5ec0438969d61e44143aa5d04b0e4e6",
+      "caption": {
+        "ko": "그림 13. 다른 DEV 학습·TEST 구간의 보존 v16.5.4 성능. 일치된 cold/warm 비교가 아니며 복구 후보 수치는 미보고다.",
+        "en": "Figure 13. Archived v16.5.4 results under different DEV fits/TEST windows. Not a matched cold/warm comparison; recovery-candidate scores remain unreported."
+      },
+      "provenance": {
+        "source": "paper/data/fresh_v1654/paper_test_results.csv",
+        "scope": "archived predictions recomputed; no new inference"
+      }
     }
   ],
   "paper_sha256": {
-    "ko": "d43a5ebe45b7ca6e42c86cfd91be52f0fb1cd96c25e9804584cfdc4c38480423",
-    "en": "1beda6bfdb220b4978fecc30ded797534868ce0de039be7805230c40a003c183"
+    "ko": "659d73ce670dc5bc048d6aea8a7789ef47cbbf82d03911680273714f0f1b4885",
+    "en": "31d8b1bc65878622396bfa80a64dc46cdaed46ad913c3a1a8933716fba252dc7"
   },
   "snapshots": {
     "v16.5.1": {
@@ -288,6 +305,16 @@
         "path": "paper/snapshots/paper_v16.5.4_en.md",
         "sha256": "f0deec0e3fd61f653da28aa9b7e446af63a6138e3a96da686b35d03b29ebcd71"
       }
+    },
+    "v16.5.5": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.5_ko.md",
+        "sha256": "755c5f84b2f63b1a2b1a3af52037119156c99422cef5d0be43ad02dc6299477e"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.5_en.md",
+        "sha256": "67b356882e45475db32c2c216965ed88e29ba68c0aa54834ed490ad93db12985"
+      }
     }
   },
   "growth_policy": {
@@ -314,8 +341,8 @@
       "en"
     ],
     "assets": [
-      "ParkingResearchAgent-v16.5.4-paper-ko.pdf",
-      "ParkingResearchAgent-v16.5.4-paper-en.pdf"
+      "ParkingResearchAgent-v16.5.5-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.5-paper-en.pdf"
     ]
   },
   "external_evidence": {
@@ -442,17 +469,95 @@
     ]
   },
   "split_experiments": {
-    "protocol_record": "paper/data/split_protocol_v1654.json",
+    "protocol_record": "paper/data/split_protocol_v1655.json",
     "results_status": "pending_full_real_video_run",
     "test_labels_used_for_selection": false,
     "neural_network_retraining": false,
     "independent_validation": false,
-    "sha256": "fda005f8093a0607d5143fa37a59e69278ff477375edd3fc9460e3332ee5d399",
+    "sha256": "d0e153ef0f8484efcaa3ebfd2fdf2384780272dfb8a55795174241c1190bb625",
     "artifacts": [
       {
-        "path": "paper/data/split_protocol_v1654.json",
-        "sha256": "fda005f8093a0607d5143fa37a59e69278ff477375edd3fc9460e3332ee5d399"
+        "path": "paper/data/split_protocol_v1655.json",
+        "sha256": "d0e153ef0f8484efcaa3ebfd2fdf2384780272dfb8a55795174241c1190bb625"
       }
     ]
+  },
+  "fresh_split_evidence": {
+    "provenance": "paper/data/fresh_v1654/provenance.json",
+    "artifacts": [
+      {
+        "path": "paper/data/fresh_v1654/original/split_final_metrics.csv",
+        "sha256": "ed75bb532c540c6b11f5081d86f628589be184e942bbf2fc51fd537c0091f1d7"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/baseline_count_timeseries.csv",
+        "sha256": "d6d6dce2dcfc6e6ef59652ff58beb759b42c175623b53dfa7360c9052fa4bea6"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/transition_guard_count_timeseries.csv",
+        "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/seg_assist_count_timeseries.csv",
+        "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/empty_ref_assist_count_timeseries.csv",
+        "sha256": "9148fed1bc9e9bdf6f5e739af28cd69d52e7621639a11e573d37c20f8da91f98"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/candidate_v164_count_timeseries.csv",
+        "sha256": "80ea3adf802bf46614fe5d46276ad55d851a5da2db2bd046b51391ba30bd4239"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/selected_state_params.json",
+        "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+      },
+      {
+        "path": "paper/data/fresh_v1654/original/selection_freeze.json",
+        "sha256": "7e229a7c35141aecea924deb95673dbaa21c198ca7a7ebd3392fd20bbdf1b83d"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/split_final_metrics.csv",
+        "sha256": "6e2632336f989be44ef6fc037c3b9e7d5cd12db7e08488e2010b7c05697cdce0"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/baseline_count_timeseries.csv",
+        "sha256": "a28fe190e5a6f109ec0d64439dfb5a81f1292d89e1b5f81251b8da6cdd3b35c2"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/transition_guard_count_timeseries.csv",
+        "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/seg_assist_count_timeseries.csv",
+        "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/empty_ref_assist_count_timeseries.csv",
+        "sha256": "a39f1ce03b7b8af06859ec176fb8052c599592635fc01cdebaa2ff2aa4bbc835"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/candidate_v164_count_timeseries.csv",
+        "sha256": "2e653c283bc25f4b41c1fba73ec0cf613c1e934c42e5c55a2b2fc9f1e37d54a9"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/selected_state_params.json",
+        "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+      },
+      {
+        "path": "paper/data/fresh_v1654/alternate/selection_freeze.json",
+        "sha256": "32c077921e4b878a7866870c6e2f4f3762cf70bbd1af6a05513363b8250a4042"
+      },
+      {
+        "path": "paper/data/fresh_v1654/paper_test_results.csv",
+        "sha256": "80db102e6d9156c771d9bde32c959f38a7fd6d978edf1274711333c2766825e8"
+      },
+      {
+        "path": "paper/data/fresh_v1654/provenance.json",
+        "sha256": "5495d8bb16c0d88d1c3593f06ed9fafcdc0d94de9cfce56f00f8a9eb4009de98"
+      }
+    ],
+    "new_restart_results": null
   }
 }

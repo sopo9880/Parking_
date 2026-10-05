@@ -29,7 +29,7 @@ from localization import tr
 from tkinter import filedialog, messagebox, ttk
 from PIL import Image, ImageTk
 
-from utils import format_timestamp, load_json, save_json, video_info, open_video, read_frame_at
+from utils import load_ground_truth, zip_paths, format_timestamp, load_json, save_json, video_info, open_video, read_frame_at
 from public_dataset import prepare_metapklot_cnr, evaluate_external_cnr
 from window_evaluation import default_windows, format_windows, parse_windows, write_window_evaluation
 
@@ -455,6 +455,9 @@ def open_validation_center(app):
     windows_var = tk.StringVar(value=format_windows(vcfg.get('evaluation_windows',default_windows())))
     scfg = vcfg.get('split_experiments',{})
     split_enabled = tk.BooleanVar(value=scfg.get('enabled',True))
+    rcfg=vcfg.get('restart_experiments',{})
+    restart_enabled=tk.BooleanVar(value=rcfg.get('enabled',True))
+    restart_times=tk.StringVar(value=format_time_list(rcfg.get('starts_sec',[0,330,660,900])))
     split_dev = tk.StringVar(value=format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
     split_test = tk.StringVar(value=format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
 
@@ -497,6 +500,7 @@ def open_validation_center(app):
             "repeat_count": max(0, int(repeat_count_var.get())),
             "evaluation_windows": parse_windows(windows_var.get()),
             "split_experiments": collect_split(),
+            "restart_experiments": {"enabled":bool(restart_enabled.get()),"starts_sec":parse_time_list(restart_times.get()),"duration_sec":330,"stable_samples":3},
         }
 
     def save_settings_only(show=True):
@@ -555,6 +559,9 @@ def open_validation_center(app):
         windows_var.set(format_windows(cfg.get('evaluation_windows',default_windows())))
         scfg=cfg.get('split_experiments',{})
         split_enabled.set(scfg.get('enabled',True))
+        rcfg=cfg.get('restart_experiments',{})
+        restart_enabled.set(rcfg.get('enabled',True))
+        restart_times.set(format_time_list(rcfg.get('starts_sec',[0,330,660,900])))
         split_dev.set(format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
         split_test.set(format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
 
@@ -620,6 +627,33 @@ def open_validation_center(app):
     ttk.Label(local,text=tr('Alternate TEST interval')).grid(row=15,column=0,sticky='w',padx=6,pady=5)
     ttk.Entry(local,textvariable=split_test).grid(row=15,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
     ttk.Label(local,text=tr('Default DEV 5:30-20:30 / TEST 0:00-5:30. Each split refits detector settings and slot geometry. Two fresh runs take longer; TEST labels are used only after selection. Same-video results are not independent validation.'),wraplength=900).grid(row=16,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+
+    ttk.Checkbutton(local,text=tr('Fresh split runs: compare continuous / restart / recovery'),variable=restart_enabled).grid(row=17,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    ttk.Label(local,text=tr('Restart times')).grid(row=18,column=0,sticky='w',padx=6,pady=5)
+    ttk.Entry(local,textvariable=restart_times).grid(row=18,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
+    ttk.Label(local,text=tr('Fresh tracking at each restart; learned geometry stays frozen. Recovery is experimental. Startup errors remain included; 30/60/120s and stabilization metrics are reported separately.'),wraplength=900).grid(row=19,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    def evaluate_restart_from_fit():
+        try:
+            current=save_settings_only(show=False)
+            folder=filedialog.askdirectory(title=tr('Select fitted original or alternate split folder'),initialdir=str(APP_DIR/'output'),parent=win)
+            if not folder: return
+            fit=Path(folder)
+            fixed=load_json(fit/'settings_snapshot.json',{})
+            if not fixed or not (fit/'learned/templates').is_dir():
+                raise ValueError('Fitted settings and learned templates are required; select an original/alternate split folder, not the upload ZIP.')
+            fixed.setdefault('validation',{})['restart_experiments']=current['validation']['restart_experiments']
+            request=load_json(fit/'worker_input.json',{})
+            video=app.video_var.get().strip();gt=app.gt_var.get().strip()
+            if not Path(video).is_file() or not Path(gt).is_file(): raise ValueError('Select the original video and GT in the main window')
+            rois=request.get('rois') or load_json(APP_DIR/'rois.json',{})
+            def job():
+                from restart_evaluation import run_restart_experiments
+                result=run_restart_experiments(video,rois,load_ground_truth(gt),fixed,fit,app._progress)
+                zip_paths(result/'RESTART_EVALUATION_TO_CHATGPT.zip',[(f,str(f.relative_to(result)).replace('\\','/')) for f in result.rglob('*') if f.is_file() and f.suffix!='.zip'])
+            app._run_thread(job,done_message=tr('Restart comparison complete'))
+        except Exception as exc:
+            messagebox.showerror(tr('Evaluation error'),tr(str(exc)),parent=win)
+    ttk.Button(local,text=tr('Run restart comparison from fitted split'),command=evaluate_restart_from_fit).grid(row=20,column=0,columnspan=3,sticky='w',padx=6,pady=5)
 
     public = ttk.LabelFrame(body, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)

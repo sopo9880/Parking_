@@ -116,6 +116,14 @@ def execute(request, progress=None):
             'scope': 'offline same-video experiment; historically reviewed data; not independent validation',
             'segmentation_available': not (out/'evidence/SEGMENTATION_UNAVAILABLE.txt').exists(),
         })
+        if settings.get('validation',{}).get('restart_experiments',{}).get('enabled',True):
+            from restart_evaluation import run_restart_experiments
+            try:
+                run_restart_experiments(request['video'],request['rois'],load_ground_truth(request['gt']),settings,out,progress)
+            except Exception as exc:
+                restart_dir=out/'restart_experiments';restart_dir.mkdir(exist_ok=True)
+                save_json(restart_dir/'failure.json',{'status':'failed','error':str(exc)})
+                raise
     return rows
 
 
