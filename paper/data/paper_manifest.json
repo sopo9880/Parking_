@@ -1,24 +1,10 @@
 {
   "schema_version": 1,
-  "version": "v16.5.3",
+  "version": "v16.5.3.1",
   "research_revision": "retained-temporal-external-cross-window-r3",
-  "release_kind": "research",
-  "research_changed": true,
-  "evidence_updates": [
-    {
-      "type": "external_spatial_recalculation",
-      "source_zip_sha256": "260036c0045e2fc3a45553e3cbe11d08f1962042f0d24c9874a3cdc245ec46a7",
-      "summary": "paper/data/external_v1652/external_summary.json",
-      "method": "all retained predictions deduplicated; 20 selected images re-inferred and verified; no full inference rerun"
-    },
-    {
-      "type": "retained_trace_cross_window_evaluation",
-      "summary": "paper/data/windows_v1653/window_evaluation_summary.json",
-      "inference_rerun": false,
-      "improved_windows": "1/4",
-      "independent_holdout": false
-    }
-  ],
+  "release_kind": "maintenance_patch",
+  "research_changed": false,
+  "evidence_updates": [],
   "languages": [
     "ko",
     "en"
@@ -247,8 +233,8 @@
     }
   ],
   "paper_sha256": {
-    "ko": "3715fbaf3d618d76583218efc3d3fe1a168194f37cf801f955e62a6a7968bba9",
-    "en": "977226182a682e5b78ad33266a3d11aa51b88acf80251063ac28c52bddc44414"
+    "ko": "b3cab2f1baa2d930b1c71804adf7595d2b8af2b97145daafd2214dd5da17e05c",
+    "en": "e7208105dddc5c0cf3aa4c70be3944e22430b365ca27d826188c162920979888"
   },
   "snapshots": {
     "v16.5.1": {
@@ -280,6 +266,16 @@
         "path": "paper/snapshots/paper_v16.5.3_en.md",
         "sha256": "3a93f085198ed4eeb7c381d30c73494b891a2a265b5e36429a66009134061330"
       }
+    },
+    "v16.5.3.1": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.3.1_ko.md",
+        "sha256": "a1a422bbbb6f0a65dd98fd6c6d45932145abf96e96ee67118c0132c77ee1dbb2"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.3.1_en.md",
+        "sha256": "193d0af0ea94a282f6108cbc0eb51fc593d1702d88d8afa70c4f6df29ecb392f"
+      }
     }
   },
   "growth_policy": {
@@ -306,8 +302,8 @@
       "en"
     ],
     "assets": [
-      "ParkingResearchAgent-v16.5.2-paper-ko.pdf",
-      "ParkingResearchAgent-v16.5.2-paper-en.pdf"
+      "ParkingResearchAgent-v16.5.3.1-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.3.1-paper-en.pdf"
     ]
   },
   "external_evidence": {

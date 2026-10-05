@@ -1,3 +1,11 @@
+# Parking Research Agent v16.5.3.1
+
+Correct the Living Paper manifest PDF asset filenames to match this release, and require an exact-version asset list in publication checks. Includes the v16.5.3 multi-window functionality and actual retained results unchanged. No new experiment, tuning, promotion or manuscript expansion; earlier snapshots remain immutable.
+
+한·영 PDF 목록의 이전 버전 표기를 수정하고 재발 방지 검사를 추가한 유지보수 패치입니다. 다중 구간 평가 기능과 실제 결과는 그대로 유지됩니다.
+
+---
+
 # Parking Research Agent v16.5.3
 
 - 검증 센터에서 다중 평가 구간 지정·설정/프로필 유지, 저장된 SAFE/Candidate 결과 재비교 버튼 추가. 학습·파라미터 선택·추론 없이 비교합니다. 새 실행 후 자동 생성하고 업로드 ZIP에 포함합니다.

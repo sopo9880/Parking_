@@ -56,6 +56,7 @@ def main():
     manifest = json.loads((ROOT/'paper_manifest.json').read_text(encoding='utf-8'))
     version = (ROOT/'VERSION.txt').read_text().strip()
     assert manifest['version']==version, 'Paper release version differs from application version'
+    assert manifest['pdf']['assets']==[f'ParkingResearchAgent-{version}-paper-{lang}.pdf' for lang in ('ko','en')], 'PDF asset filenames differ from release version'
     assert set(manifest['snapshots'].get(version, {}))=={'ko','en'} or not args.check, 'Both release snapshots are required'
     assert manifest['release_kind'] in ('research','presentation_patch','maintenance_patch')
     if manifest['research_changed']:

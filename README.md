@@ -2,7 +2,7 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.3**
+Current release: **v16.5.3.1**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 

@@ -670,6 +670,21 @@
         "Early counting errors remain; initialization is a hypothesis requiring investigation"
       ],
       "decision": "Keep SAFE_BASELINE/CANDIDATE status and frozen parameters; report limited cross-window benefit honestly."
+    },
+    {
+      "version": "v16.5.3.1",
+      "period": "2026-10",
+      "status": "MAINTENANCE_PATCH",
+      "title": "Correct paper PDF asset metadata",
+      "goal": "Keep manifest asset filenames aligned with the published version.",
+      "changes": [
+        "Exact-version PDF asset list and release check"
+      ],
+      "results": [
+        "Research results unchanged; no additional experiment"
+      ],
+      "issues": [],
+      "decision": "Preserve prior snapshots and SAFE/Candidate status."
     }
   ]
 }
