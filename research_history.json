@@ -732,6 +732,30 @@
         "Historical same-video data remain non-independent"
       ],
       "decision": "Keep recovery experimental and preserve SAFE/CANDIDATE status."
+    },
+    {
+      "version": "v16.5.6",
+      "period": "2026-10-06",
+      "status": "RESTART_EVIDENCE_AND_CANDIDATE_REVISION",
+      "confidence": "confirmed implementation; archived v16.5.5 numerical evidence; v16.5.6 full inference pending",
+      "title": "Actual restart failure analysis, additive recovery and DEV-only research selection",
+      "changes": [
+        "Preserve operational SAFE; separate frozen DEV_SELECTED_EXPERIMENTAL",
+        "Fix normal SAFE entry suppression in startup candidate; preserve legacy comparator",
+        "Report later count relapses instead of permanent recovery from three checkpoints",
+        "Publish actual v16.5.5 numerical restart evidence and synchronized bilingual snapshots/PDFs"
+      ],
+      "results": [
+        "Original-fit restart at 900s: continuous SAFE Exact 85.2941%, reset SAFE 0%; initialization priors differ",
+        "Actual v16.5.5 legacy recovery failed to improve all tested starts",
+        "31 unit/UI tests and archived 11-second regression replay; no full v16.5.6 real-video results"
+      ],
+      "issues": [
+        "No slot-level GT or independent new-video recovery validation",
+        "Historical DEV ranking introduced after TEST review",
+        "Reset UNKNOWN versus continuous operator priors confound history-only interpretation"
+      ],
+      "decision": "Retain SAFE; recovery/Guard/DEV selection remain research candidates."
     }
   ]
 }

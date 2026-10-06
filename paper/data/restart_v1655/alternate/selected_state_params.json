@@ -1,0 +1,19 @@
+{
+  "evidence_mode": "FULL",
+  "entry_hit_ratio": 0.35,
+  "exit_hit_ratio": 0.1,
+  "stable_track_ratio": 0.55,
+  "occupied_visual_diff_threshold": 0.08,
+  "global_merge": "ANY",
+  "global_confidence_threshold": 0.0,
+  "entry_mean_conf_min": 0.08,
+  "entry_no_appearance_conf": 0.25,
+  "full_min_conf": 0.0,
+  "temporal_window_sec": 10.0,
+  "recent_window_sec": 3.0,
+  "stationary_speed_px_s": 14.0,
+  "stationary_motion_span_px": 32.0,
+  "crop_stationary_motion_span_px": 28.0,
+  "max_track_switches_for_entry": 1,
+  "temporal_variant": "SAFE_BASELINE"
+}

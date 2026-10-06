@@ -4044,10 +4044,12 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
                 entry_gate=bool(evidence_stable and hit_ratio>=entry_ratio and mean_conf>=entry_mean_conf_min and ghost_guard_ok)
                 if recovery_cfg and t-recovery_start<=float(recovery_cfg.get('duration_sec',30)):
                     elapsed=t-recovery_start
-                    entry_gate=bool(entry_gate and not maneuvering)
-                    if elapsed<float(recovery_cfg.get('min_observation_sec',10)):
-                        entry_gate=False
-                    elif lid in recovery_ready:
+                    # v16.5.6: recovery adds corroborated entry; normal SAFE entry
+                    # remains available while startup observations accumulate.
+                    # The explicit legacy flag retains the archived v16.5.5 comparator.
+                    if not recovery_cfg.get('preserve_safe_entry',True):
+                        entry_gate=bool(entry_gate and not maneuvering and elapsed>=float(recovery_cfg.get('min_observation_sec',10)))
+                    if elapsed>=float(recovery_cfg.get('min_observation_sec',10)) and lid in recovery_ready and (not maneuvering or not recovery_cfg.get('preserve_safe_entry',True)):
                         peers=[str(x) for x in recovery_ready if str(slot_meta.loc[x,'global_id'])==str(r['global_id']) and str(slot_meta.loc[x,'cctv'])!=cctv]
                         confidences=[float(x.get('full_det_conf',0)) for x in recovery_hist[lid] if int(x.get('full_detected',0))]
                         strong_single=bool(confidences and np.mean(confidences)>=float(recovery_cfg.get('single_camera_conf',0.25)))

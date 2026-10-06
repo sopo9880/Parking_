@@ -2,12 +2,22 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.5**
+Current release: **v16.5.6**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
 
-## 재시작 / Cold start (v16.5.5)
+## v16.5.6: 실제 재시작 결과와 연구 후보 선택
+
+- 한·영 Living Paper에 실제 v16.5.5 재시작 결과, 실패한 복구 후보, G002/G027/G019 전환과 재오류 분석을 추가했습니다. [재계산 근거](paper/data/restart_v1655/provenance.json)를 제공합니다. Original 설정의 15분 연속 SAFE는 85.29%, UNKNOWN 재시작 SAFE는 0%이며, 초기 사전 정보 차이도 함께 기록합니다.
+- `PRODUCTION_SAFE_SELECTED`는 SAFE 기준선입니다. `DEV_SELECTED_EXPERIMENTAL`은 SAFE/Guard/SEG를 DEV Exact·MAE·과대율·최대 오차로 선택하고 TEST 평가 전에 별도 설정을 동결합니다. 운영 SAFE 자동 승격은 아닙니다. 기존 `SELECTED` 파일은 유지합니다.
+- `RESET_RECOVERY`는 정상 SAFE 입차 판정을 막지 않는 수정 후보입니다. 기존 차단 후보는 `RESET_RECOVERY_V1655`, Guard는 `RESET_TRANSITION_GUARD`, DEV 후보는 `RESET_DEV_SELECTED`로 함께 비교합니다. 모든 새 후보는 같은 재시작 관측을 사용합니다.
+- 3회 count Exact 뒤의 첫 재오류 시점, 재오류 횟수, 이후 MAE, 최장/마지막 연속 Exact 표본 수를 기록합니다. 3회 일치는 영구 복구나 슬롯 GT 정확도를 뜻하지 않습니다.
+- **이미 v16.5.5를 실행했다면** 아래의 완료된 분할 학습 버튼에서 실제 `original` 또는 `alternate` 폴더를 선택해 검출기/공간 학습을 반복하지 않고 다음 재시작 비교를 실행하세요. 새 DEV 후보 선택도 저장된 DEV 표만 사용합니다.
+
+31개 단위/UI 테스트, 실제 저장 관측 900–910초의 회귀 재생과 v16.5.5 재시작 80행 재검산을 수행합니다. 수정 후보의 전체 영상 성능은 미측정이며, 기존 결과와 구분합니다.
+
+## 재시작 / Cold start (v16.5.5부터 지원)
 
 검증 센터의 **새 분할 실험: 연속 실행·재시작·초기 복구 비교**가 기본 활성화됩니다. ALL-IN-ONE의 각 fresh split 학습이 끝나면 설정을 동결한 채 0:00 / 5:30 / 11:00 / 15:00 및 TEST 시작 지점에서 새 추적·상태로 추론합니다. 재시작 시점을 변경할 수 있으며 각 구간은 최대 5분 30초입니다.
 

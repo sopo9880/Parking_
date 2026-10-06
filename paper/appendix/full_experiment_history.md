@@ -988,3 +988,8 @@ ALL-IN-ONE runs original and alternate protocols in isolated processes with fres
 ## v16.5.5 — Restart evaluation and startup recovery
 
 Frozen fitting with fresh trackers/state at configured restart points; UNKNOWN occupancy priors; causal bounded recovery candidate; startup-inclusive 30/60/120-second and stable-count metrics. Provided v16.5.4 results were recomputed, including alternate SAFE 9.375% versus Guard 46.875%. New restart/recovery full-video scores pending. Count agreement is not slot correctness or independent validation; SAFE/CANDIDATE status remains unchanged.
+
+
+## v16.5.6 — 2026-10-06
+
+Actual v16.5.5 restart CSVs are recalculated, including failed recovery and count relapses. Revised recovery preserves normal SAFE entry; legacy and Guard/DEV-selected research comparators remain separate. Production SAFE is protected. Archived same-video evidence is not independent validation; full v16.5.6 video performance remains pending. [Provenance](../data/restart_v1655/provenance.json).

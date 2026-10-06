@@ -631,7 +631,7 @@ def open_validation_center(app):
     ttk.Checkbutton(local,text=tr('Fresh split runs: compare continuous / restart / recovery'),variable=restart_enabled).grid(row=17,column=0,columnspan=3,sticky='w',padx=6,pady=5)
     ttk.Label(local,text=tr('Restart times')).grid(row=18,column=0,sticky='w',padx=6,pady=5)
     ttk.Entry(local,textvariable=restart_times).grid(row=18,column=1,columnspan=2,sticky='ew',padx=6,pady=5)
-    ttk.Label(local,text=tr('Fresh tracking at each restart; learned geometry stays frozen. Recovery is experimental. Startup errors remain included; 30/60/120s and stabilization metrics are reported separately.'),wraplength=900).grid(row=19,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    ttk.Label(local,text=tr('Each restart clears tracking history. Compare SAFE, additive recovery, legacy recovery and DEV-selected research candidates. Startup errors and later relapses remain reported; production SAFE stays protected.'),wraplength=900).grid(row=19,column=0,columnspan=3,sticky='w',padx=6,pady=5)
     def evaluate_restart_from_fit():
         try:
             current=save_settings_only(show=False)

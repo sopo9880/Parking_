@@ -156,6 +156,9 @@ def verify_and_render(pdf,previews,language):
     if json.loads((ROOT/'paper_manifest.json').read_text(encoding='utf-8')).get('fresh_split_evidence'):
         for required in ('9.3750','46.8750','1.218750','170'):
             assert required in text, f'PDF missing fresh result {required}'
+    if json.loads((ROOT/'paper_manifest.json').read_text(encoding='utf-8')).get('restart_evidence'):
+        for required in ('1.352941','2.088235','69.6970','0.8750','RESET_RECOVERY_V1655','DEV_SELECTED_EXPERIMENTAL'):
+            assert required in text, f'PDF missing restart result {required}'
     assert '\ufffd' not in text, 'Replacement glyph found'
     assert len(text)>3000 and len(pages)>1, 'Paper unexpectedly empty'
     if language=='ko': assert '초록' in text and '결론' in text, 'Korean text missing'

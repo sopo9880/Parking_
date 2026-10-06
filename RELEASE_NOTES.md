@@ -1,3 +1,17 @@
+# Parking Research Agent v16.5.6
+
+실제 v16.5.5 재시작 결과를 한·영 논문에 올리고, 초기 복구 판정 차단과 연구 후보 선택·평가를 수정합니다.
+
+- 제공된 v16.5.5 ZIP에서 original/alternate 분할과 실제 재시작 80개 scoped 지표를 재검산했습니다. Original 15분 연속 SAFE 85.2941%/MAE 0.147059, UNKNOWN 재시작 SAFE 0%/1.352941, 기존 복구 후보 0%/2.088235를 그대로 보고합니다. 초기 사전 정보도 달라 이력만의 인과 효과로 주장하지 않습니다.
+- 정상 SAFE 입차를 첫 10초 동안 일괄 차단하던 복구 후보를 수정했습니다. 수정 RESET_RECOVERY와 RESET_RECOVERY_V1655·RESET_TRANSITION_GUARD·RESET_DEV_SELECTED를 같은 새 관측으로 비교합니다. 반복 검출·정지성·다중 CCTV/강한 단일 CCTV 조건은 유지합니다.
+- PRODUCTION_SAFE_SELECTED와 DEV_SELECTED_EXPERIMENTAL을 분리합니다. SAFE/Guard/SEG 중 DEV만으로 연구 후보를 선택·동결하고 TEST를 평가합니다. 기존 SELECTED 파일과 운영 보호 규칙은 유지합니다. 이미 학습된 폴더로도 실행할 수 있습니다.
+- 세 체크포인트 Exact 이후의 재오류 시점·횟수·MAE와 연속 일치 길이를 추가합니다. Alternate SAFE의 170–320초 사후 분석은 18.75%/MAE 0.875, Guard는 93.75%/0.0625입니다. 슬롯 정답을 확인한 것은 아닙니다.
+- Living Paper에 실제 수치 표, 재시작 count 그래프, 재오류 그래프와 provenance를 추가하고 v16.5.6 한·영 snapshot/PDF를 배포합니다. 과거 snapshot은 수정하지 않습니다.
+
+Validation: 31 unit/UI tests and protected self-test; actual archived 11-second startup replay (SAFE/revision 17 at start and 910s versus legacy 0/15); frozen external/window/split/restart evidence checks; bilingual PDF rendering and release checksums. Full real-video v16.5.6 recovery scores are pending. DEV ranking was designed after historical TEST review; retrospective scores do not establish independent generalization. No automatic SAFE/CANDIDATE promotion or commercial recovery guarantee.
+
+---
+
 # Parking Research Agent v16.5.5
 
 연속 실행과 완전 재시작을 같은 학습 설정으로 비교하는 실험, 초기 복구 후보, 복구 시간 지표를 추가합니다.

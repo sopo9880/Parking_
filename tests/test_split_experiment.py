@@ -105,7 +105,7 @@ class SplitExperiments(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);slots=root/'input_slots.json'
             slots.write_text('{"slots":[{"point":[50,50]}]}',encoding='utf-8')
-            hashes=[];scores=[]
+            hashes=[];scores=[];experimental_hashes=[]
             for index in range(2):
                 gt=pd.DataFrame({'timestamp':[f'0:{t:02d}' for t in range(25)],
                     'ground_truth_occupied_space_count':[int(2<=t<=20) if t>=8 or index==0 else 5 for t in range(25)]})
@@ -120,14 +120,18 @@ class SplitExperiments(unittest.TestCase):
                      patch('slot_engine.extract_segmentation_assist',side_effect=lambda *args:args[4]):
                     execute(request)
                 hashes.append(json.loads((out/'selection_freeze.json').read_text())['sha256'])
+                experimental_hashes.append(json.loads((out/'dev_selection_freeze.json').read_text())['sha256'])
                 final=pd.read_csv(out/'split_final_metrics.csv')
                 safe=final[final.variant=='SAFE_BASELINE'].set_index('split')
                 self.assertEqual(safe.loc['DEV','N'],17)
                 self.assertEqual(safe.loc['TEST','N'],8)
+                self.assertIn('DEV_SELECTED_EXPERIMENTAL',final.variant.values)
+                self.assertIn('PRODUCTION_SAFE_SELECTED',final.variant.values)
                 scores.append(safe.loc['TEST','mae'])
                 board=pd.read_csv(out/'DEV_selection_variant_comparison.csv')
                 self.assertTrue((board.test_N==0).all())
             self.assertEqual(hashes[0],hashes[1])
+            self.assertEqual(experimental_hashes[0],experimental_hashes[1])
             self.assertEqual(seen[0],seen[1])
             self.assertNotEqual(scores[0],scores[1])
             self.assertEqual(settings,original)

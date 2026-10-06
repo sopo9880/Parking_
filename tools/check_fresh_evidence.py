@@ -26,4 +26,4 @@ for protocol in ('original','alternate'):
         computed={'N':len(error),'exact_rate':float((error==0).mean()),'mae':float(error.abs().mean()),
                   'max_abs_error':int(error.abs().max()),'under_rate':float((error<0).mean()),'over_rate':float((error>0).mean())}
         for key,value in computed.items(): assert np.isclose(value,record[key]),(protocol,record['variant'],key)
-print('Archived fresh split evidence PASS: all DEV/TEST counts and frozen selection hashes; restart recovery scores remain unmeasured')
+print('Archived fresh split evidence PASS: all DEV/TEST counts and frozen selection hashes; v16.5.4 archive preserved separately from v16.5.5 restart evidence')

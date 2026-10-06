@@ -282,5 +282,6 @@
   "Run restart comparison from fitted split": "완료된 분할 학습으로 재시작 비교 실행",
   "Restart comparison complete": "재시작 비교 완료",
   "Restart @": "재시작 @",
-  "fresh detector history": "검출 추적 이력 새로 생성"
+  "fresh detector history": "검출 추적 이력 새로 생성",
+  "Each restart clears tracking history. Compare SAFE, additive recovery, legacy recovery and DEV-selected research candidates. Startup errors and later relapses remain reported; production SAFE stays protected.": "재시작마다 추적 이력을 초기화합니다. SAFE·추가 복구·기존 복구·DEV 선택 연구 후보를 비교합니다. 초기 오차와 이후 재오류를 기록하며 운영용 SAFE는 보호합니다."
 }

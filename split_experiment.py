@@ -71,10 +71,14 @@ def execute(request, progress=None):
                                                'detectors': settings['detector_by_cctv']})
         save_json(out/'settings_snapshot.json', settings)
         (out/'temporal_variant_comparison.csv').rename(out/'DEV_selection_variant_comparison.csv')
+        from experimental_selection import freeze_dev_selection
+        experimental_freeze=freeze_dev_selection(out)
         rows = []
         for name, tag in [('SAFE_BASELINE', 'baseline'), ('TRANSITION_GUARD', 'transition_guard'),
                           ('SEG_ASSIST', 'seg_assist'), ('SELECTED', 'selected'),
-                          ('EMPTY_REF', 'empty_ref_assist')]:
+                          ('EMPTY_REF', 'empty_ref_assist'),
+                          ('PRODUCTION_SAFE_SELECTED','production_safe_selected'),
+                          ('DEV_SELECTED_EXPERIMENTAL','dev_selected_experimental')]:
             path = out/f'{tag}_global_slot_timeseries.csv'
             if not path.exists():
                 continue
@@ -95,6 +99,8 @@ def execute(request, progress=None):
         candidate = pd.read_csv(out/'candidate_v164_metrics.csv')
         rows.extend({'protocol': protocol['name'], 'variant': 'CANDIDATE', **row}
                     for row in candidate.to_dict('records'))
+        experimental_path=out/'dev_selected_experimental_params.json'
+        assert experimental_freeze['sha256']==hashlib.sha256(experimental_path.read_bytes()).hexdigest(), 'Experimental selection changed during TEST evaluation'
         assert frozen == hashlib.sha256(selected.read_bytes()).hexdigest(), 'Selection changed during TEST evaluation'
         pd.DataFrame(rows).to_csv(out/'split_final_metrics.csv', index=False, encoding='utf-8-sig')
         (out/'REPORT.txt').write_text(
@@ -110,6 +116,7 @@ def execute(request, progress=None):
             'status': 'completed', 'protocol': protocol, 'cache_reused': False,
             'test_used_for_selection': False, 'slot_gt_used_for_selection': False,
             'selected_params_sha256': frozen,
+            'dev_selected_experimental': experimental_freeze,
             'learning_times': learning_times(settings, float(settings.get('learn_sample_sec', 2))),
             'evaluation_warmup_sec': warmup,
             'boundary': '[start,end), including horizon endpoint',

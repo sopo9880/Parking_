@@ -6,9 +6,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-DEFAULT_RECOVERY={'duration_sec':30,'window_sec':10,'min_observation_sec':10,
+DEFAULT_RECOVERY={'preserve_safe_entry':True,'duration_sec':30,'window_sec':10,'min_observation_sec':10,
                   'min_samples':8,'hit_ratio':0.75,'min_conf':0.10,
                   'single_camera_conf':0.25,'max_motion_px':24,'max_speed_px_s':14}
+LEGACY_RECOVERY={k:v for k,v in DEFAULT_RECOVERY.items() if k!='preserve_safe_entry'}
+LEGACY_RECOVERY['preserve_safe_entry']=False
 
 
 def recovery_gate(history,elapsed,cfg):
@@ -41,6 +43,17 @@ def recovery_metrics(trace,start,stable_samples=3):
             'stable_confirmed_at_sec':float(times[stable+stable_samples-1]-start) if stable is not None else None,
             'stable_samples':stable_samples,'never_stabilized':stable is None,
             'post_stable_exact_rate':float(exact[stable:].mean()) if stable is not None else None}
+    # Count agreement on three checkpoints can relapse immediately afterwards.
+    exact_runs=[];run=0
+    for value in exact:
+        run=run+1 if value else 0;exact_runs.append(run)
+    relapse_start=stable+stable_samples if stable is not None else len(d)
+    relapse=np.flatnonzero(~exact[relapse_start:])+relapse_start
+    result.update({'post_stable_mae':float(np.abs(err[stable:]).mean()) if stable is not None else None,
+        'time_to_first_relapse_sec':float(times[relapse[0]]-start) if len(relapse) else None,
+        'relapse_count':int(sum(bool(exact[i-1] and not exact[i]) for i in range(relapse_start,len(d)))),
+        'longest_exact_run_samples':max(exact_runs,default=0),
+        'tail_exact_samples':exact_runs[-1] if exact_runs else 0})
     for seconds in (30,60,120):
         mask=times<start+seconds
         result[f'first_{seconds}s_N']=int(mask.sum())
@@ -51,7 +64,8 @@ def recovery_metrics(trace,start,stable_samples=3):
 
 def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
     from slot_engine import (extract_evidence,extract_segmentation_assist,load_slots,save_slots,
-        _run_state_engine_v13_safe,_v16_baseline_params,evaluate_state_output)
+        _run_state_engine_v13_safe,_run_state_engine_v15_transition_guard,
+        _run_state_engine_v15_1_seg_assist,_v16_baseline_params,evaluate_state_output)
     from split_protocol import protocol_context
     from transition_refiner_v164 import apply_transition_refiner,build_global_trace,RefinerConfig
     fit=Path(fit_dir);root=Path(settings['_restart_output_dir']);root.mkdir(parents=True,exist_ok=True)
@@ -74,6 +88,17 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
     if quality.exists() and quality.stat().st_size>5:
         for row in pd.read_csv(quality).to_dict('records'):
             thresholds[row.pop('cctv')]=row
+    from experimental_selection import load_variant_params,freeze_dev_selection
+    if (fit/'DEV_selection_variant_comparison.csv').exists() and not (fit/'dev_selected_experimental_params.json').exists():
+        freeze_dev_selection(fit)
+    guard_params=load_variant_params(fit,'TRANSITION_GUARD') if (fit/'DEV_selection_variant_comparison.csv').exists() else None
+    experimental=None
+    if (fit/'dev_selected_experimental_params.json').exists():
+        raw=(fit/'dev_selected_experimental_params.json').read_bytes()
+        experimental_freeze=json.loads((fit/'dev_selection_freeze.json').read_text())
+        if hashlib.sha256(raw).hexdigest()!=experimental_freeze['sha256']:
+            raise ValueError('Experimental DEV parameter freeze mismatch')
+        experimental=json.loads(raw)
     rows=[]
     warm=float(settings.get('evaluation_warmup_sec',10))
     with protocol_context(None):
@@ -95,8 +120,17 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
             if evidence.empty or evidence.time_sec.min()<start: raise RuntimeError('Invalid fresh restart evidence')
             baseline_params={**_v16_baseline_params(settings),'unlabeled_restart':True}
             traces={}
-            for variant,params in [('RESET_SAFE',baseline_params),('RESET_RECOVERY',{**baseline_params,'startup_recovery':DEFAULT_RECOVERY})]:
-                local,global_,transitions=_run_state_engine_v13_safe(evidence,params)
+            runners=[('RESET_SAFE',_run_state_engine_v13_safe,baseline_params),
+                ('RESET_RECOVERY',_run_state_engine_v13_safe,{**baseline_params,'startup_recovery':DEFAULT_RECOVERY}),
+                ('RESET_RECOVERY_V1655',_run_state_engine_v13_safe,{**baseline_params,'startup_recovery':LEGACY_RECOVERY})]
+            if guard_params:
+                runners.append(('RESET_TRANSITION_GUARD',_run_state_engine_v15_transition_guard,{**guard_params,'unlabeled_restart':True}))
+            if experimental:
+                runner={'SAFE_BASELINE':_run_state_engine_v13_safe,'TRANSITION_GUARD':_run_state_engine_v15_transition_guard,
+                        'SEG_ASSIST':_run_state_engine_v15_1_seg_assist}[experimental['temporal_variant']]
+                runners.append(('RESET_DEV_SELECTED',runner,{**experimental,'unlabeled_restart':True}))
+            for variant,runner,params in runners:
+                local,global_,transitions=runner(evidence,params)
                 local.to_csv(out/f'{variant}_slot_timeseries.csv',index=False,encoding='utf-8-sig')
                 transitions.to_csv(out/f'{variant}_transitions.csv',index=False,encoding='utf-8-sig')
                 traces[variant]=global_
@@ -105,6 +139,8 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
                     traces['RESET_CANDIDATE']=build_global_trace(refined)
             for variant,filename in [('CONTINUOUS_SAFE','baseline_global_slot_timeseries.csv'),('CONTINUOUS_CANDIDATE','candidate_v164_global_slot_timeseries.csv')]:
                 traces[variant]=pd.read_csv(fit/filename)
+            if experimental:
+                traces['CONTINUOUS_DEV_SELECTED']=pd.read_csv(fit/'dev_selected_experimental_global_slot_timeseries.csv')
             counts={}
             for variant,global_ in traces.items():
                 if not set(window_gt.time_sec).issubset(set(global_.time_sec)):
@@ -127,14 +163,20 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
             (out/'restart_audit.json').write_text(json.dumps({'start_sec':start,'end_sec':end,
                 'runtime_history_reused':False,'initial_state':'UNKNOWN','quality_fit':'frozen DEV thresholds',
                 'selected_parameters_sha256':hashlib.sha256(freeze).hexdigest(),
-                'recovery_candidate_config':DEFAULT_RECOVERY,'gt_used_for_bootstrap':False,
+                'recovery_candidate_config':DEFAULT_RECOVERY,'legacy_recovery_config':LEGACY_RECOVERY,
+                'dev_selected_experimental':experimental_freeze if experimental else None,
+                'transition_guard_available':guard_params is not None,'gt_used_for_bootstrap':False,
                 'fresh_inference_start_sec':float(evidence.time_sec.min()),
                 'segmentation_available':not (out/'evidence/SEGMENTATION_UNAVAILABLE.txt').exists()},indent=2),encoding='utf-8')
     assert freeze==(fit/'selected_state_params.json').read_bytes(),'Restart evaluation changed fitted selection'
+    if experimental:
+        assert hashlib.sha256((fit/'dev_selected_experimental_params.json').read_bytes()).hexdigest()==experimental_freeze['sha256']
     pd.DataFrame(rows).to_csv(root/'restart_metrics.csv',index=False,encoding='utf-8-sig')
     (root/'RESTART_REPORT.txt').write_text('Continuous versus fresh restart with frozen fitting.\n'
         'Startup-inclusive and matched post-restart warm-up metrics are separate. Stable exact means '
         'three consecutive available GT checkpoints, not permanent slot correctness. Never recovered is missing, not zero.\n'
+        'Three-checkpoint agreement is provisional: relapse time/count and post-agreement MAE are reported.\n'
+        'RESET_RECOVERY is additive v16.5.6; RESET_RECOVERY_V1655 retains the old blocking candidate.\n'
         'RESET_RECOVERY is experimental and does not replace SAFE_BASELINE. Count recovery is not slot-level validation.\n'
         'Historical same-video windows are not independent hold-out. Random-restart coverage is a configured deterministic schedule.\n',encoding='utf-8')
     return root

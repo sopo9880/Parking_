@@ -1,10 +1,10 @@
 # Causal Parking-Space Occupancy Estimation from Re-recorded Multi-CCTV Video: Parking Research Agent Living Paper
 
-Living Paper | v16.5.5 | Research revision temporal-external-fresh-splits-restart-design-r5
+Living Paper | v16.5.6 | Research revision temporal-restart-evidence-selection-r6
 
 [한국어](paper_ko.md) | [English](paper_en.md)
 
-Research draft. Temporal scores are retained records and recomputed user-provided v16.5.4 predictions. External spatial results were also recalculated from deduplicated archived predictions. No full inference was rerun for this release; real v16.5.5 restart/recovery scores remain unreported. Authors and affiliation are unspecified.
+Research draft. Retained results are separated from recomputed user-supplied v16.5.4/v16.5.5 prediction CSVs. Actual v16.5.5 UNKNOWN restarts and failed startup recovery are included. Full-video performance of revised v16.5.6 candidates remains unmeasured. Authors and affiliation are unspecified.
 
 <!-- section:abstract -->
 
@@ -70,6 +70,8 @@ Still-image evaluation uses the unchanged detector/polygon-intersection decision
 
 Restart experiments retain fitted detectors, anchors and templates but create new trackers, motion history, AUX memory, segmentation recovery frame history and occupancy state. Initial occupancy is UNKNOWN; unlabeled appearance similarity is not treated as occupied evidence. RESET_RECOVERY is experimental: at least 10 seconds of observation, at least eight samples in a 10-second window with at least 75% repeated FULL detections, stationary center/speed bounds, and multi-camera agreement or stronger single-camera confidence can initialize occupancy within the first 30 seconds. SAFE temporal rules follow. It uses current/past images and receives no TEST GT. No 10–30 second recovery guarantee or commercial readiness is claimed. Default SAFE behavior and CANDIDATE status remain unchanged.
 
+v16.5.6 revision: startup recovery adds corroborated entry without suppressing normal SAFE entry. The old first-ten-second blocking candidate remains a separate comparator.
+
 <!-- section:protocol -->
 
 ## 5. Experimental protocol and evidence status
@@ -86,13 +88,13 @@ Separate from frozen cross-window statistics, Original (DEV 0–900 s / TEST 900
 
 The selected configuration hash is frozen before TEST labels evaluate SAFE_BASELINE, TRANSITION_GUARD, SEG_ASSIST, EMPTY_REF, SELECTED and CANDIDATE. Intervals include their start and exclude their end, except the evaluation horizon endpoint. The original 10 s startup warm-up remains; state is not reset at split boundaries. Unlike the legacy learner's boundary-frame inclusion, fresh fitting follows explicit DEV membership. Inference proceeds chronologically from zero, so past online state history can span intervals. The reverse split applies templates fitted on later DEV frames to earlier TEST frames: it is offline evaluation, not causal future prediction.
 
-Implementation and functional validation are complete in v16.5.4, with full real-CCTV split experiments pending at publication. Archived predictions from a subsequently supplied v16.5.4 run are now recalculated. Tests perturb TEST labels while checking invariant actual state selection and changed evaluation metrics, inspect actual detector/geometry DEV frame access, and verify boundaries and failures. Functional validation is not performance evidence. New restart/recovery Exact/MAE values remain unreported; supplied earlier split results are reported separately. See the [protocol record](data/split_protocol_v1654.json); runtime outputs include split_final_metrics.csv and split_audit.json. Historically reviewed same-video intervals cannot establish independent validation.
+Implementation and functional validation are complete in v16.5.4, with full real-CCTV split experiments pending at publication. Archived predictions from a subsequently supplied v16.5.4 run are now recalculated. Tests perturb TEST labels while checking invariant actual state selection and changed evaluation metrics, inspect actual detector/geometry DEV frame access, and verify boundaries and failures. Functional validation is not performance evidence. Actual v16.5.5 restart/recovery scores, pending at publication, are now reported in Section 6.3. Full-video scores of revised v16.5.6 candidates remain unreported. See the [protocol record](data/split_protocol_v1654.json); runtime outputs include split_final_metrics.csv and split_audit.json. Historically reviewed same-video intervals cannot establish independent validation.
 
 ### Restart evaluation protocol (v16.5.5)
 
 After freezing each fresh split DEV selection, inference starts anew at 0/330/660/900 seconds and the TEST start, for up to 330 seconds. Continuous SAFE/Candidate are compared with RESET_SAFE, RESET_CANDIDATE and RESET_RECOVERY. Resetting state on sliced precomputed evidence is insufficient: detector histories and recovery frame histories are freshly reconstructed from the restart timestamp. The Validation Center can configure starts or reuse a completed actual fit directory for restart inference only. Unique output directories contain audits and explicit failure status. Restarts use UNKNOWN initial occupancy while existing continuous runs use operator initialization, so this is an operational comparison, not an ablation isolating temporal history alone.
 
-Metrics include startup-inclusive Exact/MAE; first 30/60/120-second errors; first exact; the beginning and confirmation time of three consecutive available exact GT checkpoints; post-stability Exact; never-stabilized flag; and continuous/reset slot-state differences. The first-10-second exclusion is a separate row. Three exact count checkpoints do not prove permanent stability or individual-slot correctness, nor guarantee correctness between GT samples. Real-video restart/recovery results remain unavailable; only functional validation is complete.
+Metrics include startup-inclusive Exact/MAE; first 30/60/120-second errors; first exact; the beginning and confirmation time of three consecutive available exact GT checkpoints; post-stability Exact; never-stabilized flag; and continuous/reset slot-state differences. The first-10-second exclusion is a separate row. Three exact count checkpoints do not prove permanent stability or individual-slot correctness, nor guarantee correctness between GT samples. Actual v16.5.5 results are reported in Section 6.3. v16.5.6 adds relapse metrics and legacy/revised recovery and DEV-selected research candidates; a new full-video evaluation remains pending.
 
 <!-- section:results -->
 
@@ -170,6 +172,70 @@ Fitting, scene content and initialization conditions differ together, so these r
 ![Figure 13. Archived v16.5.4 results under different DEV fits/TEST windows. Not a matched cold/warm comparison; recovery-candidate scores remain unreported.](figures/v16_5_5/fresh_split_results.png)
 
 Figure 13. Archived v16.5.4 results under different DEV fits/TEST windows. Not a matched cold/warm comparison; recovery-candidate scores remain unreported.
+
+<!-- section:restart_results -->
+
+## 6.3 Actual restart results and post-agreement relapses
+
+The v16.5.5 UPLOAD_TO_CHATGPT.zip supplied on 2026-10-06 contains actual original/alternate restarts with new trackers at 0/330/660/900 seconds, as well as continuous split traces. The log places fresh split/restart execution between 00:26:58 and 09:26:53. Restarts use UNKNOWN initialization without prior tracking or occupancy history; detectors and slot geometry are frozen from each DEV fit. Tables report INCLUSIVE_STARTUP over 330-second windows, including the final 1230-second endpoint. Sample counts differ from legacy TEST because the video's first-ten-second exclusion is not applied here. Separate matched AFTER_RESTART_WARMUP metrics are preserved and recomputed [R8].
+
+With the original DEV fit, continuous SAFE at 900 seconds has N=34, Exact 85.2941% and MAE 0.147059, versus 0% and 1.352941 for UNKNOWN RESET_SAFE. The old v16.5.5 RESET_RECOVERY is worse at 0% and 2.088235. Neither RESET_SAFE nor RESET_RECOVERY reaches count agreement in any of the four original-fit restart windows. With the alternate fit, RESET_SAFE at 660 seconds achieves 69.6970%/0.333333 versus continuous SAFE 33.3333%/0.666667. At 900 seconds, RESET_SAFE achieves 14.7059%/1.176471 and legacy RESET_RECOVERY 0%/1.882353. Restarts do not uniformly degrade results, and the legacy recovery candidate does not establish improvement.
+
+These observations establish strong operational restart sensitivity. Continuous comparators retain operator-supplied initial OCCUPIED/EMPTY priors, whereas resets use UNKNOWN; detector/AUX request paths are recomputed with fresh history. Differences cannot be attributed solely to temporal memory. Additional controls must match slot GT, initialization information and detector observations. This candidate does not achieve the 10-30 second recovery objective.
+
+In the alternate legacy split with original initialization priors, SAFE and Guard first reach count agreement at 170 seconds; three checkpoints confirm it at 190 seconds. SAFE is wrong again at the 200-second checkpoint. Over 16 checkpoints at 170-320 seconds, SAFE has Exact 18.75%/MAE 0.8750 while Guard has 93.75%/0.0625. This interval was chosen after inspecting results and is explanatory, not a new TEST score. EMPTY-to-OCCUPIED transitions for G002/G027/G019 occur at 33/53/163 seconds; G002 returns to EMPTY at 192 seconds. Without per-slot GT these slot decisions cannot be confirmed as correct.
+
+v16.5.6 treats three exact-count checkpoints as provisional agreement and adds first relapse time, relapse episode count, post-agreement MAE, longest exact run and terminal exact run length. The revised recovery candidate preserves normal SAFE entry while adding corroborated startup entry, correcting the old blanket first-ten-second entry suppression. Replaying the archived original 900-910 second observations produces 17 occupied spaces at both endpoints under SAFE and the revision, versus 0 initially and 15 at 910 seconds under legacy recovery. This is a startup regression check, not full-video reinference or per-slot validation. RESET_RECOVERY_V1655 retains the legacy comparator, and operational SAFE defaults remain unchanged.
+
+### Actual restarts with original DEV fitting (v16.5.5)
+
+| Start (s) | Variant | N | Exact (%) | MAE | First 30s MAE | First 60s MAE | First Exact (s) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | CONTINUOUS_SAFE | 33 | 0.0000 | 1.5152 | 2.0000 | 2.0000 | not reached |
+| 0 | RESET_SAFE | 33 | 0.0000 | 2.1818 | 4.0000 | 4.0000 | not reached |
+| 0 | RESET_RECOVERY | 33 | 0.0000 | 2.6970 | 9.3333 | 6.8333 | not reached |
+| 330 | CONTINUOUS_SAFE | 33 | 0.0000 | 2.0000 | 2.0000 | 2.0000 | not reached |
+| 330 | RESET_SAFE | 33 | 0.0000 | 2.0303 | 2.3333 | 2.1667 | not reached |
+| 330 | RESET_RECOVERY | 33 | 0.0000 | 2.6364 | 9.0000 | 5.5000 | not reached |
+| 660 | CONTINUOUS_SAFE | 33 | 63.6364 | 0.5455 | 2.0000 | 2.0000 | 100.0000 |
+| 660 | RESET_SAFE | 33 | 0.0000 | 1.2727 | 2.0000 | 2.0000 | not reached |
+| 660 | RESET_RECOVERY | 33 | 0.0000 | 1.7879 | 7.6667 | 4.8333 | not reached |
+| 900 | CONTINUOUS_SAFE | 34 | 85.2941 | 0.1471 | 0.0000 | 0.0000 | 0.0000 |
+| 900 | RESET_SAFE | 34 | 0.0000 | 1.3529 | 1.0000 | 1.1667 | not reached |
+| 900 | RESET_RECOVERY | 34 | 0.0000 | 2.0882 | 8.0000 | 5.1667 | not reached |
+
+### Actual restarts with alternate DEV fitting (v16.5.5)
+
+| Start (s) | Variant | N | Exact (%) | MAE | First 30s MAE | First 60s MAE | First Exact (s) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | CONTINUOUS_SAFE | 33 | 9.0909 | 1.2424 | 3.0000 | 2.6667 | 170.0000 |
+| 0 | RESET_SAFE | 33 | 0.0000 | 2.1818 | 4.3333 | 4.0000 | not reached |
+| 0 | RESET_RECOVERY | 33 | 0.0000 | 2.6061 | 9.0000 | 6.3333 | not reached |
+| 330 | CONTINUOUS_SAFE | 33 | 0.0000 | 1.0000 | 1.0000 | 1.0000 | not reached |
+| 330 | RESET_SAFE | 33 | 0.0000 | 1.1212 | 2.3333 | 1.6667 | not reached |
+| 330 | RESET_RECOVERY | 33 | 0.0000 | 1.7273 | 9.0000 | 5.0000 | not reached |
+| 660 | CONTINUOUS_SAFE | 33 | 33.3333 | 0.6667 | 1.0000 | 1.0000 | 70.0000 |
+| 660 | RESET_SAFE | 33 | 69.6970 | 0.3333 | 1.0000 | 1.0000 | 70.0000 |
+| 660 | RESET_RECOVERY | 33 | 69.6970 | 0.8788 | 7.0000 | 4.0000 | 70.0000 |
+| 900 | CONTINUOUS_SAFE | 34 | 73.5294 | 0.2647 | 0.0000 | 0.1667 | 0.0000 |
+| 900 | RESET_SAFE | 34 | 14.7059 | 1.1765 | 0.3333 | 0.1667 | 10.0000 |
+| 900 | RESET_RECOVERY | 34 | 0.0000 | 1.8824 | 7.0000 | 4.0000 | not reached |
+
+![Figure 14. Actual v16.5.5 continuous/UNKNOWN restart counts, including failed startup recovery. Different initialization priors prevent isolating history alone.](figures/v16_5_6/restart_count_traces.png)
+
+Figure 14. Actual v16.5.5 continuous/UNKNOWN restart counts, including failed startup recovery. Different initialization priors prevent isolating history alone.
+
+![Figure 15. Alternate split count agreement at 170 seconds can relapse under SAFE. This is a post-hoc segment analysis, not slot-level correctness.](figures/v16_5_6/post_recovery_relapse.png)
+
+Figure 15. Alternate split count agreement at 170 seconds can relapse under SAFE. This is a post-hoc segment analysis, not slot-level correctness.
+
+<!-- section:experimental_selection -->
+
+## 6.4 Protected SAFE and DEV-selected research candidate
+
+The existing protection rule prevents automatic promotion when DEV count results are under-count-confounded. In alternate v16.5.5 DEV, SAFE has Exact 31.8681% versus Guard/SEG 73.6264%, yet SAFE remains selected. v16.5.6 retains PRODUCTION_SAFE_SELECTED as the SAFE baseline and exports DEV_SELECTED_EXPERIMENTAL separately. Eligible variants are SAFE/Guard/SEG, ranked by DEV Exact descending, then MAE, over-rate and maximum error ascending; exact ties prefer SAFE, then Guard, then SEG. EMPTY_REF and the v16.4 post-hoc transition refiner are excluded. Parameters and their hash are frozen before TEST scores are computed.
+
+Applying this fixed ranking to archived v16.5.5 DEV tables selects Guard for both fits, mapping to archived TEST scores of 70.5882%/MAE 0.294118 for original and 46.8750%/0.687500 for alternate. Original Guard is worse than SAFE TEST 85.2941%, so uniform improvement is not claimed. The ranking itself was introduced after these historical TEST results were reviewed: this is retrospective analysis, not independent validation. Future evaluation must freeze it before observing new-video outcomes. Research selection does not promote operational SAFE; RESET_DEV_SELECTED and RESET_TRANSITION_GUARD are evaluated separately at restart.
 
 <!-- section:failures -->
 
@@ -352,15 +418,19 @@ External recalculation uses retained binary predictions and is distinct from a c
 
 Cross-window results show that final-window refinement did not resolve early errors. They compare retained count traces rather than a fresh run on another video. The original settings hash is retained; the complete settings file containing local video paths is not published.
 
-Fresh split experiments are computationally expensive and their full-video results remain unreported. Future results must be reviewed with input/configuration hashes, sample sizes and failure status before integration into results tables. CANDIDATE is not promoted without independent-video temporal evidence.
+Fresh split/restart experiments are computationally expensive. Actual v16.5.4/v16.5.5 results are archived separately; full-video v16.5.6 candidate results remain unreported. Future results must be reviewed with input/configuration hashes, sample sizes and failure status before integration into results tables. CANDIDATE is not promoted without independent-video temporal evidence.
 
 Restart diagnosis requires fresh inference on the same fit/window and separation of initialization-prior, detector/tracker history and scene effects. Future evaluation needs slot GT, wrong-startup occupancy, arrivals/departures, missed detections and reconnection cases. This release does not blindly restore persisted occupancy state.
+
+Actual v16.5.5 restart results expose initialization sensitivity and a failed recovery candidate. Different initial priors prevent isolating temporal history alone. Full-video v16.5.6 results remain unavailable; the archived 11-second replay only verifies the startup suppression regression.
 
 <!-- section:conclusion -->
 
 ## 13. Conclusion
 
 The retained research progressed toward protecting manual slot identities, combining spatial constraints with causal temporal decisions, and limiting auxiliary-detection authority. SAFE 85.29% improved to Candidate 97.06% on the retained video, while independent temporal generalization remains unverified. Spatial Accuracy 95.0770% is recomputed over 165,530 unique CNRPark-EXT pairs, with camera-specific FP and image-count errors reported separately. The bilingual Living Paper preserves identical evidence and limitations, integrating meaningful new methods, tables, and figures into the appropriate sections as releases evolve. Patches without research changes need not increase paper length.
+
+Actual v16.5.5 restarts reveal initialization and persistence failures, with no established improvement from legacy recovery. v16.5.6 documents these failures, removes startup entry suppression and separates research selection and relapse evaluation. Operational recovery performance still requires full-video and independent validation.
 
 <!-- section:references -->
 
@@ -375,3 +445,5 @@ The retained research progressed toward protecting manual slot identities, combi
 - [R6] [Frozen external baseline, recalculated evidence and source hashes](data/external_v1652/external_summary.json), [source package](data/external_v1652/EXTERNAL_VALIDATION_TO_CHATGPT.zip), and [source/license attribution](data/external_v1652/SOURCE_AND_LICENSE.txt), recomputed 2026-10-05.
 
 - [R7] [Retained-video cross-window evidence](data/windows_v1653/window_evaluation_summary.json), [frozen predictions and recalculation ZIP](data/windows_v1653/WINDOW_EVALUATION_TO_CHATGPT.zip), recalculated 2026-10-05.
+
+- [R8] [Actual v16.5.5 restart predictions and provenance](data/restart_v1655/provenance.json), [40 recomputed startup-inclusive rows](data/restart_v1655/recomputed_restart_metrics.csv), recomputed from supplied artifacts on 2026-10-06.

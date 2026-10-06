@@ -1,0 +1,598 @@
+{
+  "source_version": "v16.5.5",
+  "source_zip_sha256": "2a7e2bc670185ddfe9d55570d60e5373f1b72c01fd4e0f66c376256370d47ba0",
+  "source_members": [
+    {
+      "path": "paper/data/restart_v1655/original/split_final_metrics.csv",
+      "source_member": "split_experiments/original/split_final_metrics.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/DEV_selection_variant_comparison.csv",
+      "source_member": "split_experiments/original/DEV_selection_variant_comparison.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/selected_state_params.json",
+      "source_member": "split_experiments/original/selected_state_params.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/selection_freeze.json",
+      "source_member": "split_experiments/original/selection_freeze.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/baseline_count_timeseries.csv",
+      "source_member": "split_experiments/original/baseline_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/transition_guard_count_timeseries.csv",
+      "source_member": "split_experiments/original/transition_guard_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/seg_assist_count_timeseries.csv",
+      "source_member": "split_experiments/original/seg_assist_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/empty_ref_assist_count_timeseries.csv",
+      "source_member": "split_experiments/original/empty_ref_assist_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/candidate_v164_count_timeseries.csv",
+      "source_member": "split_experiments/original/candidate_v164_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_metrics.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_metrics.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_summary.json",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_summary.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/restart_audit.json",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_0/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/restart_audit.json",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_330/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/restart_audit.json",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_660/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/restart_audit.json",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/split_final_metrics.csv",
+      "source_member": "split_experiments/alternate/split_final_metrics.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/DEV_selection_variant_comparison.csv",
+      "source_member": "split_experiments/alternate/DEV_selection_variant_comparison.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/selected_state_params.json",
+      "source_member": "split_experiments/alternate/selected_state_params.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/selection_freeze.json",
+      "source_member": "split_experiments/alternate/selection_freeze.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/baseline_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/baseline_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/transition_guard_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/transition_guard_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/seg_assist_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/seg_assist_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/empty_ref_assist_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/empty_ref_assist_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/candidate_v164_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/candidate_v164_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_metrics.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_metrics.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_summary.json",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_summary.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/restart_audit.json",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_0/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/restart_audit.json",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_330/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/restart_audit.json",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_660/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/CONTINUOUS_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/RESET_CANDIDATE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_RECOVERY_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/RESET_RECOVERY_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_SAFE_count_timeseries.csv",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/RESET_SAFE_count_timeseries.csv"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/restart_audit.json",
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_082526_925224/restart_900/restart_audit.json"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/startup_evidence_900_910.csv",
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_033755_303338/restart_900/evidence/slot_evidence.csv",
+      "transformation": "retain first 11 seconds (900..910), CSV serialization"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "paper/data/restart_v1655/alternate/baseline_count_timeseries.csv",
+      "sha256": "a28fe190e5a6f109ec0d64439dfb5a81f1292d89e1b5f81251b8da6cdd3b35c2"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/candidate_v164_count_timeseries.csv",
+      "sha256": "2e653c283bc25f4b41c1fba73ec0cf613c1e934c42e5c55a2b2fc9f1e37d54a9"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/cold_slot_transitions.csv",
+      "sha256": "61e08a5bbf839e2fdf8e26fcc35ecb11be1779b7e9af5cea986020ab65841a2c"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/DEV_selection_variant_comparison.csv",
+      "sha256": "2b2e57aa2574a691d6b99570bec77ea86352d3b0cea7ca36db352b5257856707"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/empty_ref_assist_count_timeseries.csv",
+      "sha256": "a39f1ce03b7b8af06859ec176fb8052c599592635fc01cdebaa2ff2aa4bbc835"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "05836086aa7b6cb41207a85e497cc998862bb5cf054d9ca4e527797d65a9ee84"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "bae8bf97d6b6c3fb38bc5903cc5e9143e616c058691248b704d2697e091fa4b8"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "487ea7df8ab8798b956b30e50382530e88b237702012b8fbd64f9601539fbd83"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "96c82b8227d593a8a3b92429374be9e9729130250ad45f84d6626d8d5254bb8c"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/RESET_SAFE_count_timeseries.csv",
+      "sha256": "487ea7df8ab8798b956b30e50382530e88b237702012b8fbd64f9601539fbd83"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_0/restart_audit.json",
+      "sha256": "dfc5312eb636da96e6dbf25bd3a8071b57e1155a4d1262ff9cf61a8d30eed9c7"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "6b6c4defc20456c15c4fdc39a61e8d6a89c2aa390d304bd7cca158025bee2ba2"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "6b6c4defc20456c15c4fdc39a61e8d6a89c2aa390d304bd7cca158025bee2ba2"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "0ac918e8e88038bee78ebbe769ae766570f6c107f039e1f3f3e0314539375729"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/RESET_SAFE_count_timeseries.csv",
+      "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_330/restart_audit.json",
+      "sha256": "ae99c17a57f689b6aa495746333a24e533bf7fd9a63f599f85e017df0e7bb881"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "892d0f25b4fcf293bd79ea439c14ffb57ccc440c728b36faf6d74ec36ed96eeb"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "892d0f25b4fcf293bd79ea439c14ffb57ccc440c728b36faf6d74ec36ed96eeb"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "fc64e8c8a314d7808d6bbcab5df95db09585dbae4d1f72804e826ccdacf52e88"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "dfed919e675139e770fd64ae4d33778deed43394475e896d71e22f8b0d2a418b"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/RESET_SAFE_count_timeseries.csv",
+      "sha256": "fc64e8c8a314d7808d6bbcab5df95db09585dbae4d1f72804e826ccdacf52e88"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_660/restart_audit.json",
+      "sha256": "0ac836477a21b03fcfbcaedbc649c4f21ae2a69ef86e2f92399f0d14bfec3ed7"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "18a23e89f9730d7d1fddfea1f0dbb99205d1ecbd108206d1b96d4d43d54ef649"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "18a23e89f9730d7d1fddfea1f0dbb99205d1ecbd108206d1b96d4d43d54ef649"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "0d05b076bbc7553e7cfb621ed8a9123e2b231e6230ed510ab91b66194fbd7680"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "173f273b051d9e0e9b8471bb01f7c15e49b3e71a868e0af58bb601e2ee36c3aa"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/RESET_SAFE_count_timeseries.csv",
+      "sha256": "5cc8a74473eff912d674e638acf9739fb17266cf672ed0184abba457ac5f6c52"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_900/restart_audit.json",
+      "sha256": "82b86863d9eb6db107eb9f15a41902ad54cb1d7f308f9ca68b281f5c6ab3d64b"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_metrics.csv",
+      "sha256": "587a43337442af428c253af399e62b4032c2cf55cd92a428e5f912b5aaa7ca4b"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/restart_summary.json",
+      "sha256": "83d2634b0ed3695d7500a9d03b87bf823544eecfc532bba5a3956bc0bc9be104"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/seg_assist_count_timeseries.csv",
+      "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/selected_state_params.json",
+      "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/selection_freeze.json",
+      "sha256": "32c077921e4b878a7866870c6e2f4f3762cf70bbd1af6a05513363b8250a4042"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/split_final_metrics.csv",
+      "sha256": "6e2632336f989be44ef6fc037c3b9e7d5cd12db7e08488e2010b7c05697cdce0"
+    },
+    {
+      "path": "paper/data/restart_v1655/alternate/transition_guard_count_timeseries.csv",
+      "sha256": "d6258e72d8dd74d75cd816652b2d2a3481a0bfd8d61603f8b2994e1bcda7d033"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/baseline_count_timeseries.csv",
+      "sha256": "d6d6dce2dcfc6e6ef59652ff58beb759b42c175623b53dfa7360c9052fa4bea6"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/candidate_v164_count_timeseries.csv",
+      "sha256": "80ea3adf802bf46614fe5d46276ad55d851a5da2db2bd046b51391ba30bd4239"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/DEV_selection_variant_comparison.csv",
+      "sha256": "fdb8d0cefb077c33bf5361ca5828b9a807bef91b8df456f2b812b45b9665240a"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/empty_ref_assist_count_timeseries.csv",
+      "sha256": "9148fed1bc9e9bdf6f5e739af28cd69d52e7621639a11e573d37c20f8da91f98"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "e1c168d7d80fae8e5943c3496b8cdf4d836ea046f5546fb5b49bfa6199e60743"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "e1c168d7d80fae8e5943c3496b8cdf4d836ea046f5546fb5b49bfa6199e60743"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "f654aeb26a214b6d700af54123fe52b30cdb4b92e30b5d03bf48094efc2d408c"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "5845b62292e82bc9ed8af4449c5a3b498e31854d028ee0cf799d9d09c5be6bd0"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/RESET_SAFE_count_timeseries.csv",
+      "sha256": "f654aeb26a214b6d700af54123fe52b30cdb4b92e30b5d03bf48094efc2d408c"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_0/restart_audit.json",
+      "sha256": "dfc5312eb636da96e6dbf25bd3a8071b57e1155a4d1262ff9cf61a8d30eed9c7"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "89ad45d35138fad5c1e966cce1409d5090ae4e477294621f0b0c26163a4e2f29"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "89ad45d35138fad5c1e966cce1409d5090ae4e477294621f0b0c26163a4e2f29"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "9949297cd112db0a106181c9e20d1939db21f35d916371134e881d5555e6d5c7"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "b4520e81650c9b6427af207435aa5f3f375f20344c9207c7adbb3c6bba70d930"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/RESET_SAFE_count_timeseries.csv",
+      "sha256": "9949297cd112db0a106181c9e20d1939db21f35d916371134e881d5555e6d5c7"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_330/restart_audit.json",
+      "sha256": "ae99c17a57f689b6aa495746333a24e533bf7fd9a63f599f85e017df0e7bb881"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "8bd966b7b88ba64cbeb0be12df967e3175972903e83c1914b9ab800488782ee3"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "dc2774d431c2757befeef5cc79dd5df8307a4dedbfcd8cbb6d1f383eee63adaf"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "202cd296b28d1153ab0600d18d364b3ab8a54c025b750917c1d6dfbc825b855d"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "790215115004d6da793ec7dc51ce1a20d397c35ad5d9d45175623feda427b29c"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/RESET_SAFE_count_timeseries.csv",
+      "sha256": "118d5e960b2bb8c2170a5e92f95244fc21ad36bc9bc7a13ec6778389c696843f"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_660/restart_audit.json",
+      "sha256": "0ac836477a21b03fcfbcaedbc649c4f21ae2a69ef86e2f92399f0d14bfec3ed7"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+      "sha256": "3d68af603fb15b10585fbb42014cc529ac2e584f0a406cea661e2fc1a3f79b2e"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+      "sha256": "d98b7ea65385117eac65bf95c1970a9c358ce1ac56ccf231210bf0d89ef7710b"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+      "sha256": "9283121434602b40b727fb52f37f77caef71928aa5b82fb513dae413d43a0509"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_RECOVERY_count_timeseries.csv",
+      "sha256": "ad8b66ec4704afae76bd65a7cab00a69e5685402794290344afc19a031802397"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/RESET_SAFE_count_timeseries.csv",
+      "sha256": "d1ffdfcf7974584518dfcdde483d80e051582a29c75991ba6ecc7f067310dcf8"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_900/restart_audit.json",
+      "sha256": "82b86863d9eb6db107eb9f15a41902ad54cb1d7f308f9ca68b281f5c6ab3d64b"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_metrics.csv",
+      "sha256": "3746d7b175b5e7394796ac7a2c98adcfc4c16eeae3b706a191a13c4a3cca7760"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/restart_summary.json",
+      "sha256": "83d2634b0ed3695d7500a9d03b87bf823544eecfc532bba5a3956bc0bc9be104"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/seg_assist_count_timeseries.csv",
+      "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/selected_state_params.json",
+      "sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/selection_freeze.json",
+      "sha256": "7e229a7c35141aecea924deb95673dbaa21c198ca7a7ebd3392fd20bbdf1b83d"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/split_final_metrics.csv",
+      "sha256": "ed75bb532c540c6b11f5081d86f628589be184e942bbf2fc51fd537c0091f1d7"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/startup_evidence_900_910.csv",
+      "sha256": "be8fb44807feacd271f7788e76875ba98df6b5aac39fb0b365f45c5ad39d17e8"
+    },
+    {
+      "path": "paper/data/restart_v1655/original/transition_guard_count_timeseries.csv",
+      "sha256": "81efd72034ce2792f87f9937ef072ba34cdb7b084e9d7f476dcd4f3869918b62"
+    },
+    {
+      "path": "paper/data/restart_v1655/paper_alternate_restart.csv",
+      "sha256": "fa96b159be8f449db2d18eb1d3a5d92c08f5b29eb6a6654a2c0067610f7e41c0"
+    },
+    {
+      "path": "paper/data/restart_v1655/paper_original_restart.csv",
+      "sha256": "fe4a88ac24ec0ba8c5b7e29f6785ee6194e2a4f0573a0927567f243c0e0a9bd1"
+    },
+    {
+      "path": "paper/data/restart_v1655/post_170_diagnostic.csv",
+      "sha256": "98c1739cfff8f3271543a0126700294987eeb97ff664356adb8065c0133ac8c2"
+    },
+    {
+      "path": "paper/data/restart_v1655/recomputed_restart_metrics.csv",
+      "sha256": "197117a96faa6e1f22f2fc33796b3383a3440c0d421a715de10f41e3d63361f8"
+    }
+  ],
+  "scope": "Recomputed user-supplied same-video numerical predictions; private source ZIP/images/paths excluded; no new v16.5.6 inference."
+}

@@ -6,3 +6,6 @@ paper/data/split_protocol_v1654.json -text
 
 paper/data/fresh_v1654/** -text
 paper/data/split_protocol_v1655.json -text
+
+paper/data/restart_v1655/** -text
+paper/data/split_protocol_v1656.json -text

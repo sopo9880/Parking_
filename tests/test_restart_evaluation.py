@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 import pandas as pd
 import numpy as np
-from restart_evaluation import DEFAULT_RECOVERY,recovery_gate,recovery_metrics,run_restart_experiments
+from restart_evaluation import DEFAULT_RECOVERY,LEGACY_RECOVERY,recovery_gate,recovery_metrics,run_restart_experiments
 from slot_engine import _run_state_engine_v13_safe,_v16_baseline_params
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -53,10 +53,38 @@ class RestartTests(unittest.TestCase):
         self.assertEqual(m['time_to_stable_exact_sec'],20)
         self.assertEqual(m['stable_confirmed_at_sec'],40)
         self.assertAlmostEqual(m['post_stable_exact_rate'],.8)
+        self.assertEqual(m['time_to_first_relapse_sec'],50)
+        self.assertEqual(m['relapse_count'],1)
+        self.assertEqual(m['longest_exact_run_samples'],3)
+        self.assertAlmostEqual(m['post_stable_mae'],.2)
         none=recovery_metrics(trace.assign(error=-1),900)
         self.assertTrue(none['never_stabilized'])
         self.assertIsNone(none['time_to_first_exact_sec'])
         self.assertIsNone(none['time_to_stable_exact_sec'])
+
+    def test_recovery_does_not_block_normal_safe_entry(self):
+        settings=json.loads((ROOT/'settings.json').read_text(encoding='utf-8'))
+        base={**_v16_baseline_params(settings),'unlabeled_restart':True}
+        rows=evidence(900,confidence=.8,cameras=1)
+        _,safe,_=_run_state_engine_v13_safe(rows,base)
+        _,new,_=_run_state_engine_v13_safe(rows,{**base,'startup_recovery':DEFAULT_RECOVERY})
+        _,old,_=_run_state_engine_v13_safe(rows,{**base,'startup_recovery':LEGACY_RECOVERY})
+        self.assertEqual(safe.state.tolist(),new.state.tolist())
+        self.assertEqual(new.iloc[0].state,'OCCUPIED')
+        self.assertEqual(old.iloc[0].state,'EMPTY')
+
+    def test_archived_restart_startup_regression(self):
+        folder=ROOT/'paper/data/restart_v1655/original'
+        rows=pd.read_csv(folder/'startup_evidence_900_910.csv')
+        params=json.loads((folder/'selected_state_params.json').read_text(encoding='utf-8-sig'))
+        params['unlabeled_restart']=True
+        _,safe,_=_run_state_engine_v13_safe(rows,params)
+        _,new,_=_run_state_engine_v13_safe(rows,{**params,'startup_recovery':DEFAULT_RECOVERY})
+        _,old,_=_run_state_engine_v13_safe(rows,{**params,'startup_recovery':LEGACY_RECOVERY})
+        for t in (900,910):
+            self.assertEqual(new[new.time_sec==t].state.eq('OCCUPIED').sum(),17)
+            self.assertEqual(safe[safe.time_sec==t].state.tolist(),new[new.time_sec==t].state.tolist())
+        self.assertEqual(old[old.time_sec==900].state.eq('OCCUPIED').sum(),0)
 
     def test_live_extractor_reads_no_pre_restart_frames(self):
         from slot_engine import extract_evidence

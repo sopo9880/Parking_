@@ -1,0 +1,22 @@
+{
+  "start_sec": 900.0,
+  "end_sec": 1230.0,
+  "runtime_history_reused": false,
+  "initial_state": "UNKNOWN",
+  "quality_fit": "frozen DEV thresholds",
+  "selected_parameters_sha256": "e05c39cd4220e5110ef00c3bd7ddee970977bff439ac4081d66a52b584d0394c",
+  "recovery_candidate_config": {
+    "duration_sec": 30,
+    "window_sec": 10,
+    "min_observation_sec": 10,
+    "min_samples": 8,
+    "hit_ratio": 0.75,
+    "min_conf": 0.1,
+    "single_camera_conf": 0.25,
+    "max_motion_px": 24,
+    "max_speed_px_s": 14
+  },
+  "gt_used_for_bootstrap": false,
+  "fresh_inference_start_sec": 900.0,
+  "segmentation_available": true
+}
