@@ -40,11 +40,13 @@ The initial input is a phone recording of a CCTV monitor [R1]. Four-corner ROIs 
 
 Let y(t) denote the ground-truth occupied-space count and ŷ(t) the prediction. Exact is the fraction of evaluated timestamps satisfying y(t)=ŷ(t); MAE averages |y(t)-ŷ(t)|. Occupied-space count, unique-vehicle count, and per-CCTV count are separate quantities. Technical state names EMPTY, MANEUVERING, OCCUPIED, LEAVING, UNKNOWN and SAFE_BASELINE/CANDIDATE remain canonical for data and code compatibility.
 
-> **Figure placeholder 1. Actual re-recorded CCTV monitor environment**
-> No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results.
+![Figure 1. Actual re-recorded Hyundai parking CCTV monitor environment. Multiple CCTV views are shown on one monitor, with parking-space inference overlays on each ROI.](figures/hyundai/environment_overview.svg)
 
-> **Figure placeholder 2. Manual slot points, perspective correction, and Voronoi regions**
-> No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results.
+**Figure 1. Actual re-recorded Hyundai parking CCTV monitor environment.** The input is a phone recording of the control monitor rather than a direct digital CCTV stream. Oblique viewpoints, low resolution, reflections, monitor artifacts, and different perspective distortions coexist. This figure is a real paper-ready capture from an ALL-IN-ONE run, not a synthetic illustration.
+
+![Figure 2. Manual parking-space reference points and Voronoi spatial partitioning for CCTV2.](figures/hyundai/voronoi_cctv2.svg)
+
+**Figure 2. Manual parking-space reference points and Voronoi spatial partitioning for CCTV2.** Operator-defined reference points remain the authoritative slot locations, while the spatial partition constrains vehicle-to-slot association. Learned auxiliary information does not replace the manual points and is used to stabilize assignment under strong perspective distortion and occlusion in the real CCTV view.
 
 <!-- section:methods -->
 
