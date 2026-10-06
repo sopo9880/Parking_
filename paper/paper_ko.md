@@ -40,11 +40,11 @@ MetaPKLot [R4]은 기존 주차 데이터의 주석과 평가 체계를 제공�
 
 시각 t의 정답 점유 수를 y(t), 예측 수를 ŷ(t)라 하면 Exact는 평가 시점 중 y(t)=ŷ(t)의 비율이고 MAE는 |y(t)-ŷ(t)|의 평균이다. 점유 수, 고유 차량 수, CCTV별 수는 서로 다른 항목이다. 기술 상태 EMPTY, MANEUVERING, OCCUPIED, LEAVING, UNKNOWN과 SAFE_BASELINE/CANDIDATE 이름은 데이터 및 코드 호환성을 위해 그대로 유지한다.
 
-![그림 1. 실제 현대 주차장 CCTV 모니터 재촬영 환경. 하나의 모니터 화면에 여러 CCTV가 함께 표시되고, 각 ROI에 주차면 상태 추론 결과가 중첩되어 있다.](figures/hyundai/environment_overview.svg)
+![그림 1. 실제 현대 주차장 CCTV 모니터 재촬영 환경. 하나의 모니터 화면에 여러 CCTV가 함께 표시되고, 각 ROI에 주차면 상태 추론 결과가 중첩되어 있다.](figures/hyundai/environment_overview.jpg)
 
 **그림 1. 실제 현대 주차장 CCTV 모니터 재촬영 환경.** 직접 디지털 CCTV 스트림이 아니라 관제 모니터를 재촬영한 입력으로, 사선 시점·저해상도·반사·모아레와 화면별 원근 차이가 동시에 존재한다. 본 그림은 실제 ALL-IN-ONE 실행의 paper-ready 캡처이며 합성 이미지가 아니다.
 
-![그림 2. CCTV2의 수동 주차면 기준점과 Voronoi 기반 공간 분할.](figures/hyundai/voronoi_cctv2.svg)
+![그림 2. CCTV2의 수동 주차면 기준점과 Voronoi 기반 공간 분할.](figures/hyundai/voronoi_cctv2.jpg)
 
 **그림 2. CCTV2의 수동 주차면 기준점과 Voronoi 기반 공간 분할.** 사람이 지정한 주차면 기준점을 고정 기준으로 유지하고, 해당 점을 중심으로 공간 대응 영역을 구성한다. 학습된 보조 정보는 기준점을 대체하지 않으며 실제 CCTV의 강한 원근 왜곡과 가림 환경에서 차량-주차면 대응을 제한하는 데 사용한다.
 
