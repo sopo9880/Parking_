@@ -99,6 +99,15 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
         if hashlib.sha256(raw).hexdigest()!=experimental_freeze['sha256']:
             raise ValueError('Experimental DEV parameter freeze mismatch')
         experimental=json.loads(raw)
+    from manual_initialization import read_snapshots,load_snapshot,apply_snapshot,write_snapshot,snapshot_audit,occupancy_bounds
+    manual=cfg.get('manual_init',{})
+    snapshots={}
+    if manual.get('enabled',False):
+        gids={str(slot['global_id']) for slot in load_slots(fit/'slots.json')}
+        raw_snapshot=Path(manual.get('path','')).read_bytes()
+        manual_source_sha256=hashlib.sha256(raw_snapshot).hexdigest()
+        snapshot_rows,_=read_snapshots(manual['path'],raw=raw_snapshot)
+        snapshots={start:load_snapshot(manual['path'],start,gids,rows=snapshot_rows) for start in starts}
     rows=[]
     warm=float(settings.get('evaluation_warmup_sec',10))
     with protocol_context(None):
@@ -129,11 +138,22 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
                 runner={'SAFE_BASELINE':_run_state_engine_v13_safe,'TRANSITION_GUARD':_run_state_engine_v15_transition_guard,
                         'SEG_ASSIST':_run_state_engine_v15_1_seg_assist}[experimental['temporal_variant']]
                 runners.append(('RESET_DEV_SELECTED',runner,{**experimental,'unlabeled_restart':True}))
+            manual_states=snapshots.get(start)
+            manual_audit={'status':'disabled' if not manual.get('enabled',False) else 'skipped_missing_exact_time_snapshot','start_sec':start}
+            if manual_states is not None:
+                write_snapshot(out/'manual_init_snapshot.csv',start,manual_states)
+                manual_audit={'status':'initialized',**snapshot_audit(manual['path'],start,manual_states,manual.get('source','operator_snapshot'),source_sha256=manual_source_sha256)}
+                runners += [('RESET_UNKNOWN',_run_state_engine_v13_safe,{**baseline_params,'preserve_unknown':True}),
+                            ('RESET_MANUAL_INIT',_run_state_engine_v13_safe,{**baseline_params,'preserve_unknown':True,'manual_initialization':True})]
+            (out/'manual_init_audit.json').write_text(json.dumps(manual_audit,indent=2),encoding='utf-8')
             for variant,runner,params in runners:
-                local,global_,transitions=runner(evidence,params)
+                input_evidence=apply_snapshot(evidence,manual_states) if variant=='RESET_MANUAL_INIT' else evidence
+                local,global_,transitions=runner(input_evidence,params)
                 local.to_csv(out/f'{variant}_slot_timeseries.csv',index=False,encoding='utf-8-sig')
                 transitions.to_csv(out/f'{variant}_transitions.csv',index=False,encoding='utf-8-sig')
                 traces[variant]=global_
+                if variant in ('RESET_UNKNOWN','RESET_MANUAL_INIT'):
+                    global_.to_csv(out/f'{variant}_global_slot_timeseries.csv',index=False,encoding='utf-8-sig')
                 if variant=='RESET_SAFE':
                     refined,_=apply_transition_refiner(local,RefinerConfig())
                     traces['RESET_CANDIDATE']=build_global_trace(refined)
@@ -147,11 +167,23 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
                     raise ValueError('GT checkpoints missing from inference timestamps; align restart times and evidence sampling')
                 # Inclusive startup: cold-start metrics cannot hide the first 10 seconds.
                 trace=evaluate_state_output(global_,window_gt,0,0)['timeseries']
+                if variant in ('RESET_UNKNOWN','RESET_MANUAL_INIT'):
+                    bounds=occupancy_bounds(global_)
+                    trace=trace.merge(bounds,on='time_sec',validate='one_to_one')
+                    trace['gt_within_bounds']=(trace.ground_truth_occupied_space_count>=trace.confirmed_occupied)&(trace.ground_truth_occupied_space_count<=trace.possible_occupied)
+                    trace.to_csv(out/f'{variant}_occupancy_bounds.csv',index=False,encoding='utf-8-sig')
                 trace.to_csv(out/f'{variant}_count_timeseries.csv',index=False,encoding='utf-8-sig')
                 counts[variant]=trace
                 for scope,part in [('INCLUSIVE_STARTUP',trace),('AFTER_RESTART_WARMUP',trace[trace.time_sec>=start+warm])]:
-                    rows.append({'restart_sec':start,'end_sec':end,'variant':variant,'scope':scope,
-                                 **recovery_metrics(part,start,int(cfg.get('stable_samples',3)))})
+                    metrics=recovery_metrics(part,start,int(cfg.get('stable_samples',3)))
+                    if variant in ('RESET_UNKNOWN','RESET_MANUAL_INIT'):
+                        metrics.update(count_interpretation='confirmed_lower_bound',fully_resolved_N=int(part.unknown_slots.eq(0).sum()),gt_within_bounds_rate=float(part.gt_within_bounds.mean()))
+                        if part.unknown_slots.gt(0).any():
+                            metrics['confirmed_count_exact_rate']=metrics['exact_rate'];metrics['confirmed_count_mae']=metrics['mae']
+                            for key in list(metrics):
+                                if key in ('exact_rate','mae','max_abs_error','over_rate','under_rate','post_stable_mae','post_stable_exact_rate','time_to_first_exact_sec','time_to_stable_exact_sec','stable_confirmed_at_sec','time_to_first_relapse_sec','relapse_count','longest_exact_run_samples','tail_exact_samples','never_stabilized') or key.startswith('first_'):
+                                    metrics[key]=None
+                    rows.append({'restart_sec':start,'end_sec':end,'variant':variant,'scope':scope,**metrics})
             paired=counts['CONTINUOUS_SAFE'][['time_sec','occupied_pred']].merge(
                 counts['RESET_SAFE'][['time_sec','occupied_pred']],on='time_sec',suffixes=('_continuous','_reset'))
             paired['restart_count_difference']=paired.occupied_pred_reset-paired.occupied_pred_continuous

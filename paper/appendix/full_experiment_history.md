@@ -993,3 +993,8 @@ Frozen fitting with fresh trackers/state at configured restart points; UNKNOWN o
 ## v16.5.6 — 2026-10-06
 
 Actual v16.5.5 restart CSVs are recalculated, including failed recovery and count relapses. Revised recovery preserves normal SAFE entry; legacy and Guard/DEV-selected research comparators remain separate. Production SAFE is protected. Archived same-video evidence is not independent validation; full v16.5.6 video performance remains pending. [Provenance](../data/restart_v1655/provenance.json).
+
+
+## v16.5.7 - 2026-10-06
+
+Actual v16.5.6 predictions yield identical revised-recovery/SAFE counts, state/phase/score and transitions at all eight starts. All 144 scoped metric rows are recomputed. Exact-time O/E/U snapshots now support assisted manual restart initialization, genuine UNKNOWN bounds and isolated future-GT scoring. Initial O is protected for one temporal window before normal SAFE logic. Manual full-video results remain unmeasured; persistence is deferred. [Actual provenance](../data/restart_v1656/provenance.json).

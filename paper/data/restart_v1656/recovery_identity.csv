@@ -1,0 +1,9 @@
+fit,restart_sec,same_count_trace,same_state_phase_score,same_transitions,local_rows
+original,0,True,True,True,10592
+original,330,True,True,True,10592
+original,660,True,True,True,10592
+original,900,True,True,True,10592
+alternate,0,True,True,True,10592
+alternate,330,True,True,True,10592
+alternate,660,True,True,True,10592
+alternate,900,True,True,True,10592

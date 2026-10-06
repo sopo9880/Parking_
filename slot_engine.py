@@ -3973,7 +3973,8 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
     slot_hist: Dict[str,deque]=defaultdict(deque); track_hist: Dict[Tuple[str,int],deque]=defaultdict(deque)
     slot_meta=evidence.groupby('local_id',sort=False).first()
     for lid,r in slot_meta.iterrows():
-        init=str(r.get('initial_state','UNKNOWN')).upper(); st='OCCUPIED' if init=='OCCUPIED' else 'EMPTY'
+        init=str(r.get('initial_state','UNKNOWN')).upper()
+        st=init if params.get('preserve_unknown',False) and init in ('OCCUPIED','EMPTY','UNKNOWN') else ('OCCUPIED' if init=='OCCUPIED' else 'EMPTY')
         lid=str(lid); state[lid]=st; phase[lid]=st; owner_track[lid]=None; prev_local[lid]=st
 
     recovery_cfg=params.get('startup_recovery',{})
@@ -4038,7 +4039,7 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
             ghost_guard_ok=bool(appearance_occ or mean_conf>=entry_no_appearance_conf)
             entry_gate=False; exit_gate=False
 
-            if state[lid]=='EMPTY':
+            if state[lid] in ('EMPTY','UNKNOWN'):
                 strong_stationary=(hit_ratio>=max(entry_ratio,0.65) and recent_hit_ratio>=0.66 and local_motion<=crop_stationary_span)
                 evidence_stable=stable_track if dom_track>=0 else (stable_slot or strong_stationary)
                 entry_gate=bool(evidence_stable and hit_ratio>=entry_ratio and mean_conf>=entry_mean_conf_min and ghost_guard_ok)
@@ -4059,17 +4060,22 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
                     state[lid]='OCCUPIED'; phase[lid]='OCCUPIED'; owner_track[lid]=dom_track if dom_track>=0 else None
                     if dom_track>=0: owned_by_track[(cctv,dom_track)]=lid
                 elif maneuvering or hit_ratio>0: phase[lid]='MANEUVERING'
-                else: phase[lid]='EMPTY'
+                else: phase[lid]=state[lid]
             else:
                 if dom_track>=0 and recent_hit_ratio>0 and (owner_track[lid] is None or stable_track):
                     owner_track[lid]=dom_track; owned_by_track[(cctv,dom_track)]=lid
                 clear_empty=(hit_ratio<=exit_ratio and recent_hit_ratio<=exit_ratio and not appearance_occ)
+                if params.get('manual_initialization',False) and init=='OCCUPIED' and t-recovery_start<window_sec:
+                    clear_empty=False
                 exit_gate=bool(clear_empty)
                 if clear_empty:
                     old=owner_track[lid]; state[lid]='EMPTY'; phase[lid]='EMPTY'; owner_track[lid]=None
                     if old is not None and owned_by_track.get((cctv,int(old)))==lid: owned_by_track.pop((cctv,int(old)),None)
                 elif maneuvering and recent_hit_ratio>0: phase[lid]='LEAVING' if owner_track[lid]==dom_track else 'OCCUPIED'
                 else: phase[lid]='OCCUPIED'
+
+            if params.get('manual_initialization',False) and t==recovery_start:
+                state[lid]=init; phase[lid]=init; entry_gate=False; exit_gate=False; owner_track[lid]=None
 
             temporal_score=0.40*hit_ratio+0.18*recent_hit_ratio+0.12*track_slot_ratio+0.15*(1.0 if appearance_occ else 0.0)+0.15*min(1.0,mean_conf)
             occ_score=max(0.51,min(0.99,temporal_score)) if state[lid]=='OCCUPIED' else min(0.49,max(0.01,temporal_score))
@@ -4098,7 +4104,7 @@ def _run_state_engine_v13_safe(evidence: pd.DataFrame, params: Dict) -> Tuple[pd
             elif fusion=='CONF_MEAN': gscore=float(np.mean(scores)) if scores else 0.0; global_occ=gscore>=global_thr
             elif fusion=='MAJORITY': gscore=float(np.mean(scores)) if scores else 0.0; global_occ=occ>=math.ceil(len(items)/2)
             else: gscore=max(scores) if scores else 0.0; global_occ=occ>0
-            gstate='OCCUPIED' if global_occ else 'EMPTY'; phases=[str(x.get('phase','')) for x in items]
+            gstate='OCCUPIED' if global_occ else ('UNKNOWN' if params.get('preserve_unknown',False) and any(x['state']=='UNKNOWN' for x in items) else 'EMPTY'); phases=[str(x.get('phase','')) for x in items]
             gphase='MANEUVERING' if 'MANEUVERING' in phases else ('LEAVING' if 'LEAVING' in phases else gstate)
             grow={'time_sec':t,'timestamp':items[0]['timestamp'],'global_id':gid,'state':gstate,'phase':gphase,'global_score':gscore,
                   'evidence_mode':evidence_mode,'source_local_slots':';'.join(x['local_id'] for x in items),'occupied_votes':occ,'total_votes':len(items),

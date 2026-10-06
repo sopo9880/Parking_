@@ -1,0 +1,13 @@
+# Parking Research Agent v16.5.7
+
+ALL-IN-ONE의 재시작 평가 단계에만 특정 시점 슬롯별 O/E/U 초기 상태를 제공하는 선택 기능을 추가하고 실제 v16.5.6 자동 복구 결과를 한·영 논문에 반영합니다.
+
+- 검증 센터에서 영상·주차면 점을 보며 O/E/U를 입력하고 여러 재시작 시점을 한 CSV에 저장합니다. 입력은 기본 꺼짐이며 DEV 검출기/공간 학습·후보 선택에 사용하지 않습니다.
+- 정확히 일치하는 시점의 슬롯 사전만 RESET_MANUAL_INIT에 전달합니다. Count-only GT를 슬롯별 정답으로 추측하지 않고 중복/잘못된 ID·상태를 거부합니다. 출처(operator/per-slot GT), 해시, 사용 시각, 미래 GT 미사용 여부를 기록합니다. 이후 GT는 채점용입니다.
+- 같은 새 관측의 RESET_UNKNOWN·RESET_MANUAL_INIT과 CONTINUOUS_SAFE를 비교합니다. O는 움직임 없이 시작하고 초기 10초 해제를 보류한 뒤 자동 SAFE 입·출차 로직을 적용합니다. UNKNOWN은 EMPTY로 강제하지 않으며 confirmed/possible occupancy와 확정 표본 수를 제공합니다. 미확정 구간의 일반 Exact/MAE·복구 시간은 비워 둡니다.
+- 입력 없는 시점은 수동 대조군만 생략하며 기존 ALL-IN-ONE과 RESET_SAFE 파일 호환성을 유지합니다. 완료된 실제 fit 폴더로 재시작 단계만 실행할 수 있습니다.
+- 사용자 제공 v16.5.6 실행의 144개 scoped 지표를 재계산했습니다. 8개 재시작 모두 RESET_RECOVERY와 RESET_SAFE count·state/phase/score·전환이 동일합니다. 15분 original 재시작 후 10초 제외 결과는 N=33, Exact 0%, MAE 1.363636입니다. 주 TEST N=34와 구분합니다. 실제 그래프·연속 실행 화면과 수동 초기화 설계·한계를 논문에 통합했습니다.
+
+Validation: application self-test, unit/UI tests including exact-time/future-label invariance, honest UNKNOWN bounds, manual first-frame occupancy and automatic release; recomputed frozen external/window/split/v16.5.5/v16.5.6 evidence; synchronized immutable bilingual snapshots/PDF rendering; release checksums. v16.5.7 manual full-video scores are unmeasured. Operator information and bounded startup protection differ from automatic initialization; no equal-information causality, independent generalization, SAFE promotion or guaranteed recovery is claimed. Persisted-state restoration remains deferred.
+
+---

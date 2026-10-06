@@ -44,7 +44,7 @@ def _ensure():
     DATASET_ROOT.mkdir(parents=True, exist_ok=True)
 
 
-def parse_time_list(text: str) -> List[float]:
+def parse_time_list(text: str, include_zero=False) -> List[float]:
     out = []
     for token in str(text or "").replace(";", ",").split(","):
         s = token.strip()
@@ -62,7 +62,8 @@ def parse_time_list(text: str) -> List[float]:
                 raise ValueError
         except Exception:
             raise ValueError(f"Invalid cut boundary: {s}")
-        if v > 0:
+        if not math.isfinite(v) or v<0: raise ValueError("Invalid time")
+        if v > 0 or (include_zero and v==0):
             out.append(float(v))
     return sorted(set(out))
 
@@ -458,6 +459,10 @@ def open_validation_center(app):
     rcfg=vcfg.get('restart_experiments',{})
     restart_enabled=tk.BooleanVar(value=rcfg.get('enabled',True))
     restart_times=tk.StringVar(value=format_time_list(rcfg.get('starts_sec',[0,330,660,900])))
+    mcfg=rcfg.get('manual_init',{})
+    manual_enabled=tk.BooleanVar(value=mcfg.get('enabled',False))
+    manual_path=tk.StringVar(value=mcfg.get('path',''))
+    manual_source=tk.StringVar(value=mcfg.get('source','operator_snapshot'))
     split_dev = tk.StringVar(value=format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
     split_test = tk.StringVar(value=format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
 
@@ -491,6 +496,9 @@ def open_validation_center(app):
     ttk.Label(local,text=tr(hint),wraplength=900).grid(row=7,column=0,columnspan=3,sticky="w",padx=6,pady=5)
 
     def collect_validation():
+        if manual_enabled.get():
+            from manual_initialization import read_snapshots
+            read_snapshots(manual_path.get().strip())
         return {
             "camera_count": max(1, int(cam_var.get())),
             "gt_interval_sec": max(1.0, float(interval_var.get())),
@@ -500,7 +508,7 @@ def open_validation_center(app):
             "repeat_count": max(0, int(repeat_count_var.get())),
             "evaluation_windows": parse_windows(windows_var.get()),
             "split_experiments": collect_split(),
-            "restart_experiments": {"enabled":bool(restart_enabled.get()),"starts_sec":parse_time_list(restart_times.get()),"duration_sec":330,"stable_samples":3},
+            "restart_experiments": {"enabled":bool(restart_enabled.get()),"starts_sec":parse_time_list(restart_times.get(),include_zero=True),"duration_sec":330,"stable_samples":3,"manual_init":{"enabled":bool(manual_enabled.get()),"path":manual_path.get().strip(),"source":manual_source.get()}},
         }
 
     def save_settings_only(show=True):
@@ -508,9 +516,9 @@ def open_validation_center(app):
         settings = load_json(APP_DIR/"settings.json", settings) or {}
         try:
             collected = collect_validation()
-        except (ValueError,tk.TclError) as exc:
+        except (ValueError,OSError,tk.TclError) as exc:
             if not show: raise
-            messagebox.showerror(tr('Evaluation error'),tr('Invalid evaluation windows: ')+str(exc),parent=win)
+            messagebox.showerror(tr('Evaluation error'),tr('Invalid validation settings: ')+str(exc),parent=win)
             return None
         settings["validation"] = collected
         save_json(APP_DIR/"settings.json", settings)
@@ -562,6 +570,9 @@ def open_validation_center(app):
         rcfg=cfg.get('restart_experiments',{})
         restart_enabled.set(rcfg.get('enabled',True))
         restart_times.set(format_time_list(rcfg.get('starts_sec',[0,330,660,900])))
+        manual_enabled.set(rcfg.get('manual_init',{}).get('enabled',False))
+        manual_path.set(rcfg.get('manual_init',{}).get('path',''))
+        manual_source.set(rcfg.get('manual_init',{}).get('source','operator_snapshot'))
         split_dev.set(format_windows([{'name':'DEV','start_sec':scfg.get('dev',[330,1230])[0],'end_sec':scfg.get('dev',[330,1230])[1]}]))
         split_test.set(format_windows([{'name':'TEST','start_sec':scfg.get('test',[0,330])[0],'end_sec':scfg.get('test',[0,330])[1]}]))
 
@@ -618,7 +629,7 @@ def open_validation_center(app):
             output=write_window_evaluation(folder,current)
             messagebox.showinfo(tr('Evaluation complete'),tr('Window comparison saved: ')+str(output),parent=win)
         except Exception as exc:
-            messagebox.showerror(tr('Evaluation error'),str(exc),parent=win)
+            messagebox.showerror(tr('Evaluation error'),tr(str(exc)),parent=win)
     ttk.Button(local,text=tr('Compare saved SAFE / Candidate windows'),command=evaluate_saved_windows).grid(row=12,column=0,columnspan=3,sticky='w',padx=6,pady=5)
 
     ttk.Checkbutton(local,text=tr('ALL-IN-ONE: fresh original + alternate split experiments'),variable=split_enabled).grid(row=13,column=0,columnspan=3,sticky='w',padx=6,pady=5)
@@ -654,6 +665,21 @@ def open_validation_center(app):
         except Exception as exc:
             messagebox.showerror(tr('Evaluation error'),tr(str(exc)),parent=win)
     ttk.Button(local,text=tr('Run restart comparison from fitted split'),command=evaluate_restart_from_fit).grid(row=20,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+
+    ttk.Checkbutton(local,text=tr('Use exact-time manual snapshots in restart experiments only'),variable=manual_enabled).grid(row=21,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    ttk.Entry(local,textvariable=manual_path).grid(row=22,column=0,columnspan=2,sticky='ew',padx=6)
+    def choose_manual_snapshot():
+        path=filedialog.askopenfilename(parent=win,title=tr('Select per-slot restart snapshots'),filetypes=[('CSV','*.csv')])
+        if path: manual_path.set(path)
+    ttk.Button(local,text=tr('Select per-slot restart snapshots'),command=choose_manual_snapshot).grid(row=22,column=2,sticky='w')
+    def edit_manual_snapshot():
+        try:
+            from manual_init_ui import open_snapshot_editor
+            open_snapshot_editor(win,app,manual_path)
+        except Exception as exc: messagebox.showerror(tr('Evaluation error'),tr(str(exc)),parent=win)
+    ttk.Button(local,text=tr('Edit O/E/U snapshot with video'),command=edit_manual_snapshot).grid(row=23,column=0,columnspan=2,sticky='w',padx=6)
+    ttk.Combobox(local,textvariable=manual_source,values=['operator_snapshot','per_slot_gt_snapshot'],state='readonly').grid(row=23,column=2,sticky='ew')
+    ttk.Label(local,text=tr('CSV: time_sec,global_slot_id,initial_state (O/E/U). Missing slots remain UNKNOWN. Missing restart times are skipped. Count-only GT cannot initialize slots. Snapshots never tune DEV; future GT is scoring only.'),wraplength=900).grid(row=24,column=0,columnspan=3,sticky='w',padx=6,pady=5)
 
     public = ttk.LabelFrame(body, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)

@@ -2,7 +2,7 @@
 
 [한국어 논문](paper_ko.md) | [English paper](paper_en.md) | [연구 부록 / History](appendix/full_experiment_history.md)
 
-The latest papers share one reviewed source: `data/sections.json`, with paired Korean/English headings and paragraphs. Tables come from common CSV files. The root `../paper_manifest.json` is canonical; `data/paper_manifest.json` is a generated mirror. `snapshots/paper_v16.5.2_ko.md` and `_en.md` preserve this release; v16.5.1 snapshots stay immutable. Public CNRPark-EXT overlays and charts now accompany the evidence tables; unavailable private CCTV images remain placeholders.
+The latest papers share one reviewed source: `data/sections.json`, with paired Korean/English headings and paragraphs. Tables come from common CSV files. The root `../paper_manifest.json` is canonical; `data/paper_manifest.json` is a generated mirror. `snapshots/paper_v16.5.7_ko.md` and `_en.md` preserve this release; all earlier snapshots stay immutable. Public CNRPark-EXT overlays, restart charts and supplied continuous-run CCTV and Voronoi setup views accompany the evidence tables; missing before/after images remain placeholders.
 
 ## Release growth rule / 릴리스별 성장 규칙
 
@@ -26,3 +26,6 @@ The v16.5.3 snapshots add actual retained-video cross-window evidence. `tools/ch
 
 
 Fresh split experiments must be reported separately from frozen cross-window statistics. v16.5.4 records an implemented protocol with full-video results pending; do not replace old scores or infer alternate-split scores from the old traces. Before adding measured results, record the split intervals, input/configuration hashes, DEV selection freeze, sample counts, availability/failure flags and offline same-video scope. Both language sections must change together.
+
+
+Actual v16.5.6 restart evidence is separate from v16.5.7 implementation validation. Exact-time per-slot operator/GT snapshots must record assisted-information source and UNKNOWN coverage; count-only GT cannot be converted into slot initialization. Manual full-video metrics stay unreported until a real run. Code tests do not populate performance tables.

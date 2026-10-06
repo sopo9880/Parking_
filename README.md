@@ -2,10 +2,26 @@
 
 Local research Agent for the Connect Hyundai parking-occupancy study.
 
-Current release: **v16.5.6**
+Current release: **v16.5.7**
 Protected algorithm baseline: **v16.2 SAFE_BASELINE**
 Transition candidate: **v16.4 CANDIDATE**
 
+
+## v16.5.7: 선택 시점 수동 초기화 / Exact-time manual initialization
+
+1. 영상과 GT를 선택하고 검증 센터에서 **영상 보며 O/E/U 초기 상태 입력**을 누릅니다. 주차면 설정 JSON(현재 `slots.json` 또는 완료된 fit의 파일)을 선택합니다. 점 좌표는 변경하지 않습니다.
+2. `0:00`, `5:30`, `11:00`, `15:00` 중 입력할 시각과 카메라를 선택하고 **해당 시점 초기값 / 영상 보기**를 누릅니다. 목록의 슬롯을 선택해 O(차량 있음), E(빈자리), U(미확정)를 지정합니다. 같은 global 슬롯을 보는 카메라는 한 값으로 초기화합니다.
+3. **재시작 초기 상태 저장**으로 CSV를 저장합니다. 여러 시점은 같은 파일에 저장할 수 있습니다. 다른 시점 행은 보존합니다. CSV 열은 `time_sec,global_slot_id,initial_state`; 시각은 초, 상태는 O/E/U 또는 OCCUPIED/EMPTY/UNKNOWN입니다. 총수 GT는 개별 슬롯 상태를 알 수 없어 사용할 수 없습니다.
+4. **재시작 실험에서만 해당 시점의 수동 초기 상태 사용**을 켜고 저장합니다. 직접 입력은 `operator_snapshot`, 슬롯별 정답의 해당 시점 입력은 `per_slot_gt_snapshot`으로 출처를 구분합니다. GT 기반 초기화는 논문에서 assisted initialization으로 보고합니다.
+5. ALL-IN-ONE 또는 **완료된 분할 학습으로 재시작 비교 실행**을 실행합니다. 검출기·주차면 DEV 학습과 설정 선택에는 수동 값이 들어가지 않습니다. 입력 없는 시점은 수동 대조군만 생략하고 감사 파일에 남깁니다.
+
+같은 새 관측으로 `RESET_UNKNOWN`(진짜 UNKNOWN), `RESET_MANUAL_INIT`, 기존 `CONTINUOUS_SAFE`를 비교합니다. 기존 `RESET_SAFE` 및 파일 식별자는 유지합니다. O는 움직임 없이 시작하며 첫 temporal window(기본 10초) 동안 초기 O의 즉시 EMPTY 해제를 막은 뒤 정상 SAFE 입·출차 판정을 적용합니다. E/U도 첫 프레임은 입력 그대로입니다. U는 검출 누락만으로 EMPTY로 바꾸지 않으며 긍정 입차 근거로 해결합니다. 시작 상태를 전체 구간에 고정하지 않습니다.
+
+`manual_init_snapshot.csv`와 `manual_init_audit.json`에는 사용한 시각·출처·해시·O/E/U 수와 미래 GT 미사용 여부를 기록합니다. `*_occupancy_bounds.csv`는 confirmed/possible occupancy와 UNKNOWN 수를 제공합니다. UNKNOWN이 있는 범위의 일반 Exact/MAE·복구 시간은 비워 두고 lower-bound count 통계와 범위 포함률을 구분합니다. 범위 포함은 정확한 예측이 아닙니다.
+
+**실제 v16.5.6 결과:** 두 학습 분할 × 네 재시작에서 수정 복구와 SAFE의 count·state/phase/score·전환이 모두 동일했습니다. [144개 scoped 결과 재계산](paper/data/restart_v1656/recomputed_metrics.csv)을 한·영 논문에 추가했습니다. 15분 재시작 후 10초를 제외한 original RESET_SAFE/복구는 N=33, Exact 0%, MAE 1.363636입니다. 기존 주 TEST의 N=34 점수와 표본 범위를 구분합니다. **v16.5.7 수동 초기화 전체 성능은 아직 미측정입니다.** SAFE 자동 승격은 없습니다.
+
+Manual snapshots are optional and off by default. Only the exact restart-time slot dictionary enters frozen restart inference. Future GT scores outputs only. Count-only GT is rejected; missing slots remain UNKNOWN; missing-time manual runs are explicitly skipped. Initial-O clearing is deferred for one temporal window, then ordinary automatic SAFE logic applies. This assisted-information condition is not an equal-information ablation or independent validation. Stale-state persistence is deferred. Both language papers, immutable release snapshots and PDFs follow the same evidence.
 
 ## v16.5.6: 실제 재시작 결과와 연구 후보 선택
 
@@ -29,7 +45,7 @@ Restart extraction starts at the requested source timestamp with new detector tr
 
 Each unique `restart_experiments/run_.../` includes `restart_metrics.csv`, per-start count/slot traces, state differences and audits. The standalone button creates `RESTART_EVALUATION_TO_CHATGPT.zip`; ALL-IN-ONE includes restart outputs in its normal upload ZIP. Metrics include startup-inclusive Exact/MAE, first 30/60/120 s errors, first exact, three consecutive available GT checkpoints for stable exact (with confirmation time), never-stabilized flag and post-stability Exact. A separate matched post-restart 10 s warm-up row is included; initial errors are not removed from startup metrics. Count stability does not establish slot correctness or permanent stability. Failures preserve partial outputs and are flagged.
 
-The supplied v16.5.4 run has been recomputed: original continuous TEST SAFE 85.29% / Candidate 97.06%; alternate startup TEST SAFE 9.375% / MAE 1.1875, Candidate 9.375% / MAE 1.21875, guard 46.875% / MAE 0.6875. Those windows also differ in fitting and content, so they suggest a restart/initialization problem without proving its sole cause. New v16.5.5 restart/recovery full-video scores remain pending. Same-video results are not independent validation.
+The supplied v16.5.4 run has been recomputed: original continuous TEST SAFE 85.29% / Candidate 97.06%; alternate startup TEST SAFE 9.375% / MAE 1.1875, Candidate 9.375% / MAE 1.21875, guard 46.875% / MAE 0.6875. Those windows also differ in fitting and content, so they suggest a restart/initialization problem without proving its sole cause. Those formerly pending scores are now archived, alongside actual v16.5.6 results in the latest paper. Same-video results are not independent validation.
 
 ## ALL-IN-ONE: 실제 DEV/TEST 분할 실험 / Fresh split experiments
 

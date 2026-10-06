@@ -109,7 +109,16 @@ class LiveUITests(unittest.TestCase):
             dev.delete(0,'end');dev.insert(0,'6:00-20:30')
             test.delete(0,'end');test.insert(0,'0:00-6:00')
             buttons={w.cget('text'):w for w in widgets if isinstance(w,ttk.Button)}
+            snapshot=Path(self.tmp.name)/'manual.csv'
+            snapshot.write_text('time_sec,global_slot_id,initial_state\n0,G001,U\n900,G001,O\n')
+            check=next(w for w in widgets if isinstance(w,ttk.Checkbutton) and w.cget('text')=='Use exact-time manual snapshots in restart experiments only')
+            check.invoke()
+            manual_entry=next(w for w in entries if w.master==check.master and w.grid_info().get('row')==22)
+            manual_entry.delete(0,'end');manual_entry.insert(0,str(snapshot))
             buttons['Save Validation Settings'].invoke()
+            manual=json.loads(self.path.read_text())['validation']['restart_experiments']['manual_init']
+            self.assertEqual(manual,{'enabled':True,'path':str(snapshot),'source':'operator_snapshot'})
+            self.assertEqual(json.loads(self.path.read_text())['validation']['restart_experiments']['starts_sec'],[0,330,660,900])
             cfg=json.loads(self.path.read_text())['validation']['split_experiments']
             self.assertEqual(cfg,{'enabled':True,'dev':[360,1230],'test':[0,360]})
             profile=next(w for w in widgets if isinstance(w,ttk.Combobox) and str(w.cget('state'))=='normal')
@@ -118,6 +127,31 @@ class LiveUITests(unittest.TestCase):
             buttons['Load Profile'].invoke()
             self.assertEqual(dev.get(),'6:00-20:30')
             self.assertEqual(test.get(),'0:00-6:00')
+            self.assertEqual(manual_entry.get(),str(snapshot))
+            self.assertFalse(errors.called)
+
+    def test_manual_editor_saves_one_time_without_overwriting_other_snapshots(self):
+        import tkinter as tk
+        from tkinter import ttk
+        import manual_init_ui as ui
+        from manual_initialization import load_snapshot,write_snapshot
+        import numpy as np
+        self.root.language_var.set('en');self.root._change_language()
+        folder=Path(self.tmp.name);slots=folder/'slots.json';snapshot=folder/'manual.csv'
+        slots.write_text(json.dumps({'slots':[{'local_id':'S1','global_id':'G1','cctv':'cctv1','point':[10,10]}]}))
+        write_snapshot(snapshot,330,{'G1':'EMPTY'})
+        variable=tk.StringVar(master=self.root,value=str(snapshot))
+        class Video:
+            def release(self): pass
+        with patch.object(ui.filedialog,'askopenfilename',return_value=str(slots)),patch.object(ui.filedialog,'asksaveasfilename',return_value=str(snapshot)),patch.object(ui.messagebox,'showinfo'),patch.object(ui.messagebox,'showerror') as errors,patch.object(ui,'open_video',return_value=Video()),patch.object(ui,'read_frame_at',return_value=np.zeros((50,50,3),dtype=np.uint8)) as frames,patch.object(ui,'crop_roi',side_effect=lambda frame,roi:frame):
+            ui.open_snapshot_editor(self.root,self.root,variable);self.root.update()
+            widgets=self.widgets(self.root);buttons={w.cget('text'):w for w in widgets if isinstance(w,ttk.Button)}
+            buttons['Load exact-time snapshot / video'].invoke()
+            self.assertEqual(frames.call_args.args[1],900)
+            tree=next(w for w in widgets if isinstance(w,ttk.Treeview));tree.selection_set('G1')
+            buttons['O = occupied'].invoke();buttons['Save restart snapshots'].invoke()
+            self.assertEqual(load_snapshot(snapshot,900,['G1']),{'G1':'OCCUPIED'})
+            self.assertEqual(load_snapshot(snapshot,330,['G1']),{'G1':'EMPTY'})
             self.assertFalse(errors.called)
 
     def test_validation_messagebox_is_localized(self):

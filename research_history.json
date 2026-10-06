@@ -756,6 +756,31 @@
         "Reset UNKNOWN versus continuous operator priors confound history-only interpretation"
       ],
       "decision": "Retain SAFE; recovery/Guard/DEV selection remain research candidates."
+    },
+    {
+      "version": "v16.5.7",
+      "period": "2026-10-06",
+      "status": "EXACT_TIME_MANUAL_INIT_EXPERIMENT",
+      "confidence": "confirmed implementation and actual v16.5.6 numerical evidence; manual full-video evaluation pending",
+      "title": "Exact-time operator initialization and honest UNKNOWN occupancy bounds",
+      "changes": [
+        "Optional O/E/U snapshot editor/import only in frozen restart stage; DEV and future GT isolated",
+        "Retain RESET_SAFE compatibility; add genuine RESET_UNKNOWN and assisted RESET_MANUAL_INIT",
+        "Protect initial O for one temporal window, then automatic SAFE; report unresolved occupancy bounds",
+        "Publish actual v16.5.6 recomputation, graph and continuous screenshot; paired papers/snapshots/PDFs"
+      ],
+      "results": [
+        "144 actual v16.5.6 scoped rows recomputed",
+        "All eight recovery/SAFE pairs identical in counts, states/phases/scores and transitions",
+        "Original restart 900s post-10s: N=33, reset SAFE/recovery Exact 0%, MAE 1.363636",
+        "No measured v16.5.7 manual-init performance"
+      ],
+      "issues": [
+        "Count-only GT cannot identify startup slot states",
+        "Assisted information and startup protection prevent equal-information ablation",
+        "No independent new-video or commercial restart guarantee"
+      ],
+      "decision": "Retain SAFE and research-candidate status; measure operator snapshots before persistence."
     }
   ]
 }

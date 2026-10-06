@@ -1,10 +1,10 @@
 # Causal Parking-Space Occupancy Estimation from Re-recorded Multi-CCTV Video: Parking Research Agent Living Paper
 
-Living Paper | v16.5.6 | Research revision temporal-restart-evidence-selection-r6
+Living Paper | v16.5.7 | Research revision exact-time-manual-initialization-r7
 
 [한국어](paper_ko.md) | [English](paper_en.md)
 
-Research draft. Retained results are separated from recomputed user-supplied v16.5.4/v16.5.5 prediction CSVs. Actual v16.5.5 UNKNOWN restarts and failed startup recovery are included. Full-video performance of revised v16.5.6 candidates remains unmeasured. Authors and affiliation are unspecified.
+Research draft. Retained results are separated from recomputed user-supplied v16.5.4/v16.5.5/v16.5.6 prediction CSVs. Actual v16.5.6 recovery equals SAFE at all eight tested restarts. Full-video performance of v16.5.7 manual initialization is unmeasured. Authors and affiliation are unspecified.
 
 <!-- section:abstract -->
 
@@ -15,6 +15,8 @@ This paper documents the development of a research agent for estimating occupied
 Keywords: parking occupancy, re-recorded CCTV, causal state tracking, multi-CCTV, robustness, Living Paper.
 
 Retained-video cross-window recalculation found Candidate gains only in the final of four windows; full-trace Exact was SAFE 34.96% and Candidate 38.21%. This is stability evaluation, not independent validation.
+
+Actual v16.5.6 evaluations across two fits and four restart times show identical counts, states and transitions under revised recovery and SAFE. v16.5.7 implements a research comparator receiving one exact-time per-slot O/E/U snapshot, without using the full GT sequence for inference. Manual-init performance remains unmeasured.
 
 <!-- section:introduction -->
 
@@ -40,13 +42,15 @@ The initial input is a phone recording of a CCTV monitor [R1]. Four-corner ROIs 
 
 Let y(t) denote the ground-truth occupied-space count and ŷ(t) the prediction. Exact is the fraction of evaluated timestamps satisfying y(t)=ŷ(t); MAE averages |y(t)-ŷ(t)|. Occupied-space count, unique-vehicle count, and per-CCTV count are separate quantities. Technical state names EMPTY, MANEUVERING, OCCUPIED, LEAVING, UNKNOWN and SAFE_BASELINE/CANDIDATE remain canonical for data and code compatibility.
 
-![Figure 1. Actual re-recorded Hyundai parking CCTV monitor environment. Multiple CCTV views are shown on one monitor, with parking-space inference overlays on each ROI.](figures/hyundai/environment_overview.jpg)
+Figures 1–2 use actual ALL-IN-ONE paper-ready and CCTV2 setup captures. Phone re-recording of the control monitor, rather than a direct digital stream, shows oblique viewpoints, low resolution, reflections and differing perspective. Manual reference points remain authoritative; auxiliary learned information does not replace them. Real-figure descriptions previously added on GitHub are integrated into the paired canonical source, using supplied original-resolution captures. Occupancy colors are inference outputs, not per-slot GT.
 
-**Figure 1. Actual re-recorded Hyundai parking CCTV monitor environment.** The input is a phone recording of the control monitor rather than a direct digital CCTV stream. Oblique viewpoints, low resolution, reflections, monitor artifacts, and different perspective distortions coexist. This figure is a real paper-ready capture from an ALL-IN-ONE run, not a synthetic illustration.
+![Figure 1. Supplied v16.5.6 continuous-run overview at 15:00. GT 18/prediction 18 are total counts; colors and O/E are model outputs, not restarted inference or per-slot truth.](figures/v16_5_7/continuous_900_overview.jpg)
 
-![Figure 2. Manual parking-space reference points and Voronoi spatial partitioning for CCTV2.](figures/hyundai/voronoi_cctv2.jpg)
+Figure 1. Supplied v16.5.6 continuous-run overview at 15:00. GT 18/prediction 18 are total counts; colors and O/E are model outputs, not restarted inference or per-slot truth.
 
-**Figure 2. Manual parking-space reference points and Voronoi spatial partitioning for CCTV2.** Operator-defined reference points remain the authoritative slot locations, while the spatial partition constrains vehicle-to-slot association. Learned auxiliary information does not replace the manual points and is used to stabilize assignment under strong perspective distortion and occlusion in the real CCTV view.
+![Figure 2. Manual CCTV2 slot reference points and Voronoi spatial partitioning. Fixed operator points constrain vehicle-to-slot assignment; learned auxiliary anchors do not move these points. This is an actual v16.5.6 setup preview, not a per-slot GT map.](figures/v16_5_7/voronoi_cctv2.jpg)
+
+Figure 2. Manual CCTV2 slot reference points and Voronoi spatial partitioning. Fixed operator points constrain vehicle-to-slot assignment; learned auxiliary anchors do not move these points. This is an actual v16.5.6 setup preview, not a per-slot GT map.
 
 <!-- section:methods -->
 
@@ -74,6 +78,15 @@ Restart experiments retain fitted detectors, anchors and templates but create ne
 
 v16.5.6 revision: startup recovery adds corroborated entry without suppressing normal SAFE entry. The old first-ten-second blocking candidate remains a separate comparator.
 
+### 4.6 Exact-time manual initial occupancy (v16.5.7)
+
+A `time_sec,global_slot_id,initial_state` CSV selects only rows exactly matching the restart timestamp. O/E/U normalize to OCCUPIED/EMPTY/UNKNOWN; every linked camera receives the same global-slot prior. Missing slots stay UNKNOWN. Count-only GT cannot identify individual slots. Duplicate or unknown IDs and invalid states are rejected. Operator and per-slot-GT snapshot sources are recorded separately; GT-derived initialization must be reported as assisted initialization.
+
+RESET_MANUAL_INIT outputs the supplied states at its first frame. O starts occupied without requiring motion. To avoid immediate release on one initial missed detection, clearing an initial O is deferred for one temporal window (default 10 seconds), after which existing causal SAFE entry/exit logic operates. This bounded protection is an additional manual-mode rule, not indefinite occupancy retention. UNKNOWN is not forced to EMPTY by absent detections; positive normal entry evidence can resolve it to OCCUPIED. Establishing negative occupancy for unresolved slots is future work.
+
+The Validation Center supports O/E/U entry while viewing the selected video frame and slot points, without modifying geometry. Inference receives only the selected-time state dictionary; subsequent GT is used for scoring. File hash, timestamp, source, state counts and `future_gt_used_for_inference=false` are logged. This describes separation of function inputs, not an operating-system block on file access. Snapshots are not supplied to DEV detector tuning, geometry fitting or variant selection.
+
+
 <!-- section:protocol -->
 
 ## 5. Experimental protocol and evidence status
@@ -90,13 +103,17 @@ Separate from frozen cross-window statistics, Original (DEV 0–900 s / TEST 900
 
 The selected configuration hash is frozen before TEST labels evaluate SAFE_BASELINE, TRANSITION_GUARD, SEG_ASSIST, EMPTY_REF, SELECTED and CANDIDATE. Intervals include their start and exclude their end, except the evaluation horizon endpoint. The original 10 s startup warm-up remains; state is not reset at split boundaries. Unlike the legacy learner's boundary-frame inclusion, fresh fitting follows explicit DEV membership. Inference proceeds chronologically from zero, so past online state history can span intervals. The reverse split applies templates fitted on later DEV frames to earlier TEST frames: it is offline evaluation, not causal future prediction.
 
-Implementation and functional validation are complete in v16.5.4, with full real-CCTV split experiments pending at publication. Archived predictions from a subsequently supplied v16.5.4 run are now recalculated. Tests perturb TEST labels while checking invariant actual state selection and changed evaluation metrics, inspect actual detector/geometry DEV frame access, and verify boundaries and failures. Functional validation is not performance evidence. Actual v16.5.5 restart/recovery scores, pending at publication, are now reported in Section 6.3. Full-video scores of revised v16.5.6 candidates remain unreported. See the [protocol record](data/split_protocol_v1654.json); runtime outputs include split_final_metrics.csv and split_audit.json. Historically reviewed same-video intervals cannot establish independent validation.
+Implementation and functional validation are complete in v16.5.4, with full real-CCTV split experiments pending at publication. Archived predictions from a subsequently supplied v16.5.4 run are now recalculated. Tests perturb TEST labels while checking invariant actual state selection and changed evaluation metrics, inspect actual detector/geometry DEV frame access, and verify boundaries and failures. Functional validation is not performance evidence. Actual v16.5.5 restart/recovery scores, pending at publication, are now reported in Section 6.3. Actual v16.5.6 results are now reported in Section 6.5; manual initialization remains unmeasured. See the [protocol record](data/split_protocol_v1654.json); runtime outputs include split_final_metrics.csv and split_audit.json. Historically reviewed same-video intervals cannot establish independent validation.
 
 ### Restart evaluation protocol (v16.5.5)
 
 After freezing each fresh split DEV selection, inference starts anew at 0/330/660/900 seconds and the TEST start, for up to 330 seconds. Continuous SAFE/Candidate are compared with RESET_SAFE, RESET_CANDIDATE and RESET_RECOVERY. Resetting state on sliced precomputed evidence is insufficient: detector histories and recovery frame histories are freshly reconstructed from the restart timestamp. The Validation Center can configure starts or reuse a completed actual fit directory for restart inference only. Unique output directories contain audits and explicit failure status. Restarts use UNKNOWN initial occupancy while existing continuous runs use operator initialization, so this is an operational comparison, not an ablation isolating temporal history alone.
 
-Metrics include startup-inclusive Exact/MAE; first 30/60/120-second errors; first exact; the beginning and confirmation time of three consecutive available exact GT checkpoints; post-stability Exact; never-stabilized flag; and continuous/reset slot-state differences. The first-10-second exclusion is a separate row. Three exact count checkpoints do not prove permanent stability or individual-slot correctness, nor guarantee correctness between GT samples. Actual v16.5.5 results are reported in Section 6.3. v16.5.6 adds relapse metrics and legacy/revised recovery and DEV-selected research candidates; a new full-video evaluation remains pending.
+Metrics include startup-inclusive Exact/MAE; first 30/60/120-second errors; first exact; the beginning and confirmation time of three consecutive available exact GT checkpoints; post-stability Exact; never-stabilized flag; and continuous/reset slot-state differences. The first-10-second exclusion is a separate row. Three exact count checkpoints do not prove permanent stability or individual-slot correctness, nor guarantee correctness between GT samples. Actual v16.5.5 results are reported in Section 6.3. v16.5.6 adds relapse metrics and legacy/revised recovery and DEV-selected research candidates; actual results are reported in Section 6.5.
+
+Manual initialization is off by default and runs only in the frozen restart-evaluation stage of ALL-IN-ONE. At supplied times, RESET_UNKNOWN (genuinely unresolved), RESET_MANUAL_INIT and existing CONTINUOUS_SAFE are compared using the same fresh observations. Existing RESET_SAFE binary absent-to-EMPTY behavior and CSV identifiers remain for compatibility. Only the manual comparator is skipped at timestamps with no snapshot, with the reason logged. A CSV may contain multiple times, but each experiment receives only its own snapshot. Detector/runtime histories are fresh; fitted settings stay frozen. Extra operator information and a 10-second initial-O protection rule prevent interpreting this as an equal-information automatic-init ablation.
+
+Unresolved runs export confirmed occupied counts and possible occupied counts including UNKNOWN. Lower-bound count metrics are labeled separately; ordinary Exact/MAE and recovery times are left empty in scopes containing UNKNOWN. Fully resolved checkpoint counts and GT-within-bounds rates are reported. Interval coverage does not establish correct individual slots. Full-video v16.5.7 manual-mode results are not available.
 
 <!-- section:results -->
 
@@ -238,6 +255,39 @@ Figure 15. Alternate split count agreement at 170 seconds can relapse under SAFE
 The existing protection rule prevents automatic promotion when DEV count results are under-count-confounded. In alternate v16.5.5 DEV, SAFE has Exact 31.8681% versus Guard/SEG 73.6264%, yet SAFE remains selected. v16.5.6 retains PRODUCTION_SAFE_SELECTED as the SAFE baseline and exports DEV_SELECTED_EXPERIMENTAL separately. Eligible variants are SAFE/Guard/SEG, ranked by DEV Exact descending, then MAE, over-rate and maximum error ascending; exact ties prefer SAFE, then Guard, then SEG. EMPTY_REF and the v16.4 post-hoc transition refiner are excluded. Parameters and their hash are frozen before TEST scores are computed.
 
 Applying this fixed ranking to archived v16.5.5 DEV tables selects Guard for both fits, mapping to archived TEST scores of 70.5882%/MAE 0.294118 for original and 46.8750%/0.687500 for alternate. Original Guard is worse than SAFE TEST 85.2941%, so uniform improvement is not claimed. The ranking itself was introduced after these historical TEST results were reviewed: this is retrospective analysis, not independent validation. Future evaluation must freeze it before observing new-video outcomes. Research selection does not promote operational SAFE; RESET_DEV_SELECTED and RESET_TRANSITION_GUARD are evaluated separately at restart.
+
+<!-- section:recovery_v1656 -->
+
+## 6.5 Actual revised-recovery results and manual-init design
+
+The supplied v16.5.6 ZIP was recomputed for four restarts in each original/alternate fit. All 144 startup-inclusive and post-10-second metric rows were checked. RESET_RECOVERY and RESET_SAFE have identical complete count traces, per-slot state/phase/occupied_score and transitions in all eight experiments. Normal SAFE entry is preserved, but incremental recovery benefit is absent in this video. The research candidate is not promoted to operational SAFE.
+
+The table below uses AFTER_RESTART_WARMUP at 15:00, excluding the first 10 seconds, with N=33 each. The original main TEST has N=34 and SAFE 85.2941%/Candidate 97.0588%; the matched 33-checkpoint continuous comparators instead yield 84.8485%/96.9697%. Different sample scopes must not be interpreted as an algorithm regression or improvement. Startup-inclusive traces remain separately archived.
+
+Under the original fit, G029 remains EMPTY in reset SAFE/recovery from 900 through 1230 seconds. Its first 31 observations contain only four FULL hits, with maximum confidence 0.448690 and overall hit fraction 4/31. This supports a weak-detection diagnosis that makes a 75% repeat-hit gate difficult to satisfy. Count-level GT cannot confirm whether G029 is truly occupied. Labels in the continuous-run screenshot are model outputs, not per-slot GT.
+
+v16.5.7 adds a manual comparator to measure the role of exact-time startup information rather than claiming improved performance from further threshold adjustment. No actual per-slot manual snapshot has been supplied, so manual Exact/MAE and recovery times remain unmeasured. Persisted-state restoration is deferred until stale-state handling and current-image revalidation are designed. These historically reviewed same-video results are not independent validation.
+
+### 15:00 restart comparison - post-10 s, N=33
+
+| Fit | Method | N | Exact (%) | MAE |
+| --- | --- | --- | --- | --- |
+| original | RESET_SAFE | 33 | 0.0000 | 1.363636 |
+| original | RESET_CANDIDATE | 33 | 0.0000 | 1.484848 |
+| original | RESET_RECOVERY | 33 | 0.0000 | 1.363636 |
+| original | RESET_TRANSITION_GUARD | 33 | 0.0000 | 1.515152 |
+| original | CONTINUOUS_SAFE | 33 | 84.8485 | 0.151515 |
+| original | CONTINUOUS_CANDIDATE | 33 | 96.9697 | 0.030303 |
+| alternate | RESET_SAFE | 33 | 15.1515 | 1.181818 |
+| alternate | RESET_CANDIDATE | 33 | 15.1515 | 1.303030 |
+| alternate | RESET_RECOVERY | 33 | 15.1515 | 1.181818 |
+| alternate | RESET_TRANSITION_GUARD | 33 | 12.1212 | 1.393939 |
+| alternate | CONTINUOUS_SAFE | 33 | 72.7273 | 0.272727 |
+| alternate | CONTINUOUS_CANDIDATE | 33 | 72.7273 | 0.272727 |
+
+![Figure 16. Actual v16.5.6 original 15:00 count GT, continuous SAFE and reset SAFE. Revised recovery overlaps reset SAFE; manual-init results are absent.](figures/v16_5_7/restart_900_v1656.png)
+
+Figure 16. Actual v16.5.6 original 15:00 count GT, continuous SAFE and reset SAFE. Revised recovery overlaps reset SAFE; manual-init results are absent.
 
 <!-- section:failures -->
 
@@ -420,11 +470,13 @@ External recalculation uses retained binary predictions and is distinct from a c
 
 Cross-window results show that final-window refinement did not resolve early errors. They compare retained count traces rather than a fresh run on another video. The original settings hash is retained; the complete settings file containing local video paths is not published.
 
-Fresh split/restart experiments are computationally expensive. Actual v16.5.4/v16.5.5 results are archived separately; full-video v16.5.6 candidate results remain unreported. Future results must be reviewed with input/configuration hashes, sample sizes and failure status before integration into results tables. CANDIDATE is not promoted without independent-video temporal evidence.
+Fresh split/restart experiments are computationally expensive. Actual v16.5.4/v16.5.5 results are archived separately; actual v16.5.6 candidate results are reported in Section 6.5; v16.5.7 manual results remain unmeasured. Future results must be reviewed with input/configuration hashes, sample sizes and failure status before integration into results tables. CANDIDATE is not promoted without independent-video temporal evidence.
 
 Restart diagnosis requires fresh inference on the same fit/window and separation of initialization-prior, detector/tracker history and scene effects. Future evaluation needs slot GT, wrong-startup occupancy, arrivals/departures, missed detections and reconnection cases. This release does not blindly restore persisted occupancy state.
 
-Actual v16.5.5 restart results expose initialization sensitivity and a failed recovery candidate. Different initial priors prevent isolating temporal history alone. Full-video v16.5.6 results remain unavailable; the archived 11-second replay only verifies the startup suppression regression.
+Actual v16.5.5 restart results expose initialization sensitivity and a failed recovery candidate. Different initial priors prevent isolating temporal history alone. Actual v16.5.6 results in Section 6.5 show no incremental recovery benefit; the earlier 11-second replay verified startup entry preservation only.
+
+Full-video v16.5.6 recovery equals SAFE and establishes no benefit. Manual initialization is an assisted-information condition needing wrong-prior tests, UNKNOWN coverage, operator-effort accounting, departure/persistence checks and independent-video evaluation. Its first-10-second initial-O protection also needs a separate ablation. Count GT cannot be converted to correct per-slot startup labels. Full v16.5.7 manual performance is unmeasured.
 
 <!-- section:conclusion -->
 
@@ -433,6 +485,8 @@ Actual v16.5.5 restart results expose initialization sensitivity and a failed re
 The retained research progressed toward protecting manual slot identities, combining spatial constraints with causal temporal decisions, and limiting auxiliary-detection authority. SAFE 85.29% improved to Candidate 97.06% on the retained video, while independent temporal generalization remains unverified. Spatial Accuracy 95.0770% is recomputed over 165,530 unique CNRPark-EXT pairs, with camera-specific FP and image-count errors reported separately. The bilingual Living Paper preserves identical evidence and limitations, integrating meaningful new methods, tables, and figures into the appropriate sections as releases evolve. Patches without research changes need not increase paper length.
 
 Actual v16.5.5 restarts reveal initialization and persistence failures, with no established improvement from legacy recovery. v16.5.6 documents these failures, removes startup entry suppression and separates research selection and relapse evaluation. Operational recovery performance still requires full-video and independent validation.
+
+Actual v16.5.6 recovery provides no incremental gain. v16.5.7 supplies an exact-time per-slot initialization experiment with explicit unresolved occupancy bounds. Automatic inference after this initialization still requires measurement using actual manual snapshots.
 
 <!-- section:references -->
 
@@ -449,3 +503,5 @@ Actual v16.5.5 restarts reveal initialization and persistence failures, with no 
 - [R7] [Retained-video cross-window evidence](data/windows_v1653/window_evaluation_summary.json), [frozen predictions and recalculation ZIP](data/windows_v1653/WINDOW_EVALUATION_TO_CHATGPT.zip), recalculated 2026-10-05.
 
 - [R8] [Actual v16.5.5 restart predictions and provenance](data/restart_v1655/provenance.json), [40 recomputed startup-inclusive rows](data/restart_v1655/recomputed_restart_metrics.csv), recomputed from supplied artifacts on 2026-10-06.
+
+- [R9] [v16.5.6 restart evidence and provenance](data/restart_v1656/provenance.json), [144 recomputed rows](data/restart_v1656/recomputed_metrics.csv), [eight equality checks](data/restart_v1656/recovery_identity.csv), recomputed 2026-10-06.

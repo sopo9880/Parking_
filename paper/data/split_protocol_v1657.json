@@ -1,0 +1,69 @@
+{
+  "version": "v16.5.7",
+  "status": "implemented_functionally_validated_full_video_pending",
+  "default_protocols": [
+    {
+      "name": "original",
+      "dev": [
+        0.0,
+        900.0
+      ],
+      "test": [
+        900.0,
+        1230.0
+      ],
+      "horizon_sec": 1230.0
+    },
+    {
+      "name": "alternate",
+      "dev": [
+        330.0,
+        1230.0
+      ],
+      "test": [
+        0.0,
+        330.0
+      ],
+      "horizon_sec": 1230.0
+    }
+  ],
+  "full_real_video_results": null,
+  "neural_network_retraining": false,
+  "independent_validation": false,
+  "validation_scope": [
+    "39 unit/UI tests; exact-time snapshot/future-label invariance; no count-GT initialization; true UNKNOWN bounds; bounded initial-O protection and automatic release; frozen fit invariance",
+    "144 actual v16.5.6 scoped rows recomputed separately; all eight revised recovery/SAFE pairs identical"
+  ],
+  "implementation_sha256_lf_utf8": {
+    "split_protocol.py": "7b50f8b64c677c8f83873fd75fc4a6bbf1b53a9c3f8d604ea8694ccef065de8c",
+    "split_experiment.py": "05f9403335f969a664d61f87c9c53ec814ea50993524dd9b7e9349cfd5915cf9",
+    "restart_evaluation.py": "82b7e2569dc29a15244b2ec7dbf118664e82728134bfdf7847d51fbd3198d835",
+    "detector_tuner.py": "8017d63a13d9b68bc3db045cc144c24e6a148d91e0f99fc7fc3d8552c2eaae3a",
+    "slot_engine.py": "3508206c7e2151e2cc33d42676e5d33e231cb118c279486690e3f1e607709324",
+    "app.py": "30dd7e3a9cf11559d03fc4e64ff17a21081038a89779fce73f92dea66e40f8d1",
+    "validation_center.py": "b434ea175e4bd869b92449ced1a785c9c05b7e972222de2fc49ef4c42d7dafc1",
+    "tests/test_split_experiment.py": "5c279e5b415653b081ef21a8ff6c177cf68eccdb85d43a0f46f9dae1b98abd9b",
+    "tests/test_restart_evaluation.py": "852eb86ccf5200f62e63eeaa1954bb090d8821839c63db9b004b68322762d8ae",
+    "tests/test_localization.py": "475e556b24424a85e0289c1853bb2fd14c9d2a7778d247a75484c325cad52051",
+    "experimental_selection.py": "b2473726a81799122f26541d50a17842d314a35b56347deb2e2526a59e9e9ad3",
+    "tests/test_experimental_selection.py": "b497e45cc461b3dd46890590f899c36f0ef0b16772669cd4b36b4ae7a614447d",
+    "manual_initialization.py": "ff4107b37e02fa0cab9c887af0be1cd44bf3ad1f431a838a20a234392f9bad32",
+    "manual_init_ui.py": "bf6ce4e76554f64246d55a5d36de426b296b10c23e101bbba8ed03c6676c0cbd",
+    "tests/test_manual_initialization.py": "f8fc1b2b014c653e5df8ca428f66258d5833925705b89177bbd94842a38d3318"
+  },
+  "scope": "Implemented exact-time operator/per-slot-GT manual initialization only in frozen restart stage. Actual v16.5.6 results archived separately. Full v16.5.7 manual video inference pending.",
+  "manual_initialization": {
+    "enabled_by_default": false,
+    "csv_columns": [
+      "time_sec",
+      "global_slot_id",
+      "initial_state"
+    ],
+    "exact_time_only": true,
+    "count_gt_supported": false,
+    "future_gt_used_for_inference": false,
+    "initial_occupied_release_grace_sec": "one configured temporal window, default 10",
+    "unknown_forced_empty": false,
+    "full_real_video_results": null
+  }
+}

@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "version": "v16.5.6",
-  "research_revision": "temporal-restart-evidence-selection-r6",
+  "version": "v16.5.7",
+  "research_revision": "exact-time-manual-initialization-r7",
   "release_kind": "research",
   "research_changed": true,
   "evidence_updates": [
-    "Recalculate actual v16.5.5 fresh split and 80 scoped restart metric rows from user-supplied numerical traces",
-    "Report failed v16.5.5 startup recovery, UNKNOWN initialization and later count relapses",
-    "Separate protected production SAFE from DEV-selected experimental variants; additive recovery fix validated on archived 11-second evidence; full v16.5.6 video scores pending"
+    "Recompute 144 actual v16.5.6 scoped restart rows; all eight revised recovery/SAFE pairs identical",
+    "Add exact-time operator/per-slot-GT snapshots only to frozen restart inference; unknown occupancy bounds; manual full-video scores unmeasured",
+    "Preserve upstream Hyundai environment/Voronoi figure additions in paired canonical source using higher-resolution actual v16.5.6 captures; add matched-scope restart plot"
   ],
   "languages": [
     "ko",
@@ -38,32 +38,28 @@
     {
       "id": "environment",
       "number": 1,
-      "path": null,
-      "status": "missing",
+      "path": "figures/v16_5_7/continuous_900_overview.jpg",
+      "status": "available",
       "caption": {
-        "ko": "실제 CCTV 모니터 재촬영 환경",
-        "en": "Actual re-recorded CCTV monitor environment"
+        "ko": "그림 1. 사용자 제공 v16.5.6 연속 실행 15:00 화면. GT 18/예측 18은 총수이며 색과 O/E는 모델 출력이다. 재시작이나 슬롯별 정답 화면이 아니다.",
+        "en": "Figure 1. Supplied v16.5.6 continuous-run overview at 15:00. GT 18/prediction 18 are total counts; colors and O/E are model outputs, not restarted inference or per-slot truth."
       },
-      "missing_note": {
-        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
-        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
-      },
-      "provenance": null
+      "provenance": null,
+      "sha256": "b03da8d8e3bcbc8bfac85f7059e2a03bef494592c1b98f74e51cb121f4f72215",
+      "source": "User-supplied v16.5.6 upload; selected numerical plot / exact original paper-ready screenshot"
     },
     {
       "id": "slot_geometry",
       "number": 2,
-      "path": null,
-      "status": "missing",
+      "path": "figures/v16_5_7/voronoi_cctv2.jpg",
+      "status": "available",
       "caption": {
-        "ko": "수동 주차면 기준점과 원근 보정 및 Voronoi 영역",
-        "en": "Manual slot points, perspective correction, and Voronoi regions"
+        "ko": "그림 2. CCTV2의 수동 주차면 기준점과 Voronoi 공간 분할. 사람이 지정한 기준점을 고정하고 차량-주차면 대응을 제한한다. 학습된 보조 앵커는 이 점을 이동시키지 않는다. 실제 v16.5.6 설정 미리보기이며 슬롯 정답 표가 아니다.",
+        "en": "Figure 2. Manual CCTV2 slot reference points and Voronoi spatial partitioning. Fixed operator points constrain vehicle-to-slot assignment; learned auxiliary anchors do not move these points. This is an actual v16.5.6 setup preview, not a per-slot GT map."
       },
-      "missing_note": {
-        "ko": "저장소에서 실제 이미지 파일을 확인하지 못했다. 향후 실행 결과의 GT review 또는 paper-ready 이미지를 검토하여 추가한다. 합성 사진이나 미검증 전후 결과로 대체하지 않는다.",
-        "en": "No actual image file was found in the repository. Review GT-review or paper-ready artifacts from a future run before adding this figure. Do not substitute synthetic photographs or unverified before/after results."
-      },
-      "provenance": null
+      "provenance": null,
+      "sha256": "01f69216b3698cba0da8d1d7e9dbe981e8fb727293f832e67dbe4a622b66595f",
+      "source": "User-supplied v16.5.6 cctv2_manual_voronoi_preview.jpg; preserves upstream real-figure integration at 3c743b5 in higher-resolution evidence"
     },
     {
       "id": "transition_before",
@@ -270,11 +266,23 @@
         "ko": "그림 15. Alternate 분할에서 170초에 count Exact가 시작되어도 SAFE는 다시 과소 추정한다. 사후 구간 분석이며 주차면 GT 정확도를 뜻하지 않는다.",
         "en": "Figure 15. Alternate split count agreement at 170 seconds can relapse under SAFE. This is a post-hoc segment analysis, not slot-level correctness."
       }
+    },
+    {
+      "id": "restart_v1656_900",
+      "number": 16,
+      "path": "figures/v16_5_7/restart_900_v1656.png",
+      "caption": {
+        "ko": "그림 16. 실제 v16.5.6 original 15:00의 count GT·연속 SAFE·재시작 SAFE. 수정 복구는 RESET_SAFE와 겹친다. 수동 초기화 결과가 아니다.",
+        "en": "Figure 16. Actual v16.5.6 original 15:00 count GT, continuous SAFE and reset SAFE. Revised recovery overlaps reset SAFE; manual-init results are absent."
+      },
+      "sha256": "30afc7e92ec74d7fecfcf5fbca16f3766910fa952ea078b22deb318d73e59035",
+      "source": "User-supplied v16.5.6 upload; selected numerical plot / exact original paper-ready screenshot",
+      "status": "available"
     }
   ],
   "paper_sha256": {
-    "ko": "f73cefbe12d8d0ee4cf1e6daefe530c8e7339d8bb9e3401dae771f901d75923a",
-    "en": "f7f1d2a32e32b5fa4680ffc881fd3f6a9320613fe3d58d27d4a5f6474f511b0a"
+    "ko": "9c613d65b2fe2295c90210744d191fbda5d6a9db1f5f22952637555f2da0d514",
+    "en": "3dd49853b42ae546ae745a5dc1a1365bc66d70c82c8ca33c42401bd27f100601"
   },
   "snapshots": {
     "v16.5.1": {
@@ -346,6 +354,16 @@
         "path": "paper/snapshots/paper_v16.5.6_en.md",
         "sha256": "b95270fc9b04caa764e5bc20fb6af75f385d6ac5f3e693c428cfc1ae0871cacd"
       }
+    },
+    "v16.5.7": {
+      "ko": {
+        "path": "paper/snapshots/paper_v16.5.7_ko.md",
+        "sha256": "60b586f1fa9ccf0a7b741e4f3026bfcc4c1ac1463072128b07b89816e55a89ab"
+      },
+      "en": {
+        "path": "paper/snapshots/paper_v16.5.7_en.md",
+        "sha256": "624a4a84547d9929276bc6ca1a1f9b87374fe9206f369d6948b5e47593c7fff4"
+      }
     }
   },
   "growth_policy": {
@@ -372,8 +390,8 @@
       "en"
     ],
     "assets": [
-      "ParkingResearchAgent-v16.5.6-paper-ko.pdf",
-      "ParkingResearchAgent-v16.5.6-paper-en.pdf"
+      "ParkingResearchAgent-v16.5.7-paper-ko.pdf",
+      "ParkingResearchAgent-v16.5.7-paper-en.pdf"
     ]
   },
   "external_evidence": {
@@ -500,18 +518,19 @@
     ]
   },
   "split_experiments": {
-    "protocol_record": "paper/data/split_protocol_v1656.json",
+    "protocol_record": "paper/data/split_protocol_v1657.json",
     "results_status": "current_revision_pending_full_real_video_run; actual_v1655_results_in_restart_evidence",
     "test_labels_used_for_selection": false,
     "neural_network_retraining": false,
     "independent_validation": false,
-    "sha256": "ce8fbc556e1887b228abdc7da956c9ab6335b954e5a4237ba84e1b7dc56d0223",
+    "sha256": "98e8ebfc0774f7742cdb7f3f3af8048f1a7b2d5a839fb8e5f414a7750c286172",
     "artifacts": [
       {
-        "path": "paper/data/split_protocol_v1656.json",
-        "sha256": "ce8fbc556e1887b228abdc7da956c9ab6335b954e5a4237ba84e1b7dc56d0223"
+        "path": "paper/data/split_protocol_v1657.json",
+        "sha256": "98e8ebfc0774f7742cdb7f3f3af8048f1a7b2d5a839fb8e5f414a7750c286172"
       }
-    ]
+    ],
+    "status": "implemented_functionally_validated_full_video_pending"
   },
   "fresh_split_evidence": {
     "provenance": "paper/data/fresh_v1654/provenance.json",
@@ -906,5 +925,457 @@
       }
     ],
     "current_release_full_inference_results": null
+  },
+  "revised_restart_evidence": {
+    "source_version": "v16.5.6",
+    "provenance": "paper/data/restart_v1656/provenance.json",
+    "scope": "historically reviewed same-video; count GT only; revised recovery equals SAFE in all eight tested starts",
+    "manual_results": null,
+    "artifacts": [
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "05836086aa7b6cb41207a85e497cc998862bb5cf054d9ca4e527797d65a9ee84"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "2af1c5b29a3742885d7c15024f8dfff79fe3ce5c1b32ee1cf1a2a3bba178ce0c"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "bae8bf97d6b6c3fb38bc5903cc5e9143e616c058691248b704d2697e091fa4b8"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "487ea7df8ab8798b956b30e50382530e88b237702012b8fbd64f9601539fbd83"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "8b598b341d9a18fe010d6839ce55b261c1b68308764165f153d2e9c705ac38e4"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "487ea7df8ab8798b956b30e50382530e88b237702012b8fbd64f9601539fbd83"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "a8fea4aa66e8e1ef8dbcd78492234f18dc5da5136e1ca53a9f0b6793369f45a6"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_RECOVERY_transitions.csv",
+        "sha256": "bb0d1b31fe95ec41956d40da1872567d356dbf23a2bc6be09d9fd8c1aa309c14"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "96c82b8227d593a8a3b92429374be9e9729130250ad45f84d6626d8d5254bb8c"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_SAFE_count_timeseries.csv",
+        "sha256": "487ea7df8ab8798b956b30e50382530e88b237702012b8fbd64f9601539fbd83"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_SAFE_state_evidence.csv",
+        "sha256": "a8fea4aa66e8e1ef8dbcd78492234f18dc5da5136e1ca53a9f0b6793369f45a6"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_SAFE_transitions.csv",
+        "sha256": "bb0d1b31fe95ec41956d40da1872567d356dbf23a2bc6be09d9fd8c1aa309c14"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_0/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "8b598b341d9a18fe010d6839ce55b261c1b68308764165f153d2e9c705ac38e4"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "6b6c4defc20456c15c4fdc39a61e8d6a89c2aa390d304bd7cca158025bee2ba2"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "d2c6560c968e99d7865ac574cd8a1cb09a58afb6a6bfaadfc6d0ebe4768e5875"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "6b6c4defc20456c15c4fdc39a61e8d6a89c2aa390d304bd7cca158025bee2ba2"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "d61d8b5080ada1cbbb982475907e3a83a71a52d1ca40979ba5adac6cebc84cd2"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_RECOVERY_transitions.csv",
+        "sha256": "3483e3bfcee3b742440b6f1c4ec1fa5f4fbece454094ef6bfb271b3d2b95793a"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "0ac918e8e88038bee78ebbe769ae766570f6c107f039e1f3f3e0314539375729"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_SAFE_count_timeseries.csv",
+        "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_SAFE_state_evidence.csv",
+        "sha256": "d61d8b5080ada1cbbb982475907e3a83a71a52d1ca40979ba5adac6cebc84cd2"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_SAFE_transitions.csv",
+        "sha256": "3483e3bfcee3b742440b6f1c4ec1fa5f4fbece454094ef6bfb271b3d2b95793a"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_330/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "968a434559efbc8ca6d84cfdfdacd52c4268561675da7fb0980a77afa2cf6f55"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "892d0f25b4fcf293bd79ea439c14ffb57ccc440c728b36faf6d74ec36ed96eeb"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "5df8bcc75ab9d1858c4fc240a00e57a35b6eb58ffafa0b06210bb6c3d5ca65dd"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "892d0f25b4fcf293bd79ea439c14ffb57ccc440c728b36faf6d74ec36ed96eeb"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "fc64e8c8a314d7808d6bbcab5df95db09585dbae4d1f72804e826ccdacf52e88"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "02209ac118ab9c613b8d0fb3e1f40f9d5fe63eadcaed546780120ec04e20dad1"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "fc64e8c8a314d7808d6bbcab5df95db09585dbae4d1f72804e826ccdacf52e88"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "a5c040ea357a73dfd3171585a5ebc966a66d239c22da763dc07de0c1e03fc2aa"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_RECOVERY_transitions.csv",
+        "sha256": "d43c7ca0f7d0d32797a4e6deef1e0c6b6f1c4018fe377c202c9d062db935ab3f"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "dfed919e675139e770fd64ae4d33778deed43394475e896d71e22f8b0d2a418b"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_SAFE_count_timeseries.csv",
+        "sha256": "fc64e8c8a314d7808d6bbcab5df95db09585dbae4d1f72804e826ccdacf52e88"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_SAFE_state_evidence.csv",
+        "sha256": "a5c040ea357a73dfd3171585a5ebc966a66d239c22da763dc07de0c1e03fc2aa"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_SAFE_transitions.csv",
+        "sha256": "d43c7ca0f7d0d32797a4e6deef1e0c6b6f1c4018fe377c202c9d062db935ab3f"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_660/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "02209ac118ab9c613b8d0fb3e1f40f9d5fe63eadcaed546780120ec04e20dad1"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "18a23e89f9730d7d1fddfea1f0dbb99205d1ecbd108206d1b96d4d43d54ef649"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "e9295879e8fb06b7ff96b4e295a7772eb3ed01fbeeb16ccbf5819450dd58dd3e"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "18a23e89f9730d7d1fddfea1f0dbb99205d1ecbd108206d1b96d4d43d54ef649"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "0d05b076bbc7553e7cfb621ed8a9123e2b231e6230ed510ab91b66194fbd7680"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "c1840fc43af64ed0795f939a1b31485f5c0ebf194de93df361c19a63f1e4c7ee"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "5cc8a74473eff912d674e638acf9739fb17266cf672ed0184abba457ac5f6c52"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "04a55b381409ad9338e40d3a07db98afa9b95230216226ae8973ad3ea633dbdc"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_RECOVERY_transitions.csv",
+        "sha256": "4a98292831f38b5ce0480881e4989bb12a0aa39768d4ccac29f9c9bb12589009"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "173f273b051d9e0e9b8471bb01f7c15e49b3e71a868e0af58bb601e2ee36c3aa"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_SAFE_count_timeseries.csv",
+        "sha256": "5cc8a74473eff912d674e638acf9739fb17266cf672ed0184abba457ac5f6c52"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_SAFE_state_evidence.csv",
+        "sha256": "04a55b381409ad9338e40d3a07db98afa9b95230216226ae8973ad3ea633dbdc"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_SAFE_transitions.csv",
+        "sha256": "4a98292831f38b5ce0480881e4989bb12a0aa39768d4ccac29f9c9bb12589009"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/restart_900/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "c1840fc43af64ed0795f939a1b31485f5c0ebf194de93df361c19a63f1e4c7ee"
+      },
+      {
+        "path": "paper/data/restart_v1656/alternate/source_restart_metrics.csv",
+        "sha256": "d6d35e27c127cb0ca7be4fe3d21c2cb787ec8c058ae932e552f370d3ef92021d"
+      },
+      {
+        "path": "paper/data/restart_v1656/g029_startup_observations.csv",
+        "sha256": "d34476610f8f8c75f0fd6294bf8786542701be39364ba0222ecb7d9c034a0287"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "e1c168d7d80fae8e5943c3496b8cdf4d836ea046f5546fb5b49bfa6199e60743"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "6973251527c88da080e5a5c54dd7d96453bd4d78394585b7c5aeccac377c6b7f"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "e1c168d7d80fae8e5943c3496b8cdf4d836ea046f5546fb5b49bfa6199e60743"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "f654aeb26a214b6d700af54123fe52b30cdb4b92e30b5d03bf48094efc2d408c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "651539035dfd901d05bd7e11486bca951c288a2e9f214c166762e12832b83bb9"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "f654aeb26a214b6d700af54123fe52b30cdb4b92e30b5d03bf48094efc2d408c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "9cdc9bd37ef499594092ff5c092e14718b0b230dce0b6ef6b6389eea3a843909"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_RECOVERY_transitions.csv",
+        "sha256": "a332f5c6dc455b9c2ae40d3d84f3678991631900ed289cb5c80125b9fc08706d"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "5845b62292e82bc9ed8af4449c5a3b498e31854d028ee0cf799d9d09c5be6bd0"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_SAFE_count_timeseries.csv",
+        "sha256": "f654aeb26a214b6d700af54123fe52b30cdb4b92e30b5d03bf48094efc2d408c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_SAFE_state_evidence.csv",
+        "sha256": "9cdc9bd37ef499594092ff5c092e14718b0b230dce0b6ef6b6389eea3a843909"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_SAFE_transitions.csv",
+        "sha256": "a332f5c6dc455b9c2ae40d3d84f3678991631900ed289cb5c80125b9fc08706d"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_0/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "651539035dfd901d05bd7e11486bca951c288a2e9f214c166762e12832b83bb9"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "89ad45d35138fad5c1e966cce1409d5090ae4e477294621f0b0c26163a4e2f29"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "6b6c4defc20456c15c4fdc39a61e8d6a89c2aa390d304bd7cca158025bee2ba2"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "89ad45d35138fad5c1e966cce1409d5090ae4e477294621f0b0c26163a4e2f29"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "9949297cd112db0a106181c9e20d1939db21f35d916371134e881d5555e6d5c7"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "c90aa17e86e257f9c613c67e2e858c4ebc257964ca2ec66c8b2c67914408cd37"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "9949297cd112db0a106181c9e20d1939db21f35d916371134e881d5555e6d5c7"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "4fed0b16705f6e06ca21f4e28801ddb5cf95067e2aedffe8bf243a87e487b25a"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_RECOVERY_transitions.csv",
+        "sha256": "244858e0861bc93dcda9b93204cc5e26588d18b977e646212415fad0c33d3ddd"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "b4520e81650c9b6427af207435aa5f3f375f20344c9207c7adbb3c6bba70d930"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_SAFE_count_timeseries.csv",
+        "sha256": "9949297cd112db0a106181c9e20d1939db21f35d916371134e881d5555e6d5c7"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_SAFE_state_evidence.csv",
+        "sha256": "4fed0b16705f6e06ca21f4e28801ddb5cf95067e2aedffe8bf243a87e487b25a"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_SAFE_transitions.csv",
+        "sha256": "244858e0861bc93dcda9b93204cc5e26588d18b977e646212415fad0c33d3ddd"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_330/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "c90aa17e86e257f9c613c67e2e858c4ebc257964ca2ec66c8b2c67914408cd37"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "8bd966b7b88ba64cbeb0be12df967e3175972903e83c1914b9ab800488782ee3"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "81d02e02b18da9ba72262ea1ce0d02c3e149fa147e0e09d8c1c2436c4a078cad"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "dc2774d431c2757befeef5cc79dd5df8307a4dedbfcd8cbb6d1f383eee63adaf"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "202cd296b28d1153ab0600d18d364b3ab8a54c025b750917c1d6dfbc825b855d"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "081fdd60ca10d06252ac745a4674583b48516d1eb5fdeb3fcf755498c7cb5407"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "118d5e960b2bb8c2170a5e92f95244fc21ad36bc9bc7a13ec6778389c696843f"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "b05c8c0dd320e7ec60e1a513dfe8bdc08e5945d65f051a86417648a6fd2eff8c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_RECOVERY_transitions.csv",
+        "sha256": "f1a7445ae0427df3b7634b574374f3459c6dad96d4091f0fc8196d3e794385a0"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "790215115004d6da793ec7dc51ce1a20d397c35ad5d9d45175623feda427b29c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_SAFE_count_timeseries.csv",
+        "sha256": "118d5e960b2bb8c2170a5e92f95244fc21ad36bc9bc7a13ec6778389c696843f"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_SAFE_state_evidence.csv",
+        "sha256": "b05c8c0dd320e7ec60e1a513dfe8bdc08e5945d65f051a86417648a6fd2eff8c"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_SAFE_transitions.csv",
+        "sha256": "f1a7445ae0427df3b7634b574374f3459c6dad96d4091f0fc8196d3e794385a0"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_660/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "081fdd60ca10d06252ac745a4674583b48516d1eb5fdeb3fcf755498c7cb5407"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/CONTINUOUS_CANDIDATE_count_timeseries.csv",
+        "sha256": "3d68af603fb15b10585fbb42014cc529ac2e584f0a406cea661e2fc1a3f79b2e"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/CONTINUOUS_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "671b1cd250eda3c3e814b5a8d2a024188e65a77e669568708dfbe4ff6c846d2b"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/CONTINUOUS_SAFE_count_timeseries.csv",
+        "sha256": "d98b7ea65385117eac65bf95c1970a9c358ce1ac56ccf231210bf0d89ef7710b"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_CANDIDATE_count_timeseries.csv",
+        "sha256": "9283121434602b40b727fb52f37f77caef71928aa5b82fb513dae413d43a0509"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_DEV_SELECTED_count_timeseries.csv",
+        "sha256": "a104efbf59efb5eb76bb20f1e66a04dc8b2b2c7fbb430c20313f74787d7e77a4"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_RECOVERY_count_timeseries.csv",
+        "sha256": "d1ffdfcf7974584518dfcdde483d80e051582a29c75991ba6ecc7f067310dcf8"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_RECOVERY_state_evidence.csv",
+        "sha256": "c6f9adaaf52ba79a56f65a9bbf79e62b637bd9927a726ed030a56b1d8ce53f50"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_RECOVERY_transitions.csv",
+        "sha256": "ea8374343d4a88b778cba75de7ec8f2f92f740b94d042f2ca16a090d7fe81267"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_RECOVERY_V1655_count_timeseries.csv",
+        "sha256": "ad8b66ec4704afae76bd65a7cab00a69e5685402794290344afc19a031802397"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_SAFE_count_timeseries.csv",
+        "sha256": "d1ffdfcf7974584518dfcdde483d80e051582a29c75991ba6ecc7f067310dcf8"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_SAFE_state_evidence.csv",
+        "sha256": "c6f9adaaf52ba79a56f65a9bbf79e62b637bd9927a726ed030a56b1d8ce53f50"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_SAFE_transitions.csv",
+        "sha256": "ea8374343d4a88b778cba75de7ec8f2f92f740b94d042f2ca16a090d7fe81267"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/restart_900/RESET_TRANSITION_GUARD_count_timeseries.csv",
+        "sha256": "a104efbf59efb5eb76bb20f1e66a04dc8b2b2c7fbb430c20313f74787d7e77a4"
+      },
+      {
+        "path": "paper/data/restart_v1656/original/source_restart_metrics.csv",
+        "sha256": "32df5c36492130e1b6f650e0721de4c3a73cf822b3909aeaa052ce7800c8251f"
+      },
+      {
+        "path": "paper/data/restart_v1656/paper_restart_900.csv",
+        "sha256": "3c8a614bee23a1377c58dabb31647fc01a6d7a4a2cfe660b0ffbae34523b77b5"
+      },
+      {
+        "path": "paper/data/restart_v1656/provenance.json",
+        "sha256": "8a05d3e66be25a61a30ef7228713d5fb4c921fcef4f085064a6070d05b08afff"
+      },
+      {
+        "path": "paper/data/restart_v1656/recomputed_metrics.csv",
+        "sha256": "65b5d353aa6d3c451b09fa41175f563f45a31054d60a45b51f5663024d1ca936"
+      },
+      {
+        "path": "paper/data/restart_v1656/recovery_identity.csv",
+        "sha256": "19188bb7c2f966154a84062be92ed251bb6fcfd183d50de80ae0d906bcb5bd2f"
+      }
+    ]
   }
 }

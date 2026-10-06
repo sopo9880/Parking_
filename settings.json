@@ -515,7 +515,12 @@
         900
       ],
       "duration_sec": 330,
-      "stable_samples": 3
+      "stable_samples": 3,
+      "manual_init": {
+        "enabled": false,
+        "path": "",
+        "source": "operator_snapshot"
+      }
     }
   },
   "external_validation": {

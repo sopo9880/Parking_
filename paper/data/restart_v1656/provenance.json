@@ -1,0 +1,77 @@
+{
+  "source_version": "v16.5.6",
+  "source_zip_sha256": "8b6a77882ca121dcf0502227907e07beba8f1aa537633f6fcfd66478785f3f96",
+  "source_members": [
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_0/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "c6a4095858f99073501630b9a6fd0d709eae1b9e442f7837d289820fbe47f3b4"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_0/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "d6c5d6fff9d414c5dd78f5c66e5d66466688016606eeb62377f49a98e014e495"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_330/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "4f58b4256f518ed88605dd3c6e964fdd618ef4ab4d6ccc31a69202c7ec7a25f6"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_330/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "9897ba9b54362fc2ccd5503ab16ea01729e1aad36807c6640327f7cf7001a9c5"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_660/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "b1013cd0c7ccf7341db8697e42565eb59de84b3337d8d6f5cb7ec5ecd4d826bf"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_660/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "59ea76f1d98f0eabac48bf74e67257a61ea3b7ec718bdd3620f1a8a7f5e5b104"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_900/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "1b9bf8ab0ccef16785436e34558b15597a0610d7aa68fc3ee2b96c010c242806"
+    },
+    {
+      "source_member": "split_experiments/original/restart_experiments/run_20261006_124923_049695/restart_900/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "cdb28f712a7812eb2ca18880bbebacb78ac1fa921f9fb89e3076232f38491440"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_0/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "3114384eb53be7be2564b93c915635deaba3bfa96227b637516f680877d9a2f5"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_0/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "b233d4b8d6a7a299b2d3fd90bbb26d36c50be0acc120b4ec1741cf3da36c5e85"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_330/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "d0a6e6f98bf60a60b30a1c7ee23c937f449587627a31954586c65884de50ad33"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_330/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "454e6b094651f3697da8971bdb88863ac4e5993686508289d31cb9381157c94f"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_660/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "a08b0a1e91bd4fca0a737ef48fd927a50a8e207ca160225bd1221579d0f7c8ae"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_660/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "ad6c14dc2beb4179e08bf923ab8e2b3427573510f4cfa556c01522aeed08cde9"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_900/RESET_SAFE_slot_timeseries.csv",
+      "sha256": "809a4cfd4bc350d40e955fe90a379ba6c163811440c1b858c5c1d3902d73cc65"
+    },
+    {
+      "source_member": "split_experiments/alternate/restart_experiments/run_20261006_162720_284514/restart_900/RESET_RECOVERY_slot_timeseries.csv",
+      "sha256": "17791d9a7481798b204a5cc534bfa06157212852e2d24b4dfce18c644aca355d"
+    }
+  ],
+  "privacy": "Numerical results only; no private CCTV images or local paths",
+  "identity_fields": [
+    "state",
+    "phase",
+    "occupied_score"
+  ],
+  "independent_validation": false
+}
