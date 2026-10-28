@@ -99,14 +99,12 @@ def _run_restart_experiments(video,rois,gt,settings,fit_dir,progress=None):
         if hashlib.sha256(raw).hexdigest()!=experimental_freeze['sha256']:
             raise ValueError('Experimental DEV parameter freeze mismatch')
         experimental=json.loads(raw)
-    from manual_initialization import read_snapshots,load_snapshot,apply_snapshot,write_snapshot,snapshot_audit,occupancy_bounds
+    from manual_initialization import read_snapshot_source,load_snapshot,apply_snapshot,write_snapshot,snapshot_audit,occupancy_bounds
     manual=cfg.get('manual_init',{})
     snapshots={}
     if manual.get('enabled',False):
         gids={str(slot['global_id']) for slot in load_slots(fit/'slots.json')}
-        raw_snapshot=Path(manual.get('path','')).read_bytes()
-        manual_source_sha256=hashlib.sha256(raw_snapshot).hexdigest()
-        snapshot_rows,_=read_snapshots(manual['path'],raw=raw_snapshot)
+        snapshot_rows,_,manual_source_sha256=read_snapshot_source(manual['path'])
         snapshots={start:load_snapshot(manual['path'],start,gids,rows=snapshot_rows) for start in starts}
     rows=[]
     warm=float(settings.get('evaluation_warmup_sec',10))

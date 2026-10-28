@@ -9,6 +9,14 @@ STATES={'O':'OCCUPIED','E':'EMPTY','U':'UNKNOWN','OCCUPIED':'OCCUPIED','EMPTY':'
 
 def read_snapshots(path, raw=None):
     path=Path(path)
+    if path.is_dir() and raw is None:
+        files=sorted(path.glob('*.csv'))
+        if not files: raise ValueError('No snapshot CSV files in directory')
+        rows=[]; times=set()
+        for item in files:
+            part,part_times=read_snapshots(item)
+            rows.extend(part);times.update(part_times)
+        return rows,sorted(times)
     with (io.StringIO(raw.decode('utf-8-sig')) if raw is not None else path.open(encoding='utf-8-sig',newline='')) as f:
         reader=csv.DictReader(f)
         if not {'time_sec','global_slot_id','initial_state'}.issubset(reader.fieldnames or []):
@@ -20,6 +28,19 @@ def read_snapshots(path, raw=None):
         if not math.isfinite(t) or t<0: raise ValueError('Invalid snapshot time')
         times.append(t)
     return rows,sorted(set(times))
+
+def read_snapshot_source(path):
+    """Read a file or directory once and hash exactly the bytes used."""
+    path=Path(path)
+    files=sorted(path.glob('*.csv')) if path.is_dir() else [path]
+    if not files: raise ValueError('No snapshot CSV files in directory')
+    rows=[];times=set();h=hashlib.sha256()
+    for file in files:
+        raw=file.read_bytes();part,part_times=read_snapshots(file,raw=raw)
+        rows.extend(part);times.update(part_times)
+        if len(files)==1 and not path.is_dir(): return rows,sorted(times),hashlib.sha256(raw).hexdigest()
+        h.update(file.name.encode('utf-8'));h.update(b'\0');h.update(hashlib.sha256(raw).digest())
+    return rows,sorted(times),h.hexdigest()
 
 def load_snapshot(path,start,global_ids,rows=None):
     if rows is None: rows,_=read_snapshots(path)

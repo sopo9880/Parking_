@@ -2,7 +2,7 @@ import copy,csv,hashlib,json,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 import pandas as pd
-from manual_initialization import load_snapshot,write_snapshot,apply_snapshot,occupancy_bounds
+from manual_initialization import load_snapshot,write_snapshot,apply_snapshot,occupancy_bounds,read_snapshot_source
 from slot_engine import _run_state_engine_v13_safe,_v16_baseline_params
 from restart_evaluation import run_restart_experiments
 from test_restart_evaluation import evidence
@@ -50,6 +50,16 @@ class ManualInitializationTests(unittest.TestCase):
     def test_zero_restart_is_preserved(self):
         from validation_center import parse_time_list
         self.assertEqual(parse_time_list('0:00,5:30,11:00,15:00',include_zero=True),[0,330,660,900])
+    def test_separate_time_files_are_read_and_duplicates_rejected(self):
+        folder=self.root/'snapshots';folder.mkdir()
+        write_snapshot(folder/'zero.csv',0,{'G1':'UNKNOWN'})
+        write_snapshot(folder/'nine.csv',900,{'G1':'OCCUPIED'})
+        rows,times,signature=read_snapshot_source(folder)
+        self.assertEqual(times,[0,900]);self.assertEqual(len(signature),64)
+        self.assertEqual(load_snapshot(folder,900,['G1'],rows=rows)['G1'],'OCCUPIED')
+        write_snapshot(folder/'duplicate.csv',900,{'G1':'EMPTY'})
+        rows,_,_=read_snapshot_source(folder)
+        with self.assertRaisesRegex(ValueError,'duplicate'): load_snapshot(folder,900,['G1'],rows=rows)
     def test_restart_integration_future_labels_do_not_change_manual_trace(self):
         cfg=json.loads((ROOT/'settings.json').read_text(encoding='utf-8'));cfg.update(eval_end_sec=940,dev_end_sec=900)
         p=self.root/'snap.csv';write_snapshot(p,900,{'G1':'UNKNOWN'})

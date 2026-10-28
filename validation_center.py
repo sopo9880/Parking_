@@ -678,8 +678,12 @@ def open_validation_center(app):
             open_snapshot_editor(win,app,manual_path)
         except Exception as exc: messagebox.showerror(tr('Evaluation error'),tr(str(exc)),parent=win)
     ttk.Button(local,text=tr('Edit O/E/U snapshot with video'),command=edit_manual_snapshot).grid(row=23,column=0,columnspan=2,sticky='w',padx=6)
-    ttk.Combobox(local,textvariable=manual_source,values=['operator_snapshot','per_slot_gt_snapshot'],state='readonly').grid(row=23,column=2,sticky='ew')
+    ttk.Combobox(local,textvariable=manual_source,values=['operator_snapshot','per_slot_gt_snapshot','pseudo_archived_frame_detection_unverified'],state='readonly').grid(row=23,column=2,sticky='ew')
     ttk.Label(local,text=tr('CSV: time_sec,global_slot_id,initial_state (O/E/U). Missing slots remain UNKNOWN. Missing restart times are skipped. Count-only GT cannot initialize slots. Snapshots never tune DEV; future GT is scoring only.'),wraplength=900).grid(row=24,column=0,columnspan=3,sticky='w',padx=6,pady=5)
+    def choose_manual_snapshot_folder():
+        path=filedialog.askdirectory(parent=win,title='Select folder containing separate time snapshot CSV files')
+        if path: manual_path.set(path)
+    ttk.Button(local,text='Select snapshot folder',command=choose_manual_snapshot_folder).grid(row=25,column=0,columnspan=2,sticky='w',padx=6,pady=5)
 
     public = ttk.LabelFrame(body, text=tr("B. Public External Environment Validation"))
     public.pack(fill="x", padx=10, pady=8)

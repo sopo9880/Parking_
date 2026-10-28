@@ -40,7 +40,8 @@ def open_snapshot_editor(parent,app,path_var):
             tree.insert('','end',iid=gid,values=(gid,views,values[gid]))
     def display():
         try:
-            t=timestamp();snap=load_snapshot(path_var.get(),t,ids) if Path(path_var.get()).is_file() else None
+            t=timestamp();snapshot_path=path_var.get().strip()
+            snap=load_snapshot(snapshot_path,t,ids) if snapshot_path and Path(snapshot_path).exists() else None
             values.update(snap or {g:'UNKNOWN' for g in ids});refresh()
             cap=open_video(app.video_var.get().strip())
             try: frame=read_frame_at(cap,t)
@@ -62,7 +63,7 @@ def open_snapshot_editor(parent,app,path_var):
         for gid in selected: values[gid]=state;tree.item(gid,values=(gid,tree.item(gid,'values')[1],state))
     def save():
         try:
-            t=timestamp();target=filedialog.asksaveasfilename(parent=win,title=tr('Save restart snapshots'),defaultextension='.csv',initialfile='manual_init_snapshots.csv')
+            t=timestamp();target=filedialog.asksaveasfilename(parent=win,title=tr('Save restart snapshots'),defaultextension='.csv',initialfile=f'manual_init_{t:g}s.csv')
             if not target: return
             # Preserve other exact-time snapshots when saving into the same file.
             old,_=read_snapshots(target) if Path(target).is_file() else ([],[])
