@@ -8,4 +8,6 @@
 
 검토 후 연구자는 `human_manual_replay.py --fresh FRESH_RUN --snapshot VERIFIED_CSV --gt COUNT_GT --output NEW_OUTPUT_DIR`를 사용할 수 있다. 기존 실제 GPU 검출 관측을 재사용해 인간 검토 스냅샷과 AI 참고 스냅샷을 같은 상태 엔진에 넣는다. 기존 pseudo 전체 상태를 재생해 저장된 GPU 실험과 전 구간 일치해야 하며, 입력 시점·슬롯·영상·ROI·파일 해시와 검토 완료 기록이 일치하지 않으면 실행을 거부한다. 이후 GT는 계산에만 사용된다. UNKNOWN이 남은 구간의 일반 Exact/MAE는 보고하지 않는다. 연속 실행 결과는 과거에 저장된 trace이므로 이번 GPU 실행에서 새로 추출한 연속 결과가 아니다. 슬롯별 전이 오류는 후속 시점의 슬롯 GT가 없으면 판정하지 않는다.
 
+완료된 비교의 초기 점유 해제 사례는 `investigate_manual_transitions.py --fresh FRESH_RUN --comparison COMPARISON_DIR --video VIDEO --output NEW_DIR`로 로컬 분석할 수 있다. 최초 120초의 점유→빈자리 전이, 최초 시점부터 전이까지의 검출 수, 전이 순간 로컬 상태와 조건을 CSV로 기록하고 전후 영상 crop을 `private_images`에 저장한다. 영상 해시와 비교 결과의 연결을 확인한다. 추적된 전이는 사람의 후속 시점 검증 없이 오류로 간주하지 않는다.
+
 영상, 검토 이미지, 로컬 경로, 스냅샷과 진행 파일은 개인 로컬 자료로 취급하며 GitHub 프리릴리스에 포함하지 않는다.
