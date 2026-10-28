@@ -8,6 +8,7 @@ from pathlib import Path
 STATES={'O':'OCCUPIED','E':'EMPTY','U':'UNKNOWN','OCCUPIED':'OCCUPIED','EMPTY':'EMPTY','UNKNOWN':'UNKNOWN'}
 
 def read_snapshots(path, raw=None):
+    if not str(path).strip(): raise ValueError('Select a snapshot file or folder')
     path=Path(path)
     if path.is_dir() and raw is None:
         files=sorted(path.glob('*.csv'))
@@ -31,6 +32,7 @@ def read_snapshots(path, raw=None):
 
 def read_snapshot_source(path):
     """Read a file or directory once and hash exactly the bytes used."""
+    if not str(path).strip(): raise ValueError('Select a snapshot file or folder')
     path=Path(path)
     files=sorted(path.glob('*.csv')) if path.is_dir() else [path]
     if not files: raise ValueError('No snapshot CSV files in directory')

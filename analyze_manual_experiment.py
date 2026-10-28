@@ -5,10 +5,13 @@ from pathlib import Path
 import pandas as pd
 
 
-def score(trace, manual):
+def score(trace, manual, total_slots=None):
     result = {'N': len(trace)}
     if manual:
         result['unknown_mean'] = float(trace.unknown_slots.mean()) if len(trace) else None
+        if total_slots and len(trace):
+            result['unknown_slot_fraction'] = float(trace.unknown_slots.mean()) / total_slots
+            result['resolved_slot_fraction'] = 1.0 - result['unknown_slot_fraction']
         result['fully_resolved_N'] = int(trace.unknown_slots.eq(0).sum())
         result['gt_within_bounds_rate'] = float(trace.gt_within_bounds.mean()) if len(trace) else None
         # Ordinary exact/MAE require every checkpoint to be fully resolved.
@@ -41,11 +44,12 @@ def main():
         if not path.exists():
             rows.append({'variant': name, 'scope': 'MISSING', 'N': 0}); continue
         d = pd.read_csv(path)
+        total_slots = pd.read_csv(folder / f'{name}_global_slot_timeseries.csv').global_id.nunique() if manual else None
         for scope, part in [('initial', d[d.time_sec == args.start]), ('after_initial', d[d.time_sec > args.start]),
                             ('first_30s', d[(d.time_sec > args.start) & (d.time_sec < args.start+30)]),
                             ('first_60s', d[(d.time_sec > args.start) & (d.time_sec < args.start+60)]),
                             ('first_120s', d[(d.time_sec > args.start) & (d.time_sec < args.start+120)])]:
-            rows.append({'variant': name, 'scope': scope, **score(part, manual)})
+            rows.append({'variant': name, 'scope': scope, **score(part, manual, total_slots)})
     pd.DataFrame(rows).to_csv(args.output, index=False)
 
 

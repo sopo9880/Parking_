@@ -30,7 +30,8 @@ def digest(path):
 def resource_sample(child, run_dir):
     """Sample process memory, disk, and whole-device GPU usage; never infer GPU ownership."""
     try:
-        rss = psutil.Process(child.pid).memory_info().rss
+        process = psutil.Process(child.pid)
+        rss = sum(p.memory_info().rss for p in [process, *process.children(recursive=True)] if p.is_running())
     except (psutil.NoSuchProcess, psutil.AccessDenied):
         rss = None
     try:
@@ -43,7 +44,7 @@ def resource_sample(child, run_dir):
     new = not log.exists()
     with log.open('a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        if new: writer.writerow(['time', 'pid', 'process_rss_bytes', 'free_disk_bytes', 'gpu_total_device_util_mem_used_total'])
+        if new: writer.writerow(['time', 'pid', 'process_tree_rss_bytes', 'free_disk_bytes', 'gpu_total_device_util_mem_used_total'])
         writer.writerow([datetime.now().isoformat(), child.pid, rss, shutil.disk_usage(run_dir).free, gpu])
 
 
@@ -79,18 +80,19 @@ def main():
             inputs.append(run / 'restart_summary.json')
             for start in starts:
                 inputs.extend([run / f'restart_{start}' / 'evidence' / 'slot_evidence.csv', run / f'restart_{start}' / 'RESET_SAFE_slot_timeseries.csv'])
-        inputs.extend(root / n for n in ('research_replay.py', 'research_diagnose.py', 'slot_engine.py', 'restart_evaluation.py'))
+        inputs.extend(root / n for n in ('research_manager.py', 'research_replay.py', 'research_diagnose.py', 'slot_engine.py', 'restart_evaluation.py', 'manual_initialization.py', 'utils.py', 'detector.py', 'segmentation.py'))
         fresh = None
         if args.fresh_config:
             fresh = json.loads(args.fresh_config.read_text(encoding='utf-8'))
-            if set(fresh) != {'video', 'gt', 'fit', 'app'}:
-                raise ValueError('fresh-config requires exactly video, gt, fit, app')
+            if not {'video', 'gt', 'fit', 'app'}.issubset(fresh) or set(fresh) - {'video', 'gt', 'fit', 'app', 'start'}:
+                raise ValueError('fresh-config requires video, gt, fit, app and optional start')
+            if int(fresh.get('start', 900)) not in (0,330,660,900): raise ValueError('Invalid restart time')
             inputs.extend([args.fresh_config, root / 'fresh_manual_experiment.py', Path(fresh['video']), Path(fresh['gt'])])
             inputs.extend(Path(fresh['app']) / model for model in ('yolov8m.pt', 'yolov8l.pt', 'yolov8m-seg.pt'))
             fit = Path(fresh['fit'])
             inputs.extend(path for path in fit.rglob('*') if path.is_file() and 'restart_experiments' not in path.relative_to(fit).parts)
             latest = sorted((fit / 'restart_experiments').glob('run_*'))[-1]
-            inputs.extend([latest / 'restart_summary.json', latest / 'restart_900' / 'evidence' / 'slot_evidence.csv'])
+            inputs.extend([latest / 'restart_summary.json', latest / f"restart_{int(fresh.get('start', 900))}" / 'evidence' / 'slot_evidence.csv'])
         fingerprint = hashlib.sha256(json.dumps({str(path.resolve()): digest(path) for path in inputs}, sort_keys=True).encode()).hexdigest()
         state = json.loads(statefile.read_text(encoding='utf-8')) if statefile.exists() else {'fingerprint': fingerprint, 'jobs': {}}
         deadline = time.monotonic() + args.max_seconds if args.max_seconds else float('inf')
@@ -112,6 +114,7 @@ def main():
                 if name == 'fresh_gpu':
                     cmd = [sys.executable, str(root / script), '--output', str(target)]
                     for key in ('video', 'gt', 'fit', 'app'): cmd += ['--' + key, fresh[key]]
+                    cmd += ['--start', str(fresh.get('start', 900))]
                 else:
                     cmd = [sys.executable, str(root / script), '--source', str(args.source), '--output', str(target)]
                     if name == 'replay': cmd += ['--gt', str(args.gt)]
@@ -137,7 +140,7 @@ def main():
         state['finished'] = datetime.now().isoformat()
         state['status'] = 'completed' if all(state['jobs'].get(n, {}).get('status') == 'completed' for n, _ in jobs) else 'incomplete'
         save(statefile, state)
-        (args.run_dir / 'REPORT.md').write_text('# Local research queue\n\n' + '\n'.join(f'- {name}: {state["jobs"].get(name, {}).get("status", "not started")}' for name, _ in jobs) + '\n\nSaved observations only; same-video count results are not independent validation. See job outputs and logs.\n', encoding='utf-8')
+        (args.run_dir / 'REPORT.md').write_text('# Local research queue\n\n' + '\n'.join(f'- {name}: {state["jobs"].get(name, {}).get("status", "not started")}' for name, _ in jobs) + '\n\nThe replay uses saved observations; the optional fresh_gpu task extracts new video observations. Same-video results are not independent validation. See job outputs and logs.\n', encoding='utf-8')
     finally:
         lock.unlink(missing_ok=True)
 
