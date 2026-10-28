@@ -45,9 +45,11 @@ class HumanReviewTests(unittest.TestCase):
         slotfile=self.root/'slots.json';slotfile.write_text(json.dumps({'slots':self.slots}))
         roifile=self.root/'roi.json';roifile.write_text(json.dumps({'rois':{'cctv1':[0,0,80,80]}}))
         other=self.root/'pseudo0.csv';write_snapshot(other,0,{'G018':'EMPTY','G001':'OCCUPIED'})
+        dev=self.root/'pseudo330.csv';write_snapshot(dev,330,{'G018':'UNKNOWN','G001':'OCCUPIED'})
         config={'video':str(self.root/'video'),'review_dir':str(self.root/'review'),
                 'times':{'900':{'slots':str(slotfile),'roi_source':str(roifile),'pseudo':str(self.pseudo)},
-                         '0':{'slots':str(slotfile),'roi_source':str(roifile),'pseudo':str(other)}}}
+                         '0':{'slots':str(slotfile),'roi_source':str(roifile),'pseudo':str(other)},
+                         '330':{'slots':str(slotfile),'roi_source':str(roifile),'pseudo':str(dev)}}}
         class Cap:
             def release(self):pass
         win=tk.Tk();win.withdraw()
@@ -61,6 +63,8 @@ class HumanReviewTests(unittest.TestCase):
                 self.assertEqual(app.session.start,0);self.assertEqual(app.session.choices,{})
                 app.time.set('15:00');app.load_time();win.update()
                 self.assertEqual(app.session.choices,{'G018':'UNKNOWN'})
+                app.time.set('5:30');app.load_time();win.update()
+                self.assertEqual(app.session.start,330);self.assertEqual(app.session.choices,{})
         finally:win.destroy()
 
 

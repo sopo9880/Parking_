@@ -18,6 +18,7 @@ from utils import crop_roi, open_video, order_quad_points, read_frame_at
 
 PRIORITY = ('G018', 'G027', 'G028', 'G029')
 VALID = {'OCCUPIED', 'EMPTY', 'UNKNOWN'}
+TIME_LABELS = {900:'15:00', 0:'0:00', 330:'5:30', 660:'11:00'}
 
 
 def sha(path):
@@ -110,7 +111,9 @@ class ReviewApp:
         window.title('주차면 초기 상태 확인 — 15:00 우선'); window.geometry('1450x850'); window.minsize(1100,700)
         header=ttk.Frame(window); header.pack(fill='x',padx=10,pady=5)
         ttk.Label(header,text='시점:').pack(side='left')
-        self.time=tk.StringVar(value='15:00'); selector=ttk.Combobox(header,textvariable=self.time,values=['15:00','0:00'],state='readonly',width=10);selector.pack(side='left');selector.bind('<<ComboboxSelected>>',lambda e:self.load_time())
+        supported=[TIME_LABELS[t] for t in (900,0,330,660) if str(t) in config['times']]
+        if not supported:raise ValueError('No supported snapshot times in configuration')
+        self.time=tk.StringVar(value=supported[0]); selector=ttk.Combobox(header,textvariable=self.time,values=supported,state='readonly',width=10);selector.pack(side='left');selector.bind('<<ComboboxSelected>>',lambda e:self.load_time())
         ttk.Label(header,text='AI 추정은 참고용입니다. 각 면을 직접 선택해야 검토 완료됩니다.').pack(side='left',padx=14)
         self.progress=ttk.Label(header,text='');self.progress.pack(side='right')
         body=ttk.Frame(window);body.pack(fill='both',expand=True,padx=8)
@@ -136,7 +139,7 @@ class ReviewApp:
         self.load_time()
 
     def load_time(self):
-        self.start=900 if self.time.get()=='15:00' else 0
+        reverse={label:sec for sec,label in TIME_LABELS.items()};self.start=reverse[self.time.get()]
         data=self.config['times'][str(self.start)]
         if self.start not in self.sessions:
             self.slots=json.loads(Path(data['slots']).read_text(encoding='utf-8'))['slots']
