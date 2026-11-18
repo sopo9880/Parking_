@@ -18,6 +18,7 @@ G021 공간 대응 장면과 G026·G027 점유 검토 장면에서 단일 CCTV �
 | [게시 기한과 신선도](publication.svg) | 품질 V2+LOW의 전체 길이 페이싱. 예정 게시 123회 기준 |
 | [상태별 누적 시간](state-duration.svg) | 8 Local 확장 최종 실행의 OCCUPIED, EMPTY, UNKNOWN 출력 합계. 단위는 면·초 |
 | [변경 관측에 대한 검토 범위](review-scope.svg) | Polygon 사후평가에서 품질 V2+LOW 대비 직접 점유 SHADOW의 변경 5개. 출처와 판단 불가를 구분 |
-| [Crop의 마스크 비율](crop-coverage.svg) | G021 공간 진단에서 기존 Crop 면적의 차량 마스크 및 보행자 마스크 비율 |
+| [Crop의 마스크 비율](crop-coverage.svg) | G021 공간 진단에서 기존 Crop 면적의 인접 면 차량 마스크 및 보행자 마스크 비율 |
+| [G021 가림 전후 그래프](g021-fixed-crop-occlusion.png) | 기존 Crop 내 보행자와 왼쪽 차량 마스크, 두 분류 점수, 동결 품질 V2의 상태를 동일 PTS에 대조 |
 
 초기화, 공간 대응, 차량 소유, 실시간 게시 및 현장 평가 도식은 여러 관련 보고서에서 공유한다. 도식에는 수치 성능을 표시하지 않는다.

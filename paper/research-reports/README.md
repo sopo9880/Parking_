@@ -1,8 +1,8 @@
 # 주차장 연구 보고서 아카이브
 
-연구 보고서·원인 분석·실험 요약 89개 파일을 주제별 공개용 보고서 44편으로 정리했다. 사본, 중간 보고서 및 실험 큐 요약도 해당 연구 편에 연결했다. 수치는 보고서에 기록된 범위와 조건을 기준으로 해석한다.
+연구 보고서·원인 분석·실험 요약 92개 파일을 주제별 공개용 보고서 47편으로 정리했다. 사본, 중간 보고서 및 실험 큐 요약도 해당 연구 편에 연결했다. 수치는 보고서에 기록된 범위와 조건을 기준으로 해석한다.
 
-[연구 종합과 검증 범위](research-synthesis_ko.md) · [기존 논문과 연구 부록](../README.md)
+[연구 종합과 검증 범위](research-synthesis_ko.md) · [기존 논문과 연구 부록](../README.md) · [연구 완료 후 게시 절차](PUBLISHING_ko.md)
 
 [시각 자료의 출처와 처리 범위](assets/README.md)에서 그래프의 분모와 CCTV 발췌 범위를 확인할 수 있다. 각 보고서에 해당 그래프 또는 절차 도식을 삽입하고, 검토 장면을 설명하는 보고서에 비식별 CCTV 발췌를 함께 배치했다.
 
@@ -61,3 +61,6 @@
 - [Polygon 검토와 AI 초안 승인](42-physical-slot-region-verified-ai.md) · 로컬 문서 2개
 - [Polygon 검토 사후평가](43-polygon-review-post-evaluation.md) · 로컬 문서 2개
 - [독립 현장 검증 준비](44-independent-field-validation.md) · 로컬 문서 4개
+- [G021 후보 Crop 재실험](45-g021-crop-revalidation.md) · 로컬 문서 1개
+- [G021 기존 Crop 가림 분석](46-g021-occlusion-audit.md) · 로컬 문서 1개
+- [G021 보행자 가림 후 차량 재확인](47-g021-reacquisition.md) · 로컬 문서 1개
