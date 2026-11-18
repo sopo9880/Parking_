@@ -29,3 +29,7 @@ Fresh split experiments must be reported separately from frozen cross-window sta
 
 
 Actual v16.5.6 restart evidence is separate from v16.5.7 implementation validation. Exact-time per-slot operator/GT snapshots must record assisted-information source and UNKNOWN coverage; count-only GT cannot be converted into slot initialization. Manual full-video metrics stay unreported until a real run. Code tests do not populate performance tables.
+
+## 후속 주차장 연구 보고서
+
+[연구 보고서 아카이브](research-reports/README.md)에서 초기 재시작 실험부터 독립 현장 검증 준비까지의 공개용 보고서를 찾아볼 수 있다. [연구 종합](research-reports/research-synthesis_ko.md)은 후속 실험 결과와 검증 범위를 정리한다.
