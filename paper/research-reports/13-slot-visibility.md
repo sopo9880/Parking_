@@ -10,6 +10,12 @@
 
 검출·트랙 ID 변화는 가시성의 간접 단서다. 물리 총대수는 보류한다.
 
+## 시각 자료
+
+![단일 및 다중 카메라 Global 설정 집계](assets/mapping-coverage.svg)
+
+![원본에서 분류 입력까지의 공간 대응 도식](assets/spatial-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `SLOT_VISIBILITY_REPORT_ko.md`

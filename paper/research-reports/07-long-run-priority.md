@@ -10,6 +10,10 @@
 
 캐시 비교와 새 GPU 추론은 실행 범위가 다르다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `LONG_RUN_RESEARCH_REPORT_ko.md`

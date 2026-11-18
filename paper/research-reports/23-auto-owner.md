@@ -10,6 +10,10 @@
 
 사건 창에 맞춘 시험과 영상 시작부터의 연속 추적을 구분한다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `AUTO_OWNER_RESEARCH_REPORT_ko.md` · 사본과 중간본 포함 2개

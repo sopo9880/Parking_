@@ -10,6 +10,12 @@
 
 AUTO_POINT, EMPTY 참고 영상, 초기 차량 지정의 조건을 따로 평가했다.
 
+## 시각 자료
+
+![전체 길이 재생에서 측정한 프레임 처리 p95](assets/replay-latency.svg)
+
+![화면 세대와 실시간 게시 절차 도식](assets/runtime-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `INTEGRATION_REGRESSION_RECOVERY_ko.md`

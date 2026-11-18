@@ -10,6 +10,12 @@
 
 제한된 실행 시간에서의 메모리 관측으로 상한을 보장할 수 없다.
 
+## 시각 자료
+
+![품질 V2+LOW의 게시 기한과 신선도 충족 횟수](assets/publication.svg)
+
+![화면 세대와 실시간 게시 절차 도식](assets/runtime-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `INTEGRATED_OCCUPANCY_REALTIME_REPORT_ko.md`

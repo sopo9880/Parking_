@@ -10,6 +10,10 @@
 
 제한적 구간의 통과로 전체 영상이나 운영 안전성을 일반화할 수 없다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OWNER_ANCHOR_RECOVERY_REPORT_ko.md`

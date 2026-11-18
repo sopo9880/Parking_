@@ -10,6 +10,12 @@
 
 캐시 성능과 실제 입력·GPU·게시를 포함한 지연을 구분한다.
 
+## 시각 자료
+
+![전체 길이 재생에서 측정한 프레임 처리 p95](assets/replay-latency.svg)
+
+![화면 세대와 실시간 게시 절차 도식](assets/runtime-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `REALTIME_ARCHITECTURE_REPORT_ko.md`

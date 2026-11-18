@@ -10,6 +10,10 @@
 
 정답이 없는 변화는 이득이나 악화로 확정하지 않는다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OWNER_POLICY_SIMPLIFICATION_REPORT_ko.md`

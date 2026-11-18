@@ -10,6 +10,20 @@
 
 합성 TEST_ONLY 검증을 완료했다. 현장 수집·정확도·실시간 검증에는 승인된 새 영상이 필요하다.
 
+## 시각 자료
+
+![지원 8면과 미지원 24면 집계](assets/local-coverage.svg)
+
+![단일 및 다중 카메라 Global 설정 집계](assets/mapping-coverage.svg)
+
+![검토와 고정 예측 사후 평가 절차 도식](assets/approval-flow.svg)
+
+## 비식별 CCTV 발췌
+
+![G021 공간 대응 장면의 비식별 패널 발췌](assets/cctv-g021-masked.png)
+
+G021 공간 대응 진단에 사용한 영상의 배경과 모아레 예시다. 가림으로 숨긴 영역은 이 사본으로 판독할 수 없다.
+
 ## 정리한 로컬 문서
 
 - `FIELD_CAPTURE_PROTOCOL_ko.md`

@@ -10,6 +10,12 @@
 
 실측 조건 밖의 화면 전환이나 장치에서는 추가 확인이 필요하다.
 
+## 시각 자료
+
+![전체 길이 재생에서 측정한 프레임 처리 p95](assets/replay-latency.svg)
+
+![화면 세대와 실시간 게시 절차 도식](assets/runtime-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `CAMERA_SCENE_IDENTITY_REPORT_ko.md`

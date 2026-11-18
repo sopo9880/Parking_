@@ -10,6 +10,10 @@
 
 사람의 최초 후보 선택을 활용한 실행은 ASSISTED로 분류한다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OWNERSHIP_VERIFIED_REPORT_ko.md`

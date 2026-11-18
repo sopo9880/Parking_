@@ -10,6 +10,10 @@
 
 두 후보의 상충 결과와 독립 EMPTY 부족으로 SHADOW를 유지했다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `EMPTY_GT_COVERAGE_REPORT_ko.md` · 사본과 중간본 포함 2개

@@ -10,6 +10,12 @@
 
 출력 시간은 독립 GT로 측정한 정확도가 아니다.
 
+## 시각 자료
+
+![8면의 점유, 빈자리, 판단 보류 누적 면·초](assets/state-duration.svg)
+
+![원본에서 분류 입력까지의 공간 대응 도식](assets/spatial-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `EIGHT_SLOT_RELIABILITY_REPORT_ko.md` · 사본과 중간본 포함 3개

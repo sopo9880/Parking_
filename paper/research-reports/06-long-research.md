@@ -10,6 +10,10 @@
 
 개발 영상과 외부 자료의 조건이 다르므로 수치를 합산하지 않는다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `LONG_RESEARCH_REPORT_ko.md`

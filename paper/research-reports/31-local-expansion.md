@@ -10,6 +10,14 @@
 
 미지원 24 Local과 미검증 물리 매핑을 공개 수치에서 구분한다.
 
+## 시각 자료
+
+![지원 8면과 미지원 24면 집계](assets/local-coverage.svg)
+
+![8면의 점유, 빈자리, 판단 보류 누적 면·초](assets/state-duration.svg)
+
+![화면 세대와 실시간 게시 절차 도식](assets/runtime-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `SLOT_EXPANSION_RESEARCH_REPORT_ko.md`

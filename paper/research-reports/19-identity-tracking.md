@@ -10,6 +10,10 @@
 
 트랙 ID와 모델 소유 에피소드는 물리 차량 식별자가 아니다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `IDENTITY_TRACKING_RESEARCH_REPORT_ko.md`

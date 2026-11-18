@@ -10,6 +10,14 @@
 
 개발 반례의 복구와 전체 상태 변화의 물리 정확성을 구분한다.
 
+## 시각 자료
+
+![품질 V2+LOW의 게시 기한과 신선도 충족 횟수](assets/publication.svg)
+
+![전체 길이 재생에서 측정한 프레임 처리 p95](assets/replay-latency.svg)
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OWNER_REFERENCE_RECOVERY_REPORT_ko.md`

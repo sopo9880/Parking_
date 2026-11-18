@@ -10,6 +10,10 @@
 
 과거 응답에 정확 시각을 사후 생성하지 않는다.
 
+## 시각 자료
+
+![원본에서 분류 입력까지의 공간 대응 도식](assets/spatial-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `VERIFIED_RESEARCH_REPORT_ko.md`

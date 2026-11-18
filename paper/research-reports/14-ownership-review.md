@@ -10,6 +10,10 @@
 
 합성 입력은 기능 검증에만 사용한다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OWNERSHIP_REVIEW_REPORT_ko.md`

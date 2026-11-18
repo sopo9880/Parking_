@@ -10,6 +10,10 @@
 
 시각 근거가 부족한 변화는 미검증으로 유지한다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `G027_EMPTY_FAILURE_ROOT_CAUSE_ko.md`

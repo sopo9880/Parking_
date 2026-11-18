@@ -10,6 +10,10 @@
 
 검출 복구와 인접 차량의 안전한 구분은 별도 검증 대상이다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `NEW_SLOT_OWNER_RECOVERY_REPORT_ko.md`

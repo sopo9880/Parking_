@@ -10,6 +10,10 @@
 
 장치 전체 사용량과 프로세스 메모리는 다른 측정이다. 추적 ID는 물리 차량 정답으로 해석하지 않는다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `OVERNIGHT_RESEARCH_REPORT_ko.md`

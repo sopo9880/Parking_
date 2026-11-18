@@ -10,6 +10,10 @@
 
 기준점 포함 여부만으로 물리 소유나 EMPTY를 확정할 수 없다.
 
+## 시각 자료
+
+![원본에서 분류 입력까지의 공간 대응 도식](assets/spatial-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `DETECTION_OWNERSHIP_REPORT_ko.md`

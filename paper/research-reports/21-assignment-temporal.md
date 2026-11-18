@@ -10,6 +10,10 @@
 
 차량 연결이 확정되지 않은 슬롯을 인접 면에 자동 할당하지 않는다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `CONTINUOUS_REPLAY_REPORT_ko.md`

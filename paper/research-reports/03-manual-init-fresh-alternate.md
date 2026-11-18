@@ -10,6 +10,10 @@
 
 동일 영상의 다른 분할은 독립 촬영 평가와 구분한다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `CANDIDATE_v16_4_REPORT.txt`

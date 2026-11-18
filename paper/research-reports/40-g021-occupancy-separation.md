@@ -10,6 +10,18 @@
 
 소유 판단을 보류한 채 현재 점유를 기록할 수 있으나 직접 관측이 부족하면 UNKNOWN이다.
 
+## 시각 자료
+
+![기존 분류 Crop 전체 면적 대비 차량 및 보행자 마스크 비율](assets/crop-coverage.svg)
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
+## 비식별 CCTV 발췌
+
+![G021 공간 대응 장면의 비식별 패널 발췌](assets/cctv-g021-masked.png)
+
+G021 공간 대응 진단에 사용한 영상의 배경과 모아레 예시다. 가림으로 숨긴 영역은 이 사본으로 판독할 수 없다.
+
 ## 정리한 로컬 문서
 
 - `G021_OCCUPANCY_LOSS_ROOT_CAUSE_ko.md`

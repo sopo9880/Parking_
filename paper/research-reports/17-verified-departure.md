@@ -10,6 +10,10 @@
 
 후보 탐색과 사람이 확인한 실제 사건은 별도다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `EVENT_DISCOVERY_REPORT_ko.md`

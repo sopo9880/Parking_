@@ -10,6 +10,10 @@
 
 다른 슬롯 차량 답변은 EMPTY 답변이 아니다. 별도 빈자리 정답이 필요하다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `VERIFIED_NEGATIVE_GT_REPORT_ko.md` · 사본과 중간본 포함 3개

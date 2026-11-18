@@ -10,6 +10,10 @@
 
 겹친 프레임을 재처리했으므로 독립 표본을 단순 합산할 수 없다.
 
+## 시각 자료
+
+![관측 재생과 초기화 비교 도식](assets/replay-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `DEEP_RESEARCH_REPORT_ko.md`

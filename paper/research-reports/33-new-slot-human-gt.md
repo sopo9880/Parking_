@@ -10,6 +10,10 @@
 
 새 개발 점유 답변에는 EMPTY 반례가 없었다.
 
+## 시각 자료
+
+![검토와 고정 예측 사후 평가 절차 도식](assets/approval-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `NEW_SLOT_HUMAN_GT_REPORT_ko.md` · 사본과 중간본 포함 2개

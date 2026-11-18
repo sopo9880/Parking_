@@ -10,6 +10,10 @@
 
 미완료 응답과 정확한 전이 시각이 없는 사례는 추정하지 않았다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `EVENT_VERIFIED_REPORT_ko.md`

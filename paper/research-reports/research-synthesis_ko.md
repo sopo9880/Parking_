@@ -26,6 +26,14 @@
 
 운영 SAFE, 연구 비교 기준선, 실험용 SHADOW는 별도 정책이다. AUTO_POINT, AUTO_EMPTY_REFERENCE, ASSISTED_OWNER는 서로 다른 입력 조건으로 기록한다. 개발 사건에 맞춰 선택한 정책은 동결한 뒤 독립 자료에서 다시 평가한다.
 
+## 주요 결과 그래프
+
+![지원 8면과 미지원 24면 집계](assets/local-coverage.svg)
+
+![실시간 전체 재생 지연 비교](assets/replay-latency.svg)
+
+![직접 점유 SHADOW 변경 관측의 근거](assets/review-scope.svg)
+
 ## 한계와 평가 계획
 
 기존 영상에서 반복적으로 선택한 관측을 새로운 일반화 표본으로 세지 않는다. 같은 차량의 연속 프레임과 물리 사건도 별도로 집계한다. 직접 사람 답변, AI 초안 사용자 승인, 합성 기능 시험은 서로 다른 출처다. 최종 점유 일치와 차량 소유 일치의 판단도 별개다.

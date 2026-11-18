@@ -10,6 +10,10 @@
 
 다수 시점에서 같은 물리 차량이었다고 추정해 정답을 확장하지 않는다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `VEHICLE_LIFECYCLE_REPORT_ko.md` · 사본과 중간본 포함 3개

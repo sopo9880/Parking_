@@ -10,6 +10,10 @@
 
 UNKNOWN 감소분은 검증된 정확도 범위와 별도 보고한다.
 
+## 시각 자료
+
+![검출과 소유, 점유, 빈자리의 관계 도식](assets/ownership-flow.svg)
+
 ## 정리한 로컬 문서
 
 - `AUTO_RELIABILITY_REPORT_ko.md`
